@@ -312,3 +312,7 @@ html {
   text-transform: uppercase;
   color: #ff4d4d;
 }
+/* Mobile tap-to-flip */
+.team-card.flipped .team-card-inner {
+  transform: rotateY(180deg);
+}
