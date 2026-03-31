@@ -14,6 +14,7 @@ function applyAssets() {
   });
 }
 
+
 // ── Carousel ──────────────────────────────────────────────────────────────────
 const SLIDE_COUNT = 4;
 
@@ -125,7 +126,17 @@ window.scrollToDesktopSlide = function (index) {
     behavior: "smooth"
   });
 };
-
+function offsetHero() {
+  const navbar = document.getElementById('navbar');
+  const heroContent = document.getElementById('hero-content');
+  if (navbar && heroContent) {
+    const navH = navbar.offsetHeight;
+    heroContent.style.top = navH + 'px';
+    heroContent.style.bottom = '0';
+  }
+}
+document.addEventListener('DOMContentLoaded', offsetHero);
+window.addEventListener('resize', offsetHero);
 // ── Two Agents ────────────────────────────────────────────────────────────────
 window.switchAgent = function (name) {
   document

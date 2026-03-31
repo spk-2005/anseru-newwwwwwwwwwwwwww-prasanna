@@ -83,6 +83,7 @@ html {
 @layer base {
   * {
     @apply border-border;
+    box-sizing: border-box;
   }
 
   body {
@@ -111,38 +112,40 @@ html {
     letter-spacing: -0.02em;
   }
 
-  h4 {
+  h4,
+  .h4 {
     font-size: 20px;
     line-height: 1.4;
     letter-spacing: -0.02em;
   }
 
-  h5 {
+  h5,
+  .h5 {
     font-size: 16px;
     line-height: 1.4;
     letter-spacing: 0;
   }
 
-  h6 {
+  h6,
+  .h6 {
     font-size: 14px;
     line-height: 1.4;
     letter-spacing: 0;
   }
 
   h1,
-  .h1,
   h2,
-  .h2,
   h3,
-  .h3,
   h4,
-  .h4,
   h5,
-  .h5,
   h6,
+  .h1,
+  .h2,
+  .h3,
+  .h4,
+  .h5,
   .h6 {
     font-family: "DM Sans", sans-serif;
-    font-weight: 400; /* Regular as per image */
   }
 }
 
@@ -208,7 +211,8 @@ html {
 
 .anseru-section-tag {
   @apply text-[16px] mb-1 font-normal tracking-wide text-black/60;
-  letter-spacing: 0; /* Matches H6 */
+  letter-spacing: 0;
+  /* Matches H6 */
 }
 
 .anseru-section-title {
@@ -228,12 +232,14 @@ html {
 .anseru-h4 {
   @apply text-[20px] font-normal whitespace-pre-line leading-[1.4] tracking-[-0.02em];
 }
+
 /* ── 3D flip cards ─────────────────────────────────────────────── */
 @media (hover: hover) {
   .team-card:hover .team-card-inner {
     transform: rotateY(180deg);
   }
 }
+
 .team-card.flipped .team-card-inner {
   transform: rotateY(180deg);
 }
@@ -243,14 +249,17 @@ html {
   from {
     transform: translateY(0);
   }
+
   to {
     transform: translateY(-50%);
   }
 }
+
 @keyframes integrationDown {
   from {
     transform: translateY(-50%);
   }
+
   to {
     transform: translateY(0);
   }
@@ -294,6 +303,7 @@ html {
 #carousel-desktop::-webkit-scrollbar {
   display: none;
 }
+
 .scroll-down-text {
   writing-mode: vertical-rl;
   text-orientation: mixed;
