@@ -495,354 +495,385 @@
         </div>
 
         <!-- ── MOBILE: auto-sliding carousel ── -->
-   <!-- ── MOBILE: auto-sliding carousel ── -->
-<div class="md:hidden relative">
-  <style>
-    /*
+        <!-- ── MOBILE: auto-sliding carousel ── -->
+        <div class="md:hidden relative">
+          <style>
+            /*
       Fluid card responsive system:
       - Font, padding, gap all scale with vw
       - Card height auto-sizes to content via min-height + padding
       - No fixed heights — content always visible
     */
 
-    .prob-card-wrap {
-      flex-shrink: 0;
-      snap-align: center;
-      min-width: 0;
-      width: 85vw;
-    }
+            .prob-card-wrap {
+              flex-shrink: 0;
+              snap-align: center;
+              min-width: 0;
+              width: 85vw;
+            }
 
-    @media (min-width: 400px) {
-      .prob-card-wrap { width: 75vw; }
-    }
+            @media (min-width: 400px) {
+              .prob-card-wrap {
+                width: 75vw;
+              }
+            }
 
-    .prob-card {
-      position: relative;
-      width: 100%;
-      /* min-height grows taller on small screens, shorter on wider ones */
-      min-height: clamp(360px, 128vw, 500px);
-      perspective: 1000px;
-    }
+            .prob-card {
+              position: relative;
+              width: 100%;
+              /* min-height grows taller on small screens, shorter on wider ones */
+              min-height: clamp(360px, 128vw, 500px);
+              perspective: 1000px;
+            }
 
-    .prob-card-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transform-style: preserve-3d;
-      transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-    }
+            .prob-card-inner {
+              position: relative;
+              width: 100%;
+              height: 100%;
+              transform-style: preserve-3d;
+              transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            }
 
-    .prob-face {
-      position: absolute;
-      inset: 0;
-      background: #F8F9FB;
-      overflow: hidden;
-      border-radius: 12px;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-    }
+            .prob-face {
+              position: absolute;
+              inset: 0;
+              background: #F8F9FB;
+              overflow: hidden;
+              border-radius: 12px;
+              backface-visibility: hidden;
+              -webkit-backface-visibility: hidden;
+            }
 
-    .prob-face-back {
-      transform: rotateY(180deg);
-    }
+            .prob-face-back {
+              transform: rotateY(180deg);
+            }
 
-    /* Grid overlay */
-    .prob-grid-overlay {
-      position: absolute;
-      inset-inline: 0;
-      top: 0;
-      height: 45%;
-      pointer-events: none;
-      background-image: repeating-linear-gradient(
-        to right, #e5e7eb 0, #e5e7eb 1px, transparent 1px, transparent 20px
-      );
-      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%);
-      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%);
-    }
+            /* Grid overlay */
+            .prob-grid-overlay {
+              position: absolute;
+              inset-inline: 0;
+              top: 0;
+              height: 45%;
+              pointer-events: none;
+              background-image: repeating-linear-gradient(to right, #e5e7eb 0, #e5e7eb 1px, transparent 1px, transparent 20px);
+              mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+              -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+            }
 
-    .prob-face-back .prob-grid-overlay { opacity: 1; }
-    .prob-face-front .prob-grid-overlay { opacity: 0.5; }
+            .prob-face-back .prob-grid-overlay {
+              opacity: 1;
+            }
 
-    /* Fluid padding: tighter on small screens */
-    .prob-body {
-      position: relative;
-      padding: clamp(16px, 5vw, 24px);
-      height: 100%;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      z-index: 10;
-    }
+            .prob-face-front .prob-grid-overlay {
+              opacity: 0.5;
+            }
 
-    .prob-body-back {
-      padding-top: clamp(20px, 6vw, 32px);
-    }
+            /* Fluid padding: tighter on small screens */
+            .prob-body {
+              position: relative;
+              padding: clamp(16px, 5vw, 24px);
+              height: 100%;
+              width: 100%;
+              display: flex;
+              flex-direction: column;
+              z-index: 10;
+            }
 
-    /* Fluid heading */
-    .prob-heading {
-      font-weight: 400;
-      color: #111827;
-      line-height: 1.25;
-      margin-bottom: clamp(8px, 2.5vw, 12px);
-      font-size: clamp(16px, 5.2vw, 22px);
-    }
+            .prob-body-back {
+              padding-top: clamp(20px, 6vw, 32px);
+            }
 
-    /* Fluid description (front) */
-    .prob-desc {
-      color: #6B7280;
-      line-height: 1.5;
-      font-size: clamp(11px, 3vw, 13px);
-      padding-right: clamp(8px, 3vw, 16px);
-    }
+            /* Fluid heading */
+            .prob-heading {
+              font-weight: 400;
+              color: #111827;
+              line-height: 1.25;
+              margin-bottom: clamp(8px, 2.5vw, 12px);
+              font-size: clamp(16px, 5.2vw, 22px);
+            }
 
-    /* SVG illustration area */
-    .prob-svg-wrap {
-      margin-top: auto;
-      margin-bottom: clamp(8px, 3vw, 16px);
-      padding-top: clamp(8px, 3vw, 16px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+            /* Fluid description (front) */
+            .prob-desc {
+              color: #6B7280;
+              line-height: 1.5;
+              font-size: clamp(11px, 3vw, 13px);
+              padding-right: clamp(8px, 3vw, 16px);
+            }
 
-    .prob-svg-inner {
-      width: clamp(100px, 55%, 160px);
-      opacity: 0.9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+            /* SVG illustration area */
+            .prob-svg-wrap {
+              margin-top: auto;
+              margin-bottom: clamp(8px, 3vw, 16px);
+              padding-top: clamp(8px, 3vw, 16px);
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
 
-    .prob-tap-hint {
-      text-align: center;
-      font-size: 11px;
-      color: #9CA3AF;
-      margin-top: 4px;
-    }
+            .prob-svg-inner {
+              width: clamp(100px, 55%, 160px);
+              opacity: 0.9;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
 
-    /* Back face heading spacing */
-    .prob-back-heading {
-      font-weight: 400;
-      color: #111827;
-      line-height: 1.25;
-      font-size: clamp(16px, 5.2vw, 22px);
-      margin-bottom: clamp(12px, 4vw, 20px);
-    }
+            .prob-tap-hint {
+              text-align: center;
+              font-size: 11px;
+              color: #9CA3AF;
+              margin-top: 4px;
+            }
 
-    /* Bullet list */
-    .prob-bullets {
-      display: flex;
-      flex-direction: column;
-      gap: clamp(10px, 3.5vw, 18px);
-      padding-right: clamp(8px, 3vw, 16px);
-    }
+            /* Back face heading spacing */
+            .prob-back-heading {
+              font-weight: 400;
+              color: #111827;
+              line-height: 1.25;
+              font-size: clamp(16px, 5.2vw, 22px);
+              margin-bottom: clamp(12px, 4vw, 20px);
+            }
 
-    .prob-bullet-row {
-      display: flex;
-      align-items: flex-start;
-      gap: clamp(8px, 2.5vw, 12px);
-    }
+            /* Bullet list */
+            .prob-bullets {
+              display: flex;
+              flex-direction: column;
+              gap: clamp(10px, 3.5vw, 18px);
+              padding-right: clamp(8px, 3vw, 16px);
+            }
 
-    .prob-bullet-icon {
-      width: clamp(14px, 4vw, 18px);
-      height: clamp(14px, 4vw, 18px);
-      object-fit: contain;
-      margin-top: 2px;
-      flex-shrink: 0;
-    }
+            .prob-bullet-row {
+              display: flex;
+              align-items: flex-start;
+              gap: clamp(8px, 2.5vw, 12px);
+            }
 
-    .prob-bullet-text {
-      color: rgba(0,0,0,0.6);
-      line-height: 1.45;
-      font-size: clamp(11px, 3vw, 13px);
-    }
+            .prob-bullet-icon {
+              width: clamp(14px, 4vw, 18px);
+              height: clamp(14px, 4vw, 18px);
+              object-fit: contain;
+              margin-top: 2px;
+              flex-shrink: 0;
+            }
 
-    .prob-accent { color: #2C48DB; font-weight: 600; }
+            .prob-bullet-text {
+              color: rgba(0, 0, 0, 0.6);
+              line-height: 1.45;
+              font-size: clamp(11px, 3vw, 13px);
+            }
 
-    /* Accent bar (right edge) */
-    .prob-bar {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      width: 6px;
-      height: 55%;
-    }
-  </style>
+            .prob-accent {
+              color: #2C48DB;
+              font-weight: 600;
+            }
 
-  <div id="problem-carousel-track"
-    class="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4"
-    style="scrollbar-width: none; -ms-overflow-style: none; -webkit-overflow-scrolling: touch;">
+            /* Accent bar (right edge) */
+            .prob-bar {
+              position: absolute;
+              bottom: 0;
+              right: 0;
+              width: 6px;
+              height: 55%;
+            }
+          </style>
 
-    <!-- ── Card 1: Sales ── -->
-    <div class="prob-card-wrap snap-center">
-      <div class="prob-card team-card">
-        <div class="prob-card-inner team-card-inner">
-          <!-- Front -->
-          <div class="prob-face prob-face-front team-card-face team-card-front">
-            <div class="prob-grid-overlay"></div>
-            <div class="prob-bar" style="background: linear-gradient(to bottom, #11119A, #4A86E8);"></div>
-            <div class="prob-body">
-              <h3 class="prob-heading">Sales<br />Teams</h3>
-              <p class="prob-desc">
-                Responding to RFPs and RFIs requires collecting information from different teams &amp;
-                documents, which slows down deal cycles.
-              </p>
-              <div class="prob-svg-wrap">
-                <div class="prob-svg-inner">
-                  <svg viewBox="0 22 220 246" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto block">
-                    <path d="M23 36H197" stroke="black" stroke-width="2"/>
-                    <path d="M52 94H168" stroke="black" stroke-width="2"/>
-                    <path d="M81 152H139" stroke="black" stroke-width="2"/>
-                    <path d="M110 227.4C119.609 227.4 127.4 219.609 127.4 210C127.4 200.39 119.609 192.6 110 192.6C100.39 192.6 92.5996 200.39 92.5996 210C92.5996 219.609 100.39 227.4 110 227.4Z" stroke="black" stroke-width="2"/>
-                    <path d="M110 36V192.6" stroke="#888888" stroke-dasharray="4 4"/>
-                  </svg>
+          <div id="problem-carousel-track" class="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4"
+            style="scrollbar-width: none; -ms-overflow-style: none; -webkit-overflow-scrolling: touch;">
+
+            <!-- ── Card 1: Sales ── -->
+            <div class="prob-card-wrap snap-center">
+              <div class="prob-card team-card">
+                <div class="prob-card-inner team-card-inner">
+                  <!-- Front -->
+                  <div class="prob-face prob-face-front team-card-face team-card-front">
+                    <div class="prob-grid-overlay"></div>
+                    <div class="prob-bar" style="background: linear-gradient(to bottom, #11119A, #4A86E8);"></div>
+                    <div class="prob-body">
+                      <h3 class="prob-heading">Sales<br />Teams</h3>
+                      <p class="prob-desc">
+                        Responding to RFPs and RFIs requires collecting information from different teams &amp;
+                        documents, which slows down deal cycles.
+                      </p>
+                      <div class="prob-svg-wrap">
+                        <div class="prob-svg-inner">
+                          <svg viewBox="0 22 220 246" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            class="w-full h-auto block">
+                            <path d="M23 36H197" stroke="black" stroke-width="2" />
+                            <path d="M52 94H168" stroke="black" stroke-width="2" />
+                            <path d="M81 152H139" stroke="black" stroke-width="2" />
+                            <path
+                              d="M110 227.4C119.609 227.4 127.4 219.609 127.4 210C127.4 200.39 119.609 192.6 110 192.6C100.39 192.6 92.5996 200.39 92.5996 210C92.5996 219.609 100.39 227.4 110 227.4Z"
+                              stroke="black" stroke-width="2" />
+                            <path d="M110 36V192.6" stroke="#888888" stroke-dasharray="4 4" />
+                          </svg>
+                        </div>
+                      </div>
+                      <p class="prob-tap-hint">Tap to flip</p>
+                    </div>
+                  </div>
+                  <!-- Back -->
+                  <div class="prob-face prob-face-back team-card-face team-card-back">
+                    <div class="prob-grid-overlay"></div>
+                    <div class="prob-bar" style="background: linear-gradient(to bottom, #11119A, #4A86E8);"></div>
+                    <div class="prob-body prob-body-back">
+                      <h3 class="prob-back-heading">Sales<br />Teams</h3>
+                      <div class="prob-bullets">
+                        <div class="prob-bullet-row">
+                          <img src="./src/assets/Group.png" loading="lazy" alt="" class="prob-bullet-icon" />
+                          <p class="prob-bullet-text">Auto-assemble deal context from CRM data, call transcripts, and
+                            competitive insights</p>
+                        </div>
+                        <div class="prob-bullet-row">
+                          <img src="./src/assets/Group.png" loading="lazy" alt="" class="prob-bullet-icon" />
+                          <p class="prob-bullet-text">Detect requirements and map proof points to your strongest
+                            capabilities</p>
+                        </div>
+                        <div class="prob-bullet-row">
+                          <img src="./src/assets/Group.png" loading="lazy" alt="" class="prob-bullet-icon" />
+                          <p class="prob-bullet-text">Reduce proposal assembly time by <span
+                              class="prob-accent">60%+</span> with AI-generated first drafts</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <p class="prob-tap-hint">Tap to flip</p>
             </div>
+
+            <!-- ── Card 2: Security ── -->
+            <div class="prob-card-wrap snap-center">
+              <div class="prob-card team-card">
+                <div class="prob-card-inner team-card-inner">
+                  <!-- Front -->
+                  <div class="prob-face prob-face-front team-card-face team-card-front">
+                    <div class="prob-grid-overlay"></div>
+                    <div class="prob-bar" style="background: linear-gradient(to bottom, #D53B44, #3B82F6);"></div>
+                    <div class="prob-body">
+                      <h3 class="prob-heading">Security<br />Teams</h3>
+                      <p class="prob-desc">
+                        Vendor security questionnaires require detailed answers about policies, compliance, and
+                        infrastructure.
+                      </p>
+                      <div class="prob-svg-wrap">
+                        <div class="prob-svg-inner" style="width: clamp(90px, 50%, 140px);">
+                          <svg viewBox="0 20 285 285" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            class="w-full h-auto block" style="transform: scale(1.15); transform-origin: center;">
+                            <path
+                              d="M142.5 178.125C162.175 178.125 178.125 162.175 178.125 142.5C178.125 122.825 162.175 106.875 142.5 106.875C122.825 106.875 106.875 122.825 106.875 142.5C106.875 162.175 122.825 178.125 142.5 178.125Z"
+                              stroke="black" stroke-width="2.85" />
+                            <path
+                              d="M142.5 206.625C177.915 206.625 206.625 177.915 206.625 142.5C206.625 107.085 177.915 78.375 142.5 78.375C107.085 78.375 78.375 107.085 78.375 142.5C78.375 177.915 107.085 206.625 142.5 206.625Z"
+                              stroke="#444444" stroke-width="2.85" />
+                            <path
+                              d="M142.5 235.125C193.655 235.125 235.125 193.655 235.125 142.5C235.125 91.3446 193.655 49.875 142.5 49.875C91.3446 49.875 49.875 91.3446 49.875 142.5C49.875 193.655 91.3446 235.125 142.5 235.125Z"
+                              stroke="#666666" stroke-width="2.85" />
+                            <path
+                              d="M142.5 263.625C209.395 263.625 263.625 209.395 263.625 142.5C263.625 75.6045 209.395 21.375 142.5 21.375C75.6045 21.375 21.375 75.6045 21.375 142.5C21.375 209.395 75.6045 263.625 142.5 263.625Z"
+                              stroke="#888888" stroke-width="1.425" stroke-dasharray="5.7 5.7" />
+                            <path d="M142.5 21.375V263.625" stroke="#999999" stroke-width="1.425"
+                              stroke-dasharray="5.7 5.7" />
+                          </svg>
+                        </div>
+                      </div>
+                      <p class="prob-tap-hint">Tap to flip</p>
+                    </div>
+                  </div>
+                  <!-- Back -->
+                  <div class="prob-face prob-face-back team-card-face team-card-back">
+                    <div class="prob-grid-overlay"></div>
+                    <div class="prob-bar" style="background: linear-gradient(to bottom, #D53B44, #3B82F6);"></div>
+                    <div class="prob-body prob-body-back">
+                      <h3 class="prob-back-heading">Security<br />Teams</h3>
+                      <div class="prob-bullets">
+                        <div class="prob-bullet-row">
+                          <img src="./src/assets/Group (1).png" loading="lazy" alt="" class="prob-bullet-icon" />
+                          <p class="prob-bullet-text">Auto-draft security responses from your verified security
+                            documentation</p>
+                        </div>
+                        <div class="prob-bullet-row">
+                          <img src="./src/assets/Group (1).png" loading="lazy" alt="" class="prob-bullet-icon" />
+                          <p class="prob-bullet-text">Ground answers in verified security evidence</p>
+                        </div>
+                        <div class="prob-bullet-row">
+                          <img src="./src/assets/Group (1).png" loading="lazy" alt="" class="prob-bullet-icon" />
+                          <p class="prob-bullet-text">Cut security review time from hours to minutes</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ── Card 3: Compliance ── -->
+            <div class="prob-card-wrap snap-center">
+              <div class="prob-card team-card">
+                <div class="prob-card-inner team-card-inner">
+                  <!-- Front -->
+                  <div class="prob-face prob-face-front team-card-face team-card-front">
+                    <div class="prob-grid-overlay"></div>
+                    <div class="prob-bar" style="background: linear-gradient(to bottom, #658CA6, #C9C21A);"></div>
+                    <div class="prob-body">
+                      <h3 class="prob-heading">Compliance<br />Teams</h3>
+                      <p class="prob-desc">
+                        Compliance teams spend hours preparing responses for audits, vendor reviews, and regulatory
+                        forms.
+                      </p>
+                      <div class="prob-svg-wrap">
+                        <div class="prob-svg-inner">
+                          <svg viewBox="40 40 253 253" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            class="w-full h-auto block">
+                            <path d="M266.4 66.5996H66.5996V266.4H266.4V66.5996Z" stroke="black" stroke-width="2" />
+                            <path d="M133.199 66.5996V266.4" stroke="#666666" stroke-width="1.665" />
+                            <path d="M199.801 66.5996V266.4" stroke="#666666" stroke-width="1.665" />
+                            <path d="M66.5996 133.2H266.4" stroke="#666666" stroke-width="1.665" />
+                            <path d="M66.5996 199.8H266.4" stroke="#666666" stroke-width="1.665" />
+                            <path d="M66.5996 66.5996L266.4 266.4" stroke="#999999" stroke-width="1.665"
+                              stroke-dasharray="6.66 6.66" />
+                          </svg>
+                        </div>
+                      </div>
+                      <p class="prob-tap-hint">Tap to flip</p>
+                    </div>
+                  </div>
+                  <!-- Back -->
+                  <div class="prob-face prob-face-back team-card-face team-card-back">
+                    <div class="prob-grid-overlay"></div>
+                    <div class="prob-bar" style="background: linear-gradient(to bottom, #658CA6, #C9C21A);"></div>
+                    <div class="prob-body prob-body-back">
+                      <h3 class="prob-back-heading">Compliance<br />Teams</h3>
+                      <div class="prob-bullets">
+                        <div class="prob-bullet-row">
+                          <img src="./src/assets/Group (2).png" loading="lazy" alt="" class="prob-bullet-icon" />
+                          <p class="prob-bullet-text">Generate compliance responses with source-backed citations</p>
+                        </div>
+                        <div class="prob-bullet-row">
+                          <img src="./src/assets/Group (2).png" loading="lazy" alt="" class="prob-bullet-icon" />
+                          <p class="prob-bullet-text">Enforce mandatory human review for regulatory answers</p>
+                        </div>
+                        <div class="prob-bullet-row">
+                          <img src="./src/assets/Group (2).png" loading="lazy" alt="" class="prob-bullet-icon" />
+                          <p class="prob-bullet-text">Maintain a complete audit trail for every response</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
-          <!-- Back -->
-          <div class="prob-face prob-face-back team-card-face team-card-back">
-            <div class="prob-grid-overlay"></div>
-            <div class="prob-bar" style="background: linear-gradient(to bottom, #11119A, #4A86E8);"></div>
-            <div class="prob-body prob-body-back">
-              <h3 class="prob-back-heading">Sales<br />Teams</h3>
-              <div class="prob-bullets">
-                <div class="prob-bullet-row">
-                  <img src="./src/assets/Group.png" loading="lazy" alt="" class="prob-bullet-icon"/>
-                  <p class="prob-bullet-text">Auto-assemble deal context from CRM data, call transcripts, and competitive insights</p>
-                </div>
-                <div class="prob-bullet-row">
-                  <img src="./src/assets/Group.png" loading="lazy" alt="" class="prob-bullet-icon"/>
-                  <p class="prob-bullet-text">Detect requirements and map proof points to your strongest capabilities</p>
-                </div>
-                <div class="prob-bullet-row">
-                  <img src="./src/assets/Group.png" loading="lazy" alt="" class="prob-bullet-icon"/>
-                  <p class="prob-bullet-text">Reduce proposal assembly time by <span class="prob-accent">60%+</span> with AI-generated first drafts</p>
-                </div>
-              </div>
-            </div>
+
+          <!-- Dots -->
+          <div id="problem-dots" class="flex justify-center gap-2 mt-4 pb-8">
+            <button data-idx="0"
+              class="problem-dot transition-all duration-300 w-5 h-2 bg-gray-700 rounded-full"></button>
+            <button data-idx="1"
+              class="problem-dot transition-all duration-300 w-2 h-2 bg-gray-300 rounded-full"></button>
+            <button data-idx="2"
+              class="problem-dot transition-all duration-300 w-2 h-2 bg-gray-300 rounded-full"></button>
           </div>
         </div>
-      </div>
-    </div>
-
-    <!-- ── Card 2: Security ── -->
-    <div class="prob-card-wrap snap-center">
-      <div class="prob-card team-card">
-        <div class="prob-card-inner team-card-inner">
-          <!-- Front -->
-          <div class="prob-face prob-face-front team-card-face team-card-front">
-            <div class="prob-grid-overlay"></div>
-            <div class="prob-bar" style="background: linear-gradient(to bottom, #D53B44, #3B82F6);"></div>
-            <div class="prob-body">
-              <h3 class="prob-heading">Security<br />Teams</h3>
-              <p class="prob-desc">
-                Vendor security questionnaires require detailed answers about policies, compliance, and infrastructure.
-              </p>
-              <div class="prob-svg-wrap">
-                <div class="prob-svg-inner" style="width: clamp(90px, 50%, 140px);">
-                  <svg viewBox="0 20 285 285" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto block" style="transform: scale(1.15); transform-origin: center;">
-                    <path d="M142.5 178.125C162.175 178.125 178.125 162.175 178.125 142.5C178.125 122.825 162.175 106.875 142.5 106.875C122.825 106.875 106.875 122.825 106.875 142.5C106.875 162.175 122.825 178.125 142.5 178.125Z" stroke="black" stroke-width="2.85"/>
-                    <path d="M142.5 206.625C177.915 206.625 206.625 177.915 206.625 142.5C206.625 107.085 177.915 78.375 142.5 78.375C107.085 78.375 78.375 107.085 78.375 142.5C78.375 177.915 107.085 206.625 142.5 206.625Z" stroke="#444444" stroke-width="2.85"/>
-                    <path d="M142.5 235.125C193.655 235.125 235.125 193.655 235.125 142.5C235.125 91.3446 193.655 49.875 142.5 49.875C91.3446 49.875 49.875 91.3446 49.875 142.5C49.875 193.655 91.3446 235.125 142.5 235.125Z" stroke="#666666" stroke-width="2.85"/>
-                    <path d="M142.5 263.625C209.395 263.625 263.625 209.395 263.625 142.5C263.625 75.6045 209.395 21.375 142.5 21.375C75.6045 21.375 21.375 75.6045 21.375 142.5C21.375 209.395 75.6045 263.625 142.5 263.625Z" stroke="#888888" stroke-width="1.425" stroke-dasharray="5.7 5.7"/>
-                    <path d="M142.5 21.375V263.625" stroke="#999999" stroke-width="1.425" stroke-dasharray="5.7 5.7"/>
-                  </svg>
-                </div>
-              </div>
-              <p class="prob-tap-hint">Tap to flip</p>
-            </div>
-          </div>
-          <!-- Back -->
-          <div class="prob-face prob-face-back team-card-face team-card-back">
-            <div class="prob-grid-overlay"></div>
-            <div class="prob-bar" style="background: linear-gradient(to bottom, #D53B44, #3B82F6);"></div>
-            <div class="prob-body prob-body-back">
-              <h3 class="prob-back-heading">Security<br />Teams</h3>
-              <div class="prob-bullets">
-                <div class="prob-bullet-row">
-                  <img src="./src/assets/Group (1).png" loading="lazy" alt="" class="prob-bullet-icon"/>
-                  <p class="prob-bullet-text">Auto-draft security responses from your verified security documentation</p>
-                </div>
-                <div class="prob-bullet-row">
-                  <img src="./src/assets/Group (1).png" loading="lazy" alt="" class="prob-bullet-icon"/>
-                  <p class="prob-bullet-text">Ground answers in verified security evidence</p>
-                </div>
-                <div class="prob-bullet-row">
-                  <img src="./src/assets/Group (1).png" loading="lazy" alt="" class="prob-bullet-icon"/>
-                  <p class="prob-bullet-text">Cut security review time from hours to minutes</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── Card 3: Compliance ── -->
-    <div class="prob-card-wrap snap-center">
-      <div class="prob-card team-card">
-        <div class="prob-card-inner team-card-inner">
-          <!-- Front -->
-          <div class="prob-face prob-face-front team-card-face team-card-front">
-            <div class="prob-grid-overlay"></div>
-            <div class="prob-bar" style="background: linear-gradient(to bottom, #658CA6, #C9C21A);"></div>
-            <div class="prob-body">
-              <h3 class="prob-heading">Compliance<br />Teams</h3>
-              <p class="prob-desc">
-                Compliance teams spend hours preparing responses for audits, vendor reviews, and regulatory forms.
-              </p>
-              <div class="prob-svg-wrap">
-                <div class="prob-svg-inner">
-                  <svg viewBox="40 40 253 253" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto block">
-                    <path d="M266.4 66.5996H66.5996V266.4H266.4V66.5996Z" stroke="black" stroke-width="2"/>
-                    <path d="M133.199 66.5996V266.4" stroke="#666666" stroke-width="1.665"/>
-                    <path d="M199.801 66.5996V266.4" stroke="#666666" stroke-width="1.665"/>
-                    <path d="M66.5996 133.2H266.4" stroke="#666666" stroke-width="1.665"/>
-                    <path d="M66.5996 199.8H266.4" stroke="#666666" stroke-width="1.665"/>
-                    <path d="M66.5996 66.5996L266.4 266.4" stroke="#999999" stroke-width="1.665" stroke-dasharray="6.66 6.66"/>
-                  </svg>
-                </div>
-              </div>
-              <p class="prob-tap-hint">Tap to flip</p>
-            </div>
-          </div>
-          <!-- Back -->
-          <div class="prob-face prob-face-back team-card-face team-card-back">
-            <div class="prob-grid-overlay"></div>
-            <div class="prob-bar" style="background: linear-gradient(to bottom, #658CA6, #C9C21A);"></div>
-            <div class="prob-body prob-body-back">
-              <h3 class="prob-back-heading">Compliance<br />Teams</h3>
-              <div class="prob-bullets">
-                <div class="prob-bullet-row">
-                  <img src="./src/assets/Group (2).png" loading="lazy" alt="" class="prob-bullet-icon"/>
-                  <p class="prob-bullet-text">Generate compliance responses with source-backed citations</p>
-                </div>
-                <div class="prob-bullet-row">
-                  <img src="./src/assets/Group (2).png" loading="lazy" alt="" class="prob-bullet-icon"/>
-                  <p class="prob-bullet-text">Enforce mandatory human review for regulatory answers</p>
-                </div>
-                <div class="prob-bullet-row">
-                  <img src="./src/assets/Group (2).png" loading="lazy" alt="" class="prob-bullet-icon"/>
-                  <p class="prob-bullet-text">Maintain a complete audit trail for every response</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Dots -->
-  <div id="problem-dots" class="flex justify-center gap-2 mt-4 pb-8">
-    <button data-idx="0" class="problem-dot transition-all duration-300 w-5 h-2 bg-gray-700 rounded-full"></button>
-    <button data-idx="1" class="problem-dot transition-all duration-300 w-2 h-2 bg-gray-300 rounded-full"></button>
-    <button data-idx="2" class="problem-dot transition-all duration-300 w-2 h-2 bg-gray-300 rounded-full"></button>
-  </div>
-</div>
 
         <!-- ── DESKTOP: original 3-col grid with flip ── -->
         <div class="hidden md:grid grid-cols-3 gap-6 md:gap-8">
@@ -1039,25 +1070,26 @@
     </div>
   </section>
 
-    <section data-section id="how-it-works" class="scroll-mt-5">
-<!-- ═══════════════════════════════════════════
+  <section data-section id="how-it-works" class="scroll-mt-5">
+    <!-- ═══════════════════════════════════════════
    MOBILE CAROUSEL  (hidden on lg+)
 ════════════════════════════════════════════ -->
-<div id="carousel-mobile-gsap" class="lg:hidden relative w-full bg-white" style="height: 400vh">
-  <div class="sticky top-0 w-full h-[100dvh] overflow-hidden flex flex-col bg-white"
-    style="padding: clamp(16px,4vw,24px) 0 8px;">
+    <div id="carousel-mobile-gsap" class="lg:hidden relative w-full bg-white" style="height: 400vh">
+      <div class="sticky top-0 w-full h-[100dvh] overflow-hidden flex flex-col bg-white"
+        style="padding: clamp(16px,4vw,24px) 0 8px;">
 
-    <!-- Header -->
-    <div style="padding: 0 clamp(14px,4vw,20px); margin-bottom: clamp(14px,4vw,20px);" class="shrink-0">
-      <p style="font-size: clamp(11px,3vw,14px); color:#9ca3af; margin-bottom:4px; font-weight:400;">How it Works</p>
-      <h2
-       style="font-size:clamp(13px,5.97vw,36px); line-height:1.1; font-weight:400; letter-spacing:-0.02em; color:#000; margin:0;">
-        How Anseru Turns Knowledge Into<br />Winning Deals
-      </h2>
-    </div>
+        <!-- Header -->
+        <div style="padding: 0 clamp(14px,4vw,20px); margin-bottom: clamp(14px,4vw,20px);" class="shrink-0">
+          <p style="font-size: clamp(11px,3vw,14px); color:#9ca3af; margin-bottom:4px; font-weight:400;">How it Works
+          </p>
+          <h2
+            style="font-size:clamp(13px,5.97vw,36px); line-height:1.1; font-weight:400; letter-spacing:-0.02em; color:#000; margin:0;">
+            How Anseru Turns Knowledge Into<br />Winning Deals
+          </h2>
+        </div>
 
-    <!-- Pill Navigation -->
-    <div style="
+        <!-- Pill Navigation -->
+        <div style="
       width: calc(100% - clamp(28px,8vw,40px));
       margin: 0 auto clamp(14px,4vw,20px);
       background: #f4f4f5;
@@ -1066,915 +1098,1007 @@
       display: flex;
       align-items: center;
     " class="shrink-0">
-      <button id="pill-nav-0" onclick="if(window.scrollToMobileSlide) window.scrollToMobileSlide(0)" style="
+          <button id="pill-nav-0" onclick="if(window.scrollToMobileSlide) window.scrollToMobileSlide(0)" style="
         flex:1; background:#000; color:#fff;
         border-radius:2px; padding: clamp(5px,1.5vw,8px) 4px;
         font-size:clamp(11px,3.2vw,14px); font-weight:500;
         border:none; cursor:pointer; transition:background 0.2s;
       ">Connect</button>
-      <button id="pill-nav-1" onclick="if(window.scrollToMobileSlide) window.scrollToMobileSlide(1)" style="
+          <button id="pill-nav-1" onclick="if(window.scrollToMobileSlide) window.scrollToMobileSlide(1)" style="
         flex:1; background:transparent; color:#4b5563;
         border-radius:8px; padding: clamp(5px,1.5vw,8px) 4px;
         font-size:clamp(11px,3.2vw,14px); font-weight:500;
         border:none; cursor:pointer; transition:background 0.2s;
       ">Upload</button>
-      <button id="pill-nav-2" onclick="if(window.scrollToMobileSlide) window.scrollToMobileSlide(2)" style="
+          <button id="pill-nav-2" onclick="if(window.scrollToMobileSlide) window.scrollToMobileSlide(2)" style="
         flex:1; background:transparent; color:#4b5563;
         border-radius:8px; padding: clamp(5px,1.5vw,8px) 4px;
         font-size:clamp(11px,3.2vw,14px); font-weight:500;
         border:none; cursor:pointer; transition:background 0.2s;
       ">Respond</button>
-      <button id="pill-nav-3" onclick="if(window.scrollToMobileSlide) window.scrollToMobileSlide(3)" style="
+          <button id="pill-nav-3" onclick="if(window.scrollToMobileSlide) window.scrollToMobileSlide(3)" style="
         flex:1; background:transparent; color:#4b5563;
         border-radius:8px; padding: clamp(5px,1.5vw,8px) 4px;
         font-size:clamp(11px,3.2vw,14px); font-weight:500;
         border:none; cursor:pointer; transition:background 0.2s;
       ">Approve</button>
-    </div>
+        </div>
 
-    <!-- Slide Track Wrapper -->
-    <div class="relative flex-1 min-h-0" style="overflow:hidden; isolation: isolate;">
-      <div id="carousel-mobile-track" style="
+        <!-- Slide Track Wrapper -->
+        <div class="relative flex-1 min-h-0" style="overflow:hidden; isolation: isolate;">
+          <div id="carousel-mobile-track" style="
         display:flex; height:100%; width:400vw;
         transform:translateX(0); will-change:transform;
         transition: transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94);
       ">
 
-        <!-- ── Slide 0: Connect ── -->
-        <div style="
+            <!-- ── Slide 0: Connect ── -->
+            <div style="
           width:100vw; height:100%;
           display:flex; flex-direction:column;
           padding: 0 clamp(14px,4vw,20px);
           overflow-y:auto; scrollbar-width:none;
           flex-shrink: 0;
         ">
-          <h3 style="font-size:clamp(18px,5.5vw,24px); font-weight:400; color:#111827; margin:0 0 clamp(10px,3vw,16px); line-height:1.2;">
-            Connect your knowledge
-          </h3>
+              <h3
+                style="font-size:clamp(18px,5.5vw,24px); font-weight:400; color:#111827; margin:0 0 clamp(10px,3vw,16px); line-height:1.2;">
+                Connect your knowledge
+              </h3>
 
-          <!-- Card -->
-          <div style="
+              <!-- Card -->
+              <div style="
             width:100%; flex-shrink:0;
             height: clamp(200px,55vw,280px);
             border-radius:12px; overflow:hidden;
             position:relative; margin-bottom:clamp(12px,3.5vw,20px);
             display: flex; flex-direction: column;
           " class="card-gradient-a1">
-            <img src="./src/assets/Group 1437253216.png" loading="lazy" alt=""
-              style="position:absolute;top:0;right:0;width:40%;height:40%;object-fit:contain;pointer-events:none;z-index:1;" />
-            <div class="noise-overlay"
-              style="position:absolute;inset:0;pointer-events:none;mix-blend-mode:overlay;z-index:0;"></div>
-            <!-- Text on top left -->
-            <div style="position:relative;z-index:3;padding:clamp(14px,4vw,20px);width:100%;box-sizing:border-box;">
-              <h4 style="font-size:clamp(13px,3.8vw,16px);font-weight:500;color:#fff;line-height:1.3;margin:0;">
-                Turn complex RFPs into clear, winning responses
-              </h4>
-            </div>
-            <!-- Screenshot bottom-right -->
-            <div style="position:relative;z-index:2;margin-top:auto;align-self:flex-end;width:78%;display:flex;justify-content:flex-end;">
-              <img src="./src/assets/Intro-Page.webp" loading="lazy" alt="Connect"
-                style="width:100%;height:auto;display:block;border-radius:8px 0 0 0;" />
-            </div>
-          </div>
+                <img src="./src/assets/Group 1437253216.png" loading="lazy" alt=""
+                  style="position:absolute;top:0;right:0;width:40%;height:40%;object-fit:contain;pointer-events:none;z-index:1;" />
+                <div class="noise-overlay"
+                  style="position:absolute;inset:0;pointer-events:none;mix-blend-mode:overlay;z-index:0;"></div>
+                <!-- Text on top left -->
+                <div style="position:relative;z-index:3;padding:clamp(14px,4vw,20px);width:100%;box-sizing:border-box;">
+                  <h4 style="font-size:clamp(13px,3.8vw,16px);font-weight:500;color:#fff;line-height:1.3;margin:0;">
+                    Turn complex RFPs into clear, winning responses
+                  </h4>
+                </div>
+                <!-- Screenshot bottom-right -->
+                <div
+                  style="position:relative;z-index:2;margin-top:auto;align-self:flex-end;width:78%;display:flex;justify-content:flex-end;">
+                  <img src="./src/assets/Intro-Page.webp" loading="lazy" alt="Connect"
+                    style="width:100%;height:auto;display:block;border-radius:8px 0 0 0;" />
+                </div>
+              </div>
 
-          <!-- Body text -->
-          <p style="font-size:clamp(12px,3.5vw,15px);line-height:1.65;color:#6b7280;margin:0 0 clamp(10px,3vw,16px);">
-            Your single living source of truth. Anseru connects to where your knowledge already lives. Sync Google
-            Drive, SharePoint, Teams, Jira, Slack, and Dropbox or upload your internal documents directly. Your
-            answer library builds itself and stays current automatically.
-          </p>
-          <!-- Bullets -->
-          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:clamp(8px,2.5vw,12px);">
-            <li style="display:flex;align-items:flex-start;gap:clamp(6px,2vw,10px);">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:3px;opacity:0.4;">
-                <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black" stroke-width="1.5" stroke-linecap="round" />
-              </svg>
-              <span style="font-size:clamp(12px,3.5vw,15px);color:#6b7280;line-height:1.5;">Indexes past RFPs, security docs, and compliance content automatically</span>
-            </li>
-            <li style="display:flex;align-items:flex-start;gap:clamp(6px,2vw,10px);">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:3px;opacity:0.4;">
-                <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black" stroke-width="1.5" stroke-linecap="round" />
-              </svg>
-              <span style="font-size:clamp(12px,3.5vw,15px);color:#6b7280;line-height:1.5;">Integrates with your existing storage and communication systems</span>
-            </li>
-            <li style="display:flex;align-items:flex-start;gap:clamp(6px,2vw,10px);">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:3px;opacity:0.4;">
-                <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black" stroke-width="1.5" stroke-linecap="round" />
-              </svg>
-              <span style="font-size:clamp(12px,3.5vw,15px);color:#6b7280;line-height:1.5;">Improves continuously as your team uses and approves new answers</span>
-            </li>
-          </ul>
-        </div>
+              <!-- Body text -->
+              <p
+                style="font-size:clamp(12px,3.5vw,15px);line-height:1.65;color:#6b7280;margin:0 0 clamp(10px,3vw,16px);">
+                Your single living source of truth. Anseru connects to where your knowledge already lives. Sync Google
+                Drive, SharePoint, Teams, Jira, Slack, and Dropbox or upload your internal documents directly. Your
+                answer library builds itself and stays current automatically.
+              </p>
+              <!-- Bullets -->
+              <ul
+                style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:clamp(8px,2.5vw,12px);">
+                <li style="display:flex;align-items:flex-start;gap:clamp(6px,2vw,10px);">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    style="flex-shrink:0;margin-top:3px;opacity:0.4;">
+                    <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
+                      stroke-width="1.5" stroke-linecap="round" />
+                  </svg>
+                  <span style="font-size:clamp(12px,3.5vw,15px);color:#6b7280;line-height:1.5;">Indexes past RFPs,
+                    security docs, and compliance content automatically</span>
+                </li>
+                <li style="display:flex;align-items:flex-start;gap:clamp(6px,2vw,10px);">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    style="flex-shrink:0;margin-top:3px;opacity:0.4;">
+                    <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
+                      stroke-width="1.5" stroke-linecap="round" />
+                  </svg>
+                  <span style="font-size:clamp(12px,3.5vw,15px);color:#6b7280;line-height:1.5;">Integrates with your
+                    existing storage and communication systems</span>
+                </li>
+                <li style="display:flex;align-items:flex-start;gap:clamp(6px,2vw,10px);">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    style="flex-shrink:0;margin-top:3px;opacity:0.4;">
+                    <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
+                      stroke-width="1.5" stroke-linecap="round" />
+                  </svg>
+                  <span style="font-size:clamp(12px,3.5vw,15px);color:#6b7280;line-height:1.5;">Improves continuously as
+                    your team uses and approves new answers</span>
+                </li>
+              </ul>
+            </div>
 
-        <!-- ── Slide 1: Upload ── -->
-        <div style="
+            <!-- ── Slide 1: Upload ── -->
+            <div style="
           width:100vw; height:100%;
           display:flex; flex-direction:column;
           padding: 0 clamp(14px,4vw,20px);
           overflow-y:auto; scrollbar-width:none;
           flex-shrink: 0;
         ">
-          <h3 style="font-size:clamp(18px,5.5vw,24px);font-weight:400;color:#111827;margin:0 0 clamp(10px,3vw,16px);line-height:1.2;">
-            Upload RFPs &amp; Security Questionnaires
-          </h3>
+              <h3
+                style="font-size:clamp(18px,5.5vw,24px);font-weight:400;color:#111827;margin:0 0 clamp(10px,3vw,16px);line-height:1.2;">
+                Upload RFPs &amp; Security Questionnaires
+              </h3>
 
-          <!-- Card -->
-          <div style="
+              <!-- Card -->
+              <div style="
             width:100%; flex-shrink:0;
             height:clamp(200px,55vw,280px);
             border-radius:12px; overflow:hidden;
             position:relative; margin-bottom:clamp(12px,3.5vw,20px);
             display: flex; flex-direction: column;
           " class="card-gradient-a2">
-            <img src="./src/assets/Group 1437253216.png" loading="lazy" alt=""
-              style="position:absolute;top:0;right:0;width:40%;height:40%;object-fit:contain;pointer-events:none;z-index:1;" />
-            <div class="noise-overlay"
-              style="position:absolute;inset:0;pointer-events:none;mix-blend-mode:overlay;z-index:0;"></div>
-            <div style="position:relative;z-index:3;padding:clamp(14px,4vw,20px);width:100%;box-sizing:border-box;">
-              <h4 style="font-size:clamp(13px,3.8vw,16px);font-weight:500;color:#fff;line-height:1.3;margin:0;">
-                Extract precise constraints with pinpoint accuracy
-              </h4>
-            </div>
-            <div style="position:relative;z-index:2;margin-top:auto;align-self:flex-end;width:78%;display:flex;justify-content:flex-end;">
-              <img src="./src/assets/Intro Page (3).png" loading="lazy" alt="Upload"
-                style="width:100%;height:auto;display:block;border-radius:8px 0 0 0;" />
-            </div>
-          </div>
+                <img src="./src/assets/Group 1437253216.png" loading="lazy" alt=""
+                  style="position:absolute;top:0;right:0;width:40%;height:40%;object-fit:contain;pointer-events:none;z-index:1;" />
+                <div class="noise-overlay"
+                  style="position:absolute;inset:0;pointer-events:none;mix-blend-mode:overlay;z-index:0;"></div>
+                <div style="position:relative;z-index:3;padding:clamp(14px,4vw,20px);width:100%;box-sizing:border-box;">
+                  <h4 style="font-size:clamp(13px,3.8vw,16px);font-weight:500;color:#fff;line-height:1.3;margin:0;">
+                    Extract precise constraints with pinpoint accuracy
+                  </h4>
+                </div>
+                <div
+                  style="position:relative;z-index:2;margin-top:auto;align-self:flex-end;width:78%;display:flex;justify-content:flex-end;">
+                  <img src="./src/assets/Intro Page (3).png" loading="lazy" alt="Upload"
+                    style="width:100%;height:auto;display:block;border-radius:8px 0 0 0;" />
+                </div>
+              </div>
 
-          <p style="font-size:clamp(12px,3.5vw,15px);line-height:1.65;color:#6b7280;margin:0 0 clamp(10px,3vw,16px);">
-            Drop in any document in any format. Anseru reads the full document, identifies every requirement, and
-            maps each question to your verified knowledge base, in seconds.
-          </p>
-          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:clamp(8px,2.5vw,12px);">
-            <li style="display:flex;align-items:flex-start;gap:clamp(6px,2vw,10px);">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:3px;opacity:0.4;">
-                <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black" stroke-width="1.5" stroke-linecap="round" />
-              </svg>
-              <span style="font-size:clamp(12px,3.5vw,15px);color:#6b7280;line-height:1.5;">Accepts PDF, DOCX, XLSX documents</span>
-            </li>
-            <li style="display:flex;align-items:flex-start;gap:clamp(6px,2vw,10px);">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:3px;opacity:0.4;">
-                <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black" stroke-width="1.5" stroke-linecap="round" />
-              </svg>
-              <span style="font-size:clamp(12px,3.5vw,15px);color:#6b7280;line-height:1.5;">Automatically identifies and classifies every question and sub-requirement</span>
-            </li>
-            <li style="display:flex;align-items:flex-start;gap:clamp(6px,2vw,10px);">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:3px;opacity:0.4;">
-                <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black" stroke-width="1.5" stroke-linecap="round" />
-              </svg>
-              <span style="font-size:clamp(12px,3.5vw,15px);color:#6b7280;line-height:1.5;">Maps each item to your verified answer library before you begin</span>
-            </li>
-          </ul>
-        </div>
+              <p
+                style="font-size:clamp(12px,3.5vw,15px);line-height:1.65;color:#6b7280;margin:0 0 clamp(10px,3vw,16px);">
+                Drop in any document in any format. Anseru reads the full document, identifies every requirement, and
+                maps each question to your verified knowledge base, in seconds.
+              </p>
+              <ul
+                style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:clamp(8px,2.5vw,12px);">
+                <li style="display:flex;align-items:flex-start;gap:clamp(6px,2vw,10px);">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    style="flex-shrink:0;margin-top:3px;opacity:0.4;">
+                    <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
+                      stroke-width="1.5" stroke-linecap="round" />
+                  </svg>
+                  <span style="font-size:clamp(12px,3.5vw,15px);color:#6b7280;line-height:1.5;">Accepts PDF, DOCX, XLSX
+                    documents</span>
+                </li>
+                <li style="display:flex;align-items:flex-start;gap:clamp(6px,2vw,10px);">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    style="flex-shrink:0;margin-top:3px;opacity:0.4;">
+                    <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
+                      stroke-width="1.5" stroke-linecap="round" />
+                  </svg>
+                  <span style="font-size:clamp(12px,3.5vw,15px);color:#6b7280;line-height:1.5;">Automatically identifies
+                    and classifies every question and sub-requirement</span>
+                </li>
+                <li style="display:flex;align-items:flex-start;gap:clamp(6px,2vw,10px);">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    style="flex-shrink:0;margin-top:3px;opacity:0.4;">
+                    <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
+                      stroke-width="1.5" stroke-linecap="round" />
+                  </svg>
+                  <span style="font-size:clamp(12px,3.5vw,15px);color:#6b7280;line-height:1.5;">Maps each item to your
+                    verified answer library before you begin</span>
+                </li>
+              </ul>
+            </div>
 
-        <!-- ── Slide 2: Respond ── -->
-        <div style="
+            <!-- ── Slide 2: Respond ── -->
+            <div style="
           width:100vw; height:100%;
           display:flex; flex-direction:column;
           padding: 0 clamp(14px,4vw,20px);
           overflow-y:auto; scrollbar-width:none;
           flex-shrink: 0;
         ">
-          <h3 style="font-size:clamp(18px,5.5vw,24px);font-weight:400;color:#111827;margin:0 0 clamp(10px,3vw,16px);line-height:1.2;">
-            Generate AI Draft Responses
-          </h3>
+              <h3
+                style="font-size:clamp(18px,5.5vw,24px);font-weight:400;color:#111827;margin:0 0 clamp(10px,3vw,16px);line-height:1.2;">
+                Generate AI Draft Responses
+              </h3>
 
-          <!-- Card -->
-          <div style="
+              <!-- Card -->
+              <div style="
             width:100%; flex-shrink:0;
             height:clamp(200px,55vw,280px);
             border-radius:12px; overflow:hidden;
             position:relative; margin-bottom:clamp(12px,3.5vw,20px);
             display: flex; flex-direction: column;
           " class="card-gradient-a3">
-            <img src="./src/assets/Group 1437253216.png" loading="lazy" alt=""
-              style="position:absolute;top:0;right:0;width:40%;height:40%;object-fit:contain;pointer-events:none;z-index:1;" />
-            <div class="noise-overlay"
-              style="position:absolute;inset:0;pointer-events:none;mix-blend-mode:overlay;z-index:0;"></div>
-            <div style="position:relative;z-index:3;padding:clamp(14px,4vw,20px);width:100%;box-sizing:border-box;">
-              <h4 style="font-size:clamp(13px,3.8vw,16px);font-weight:500;color:#fff;line-height:1.3;margin:0;">
-                Produce high-quality answers tied to real company data
-              </h4>
-            </div>
-            <div style="position:relative;z-index:2;margin-top:auto;align-self:flex-end;width:78%;display:flex;justify-content:flex-end;">
-              <img src="./src/assets/Intro Page (8).png" loading="lazy" alt="Respond"
-                style="width:100%;height:auto;display:block;border-radius:8px 0 0 0;" />
-            </div>
-          </div>
+                <img src="./src/assets/Group 1437253216.png" loading="lazy" alt=""
+                  style="position:absolute;top:0;right:0;width:40%;height:40%;object-fit:contain;pointer-events:none;z-index:1;" />
+                <div class="noise-overlay"
+                  style="position:absolute;inset:0;pointer-events:none;mix-blend-mode:overlay;z-index:0;"></div>
+                <div style="position:relative;z-index:3;padding:clamp(14px,4vw,20px);width:100%;box-sizing:border-box;">
+                  <h4 style="font-size:clamp(13px,3.8vw,16px);font-weight:500;color:#fff;line-height:1.3;margin:0;">
+                    Produce high-quality answers tied to real company data
+                  </h4>
+                </div>
+                <div
+                  style="position:relative;z-index:2;margin-top:auto;align-self:flex-end;width:78%;display:flex;justify-content:flex-end;">
+                  <img src="./src/assets/Intro Page (8).png" loading="lazy" alt="Respond"
+                    style="width:100%;height:auto;display:block;border-radius:8px 0 0 0;" />
+                </div>
+              </div>
 
-          <p style="font-size:clamp(12px,3.5vw,15px);line-height:1.65;color:#6b7280;margin:0 0 clamp(10px,3vw,16px);">
-            Anseru generates a full response draft using your verified documentation and past approved answers.
-            Every answer is traceable to a real source, so drafts arrive ready for review, not ready to be rewritten from scratch.
-          </p>
-          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:clamp(8px,2.5vw,12px);">
-            <li style="display:flex;align-items:flex-start;gap:clamp(6px,2vw,10px);">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:3px;opacity:0.4;">
-                <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black" stroke-width="1.5" stroke-linecap="round" />
-              </svg>
-              <span style="font-size:clamp(12px,3.5vw,15px);color:#6b7280;line-height:1.5;">Drafts complete responses from your verified internal knowledge base</span>
-            </li>
-            <li style="display:flex;align-items:flex-start;gap:clamp(6px,2vw,10px);">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:3px;opacity:0.4;">
-                <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black" stroke-width="1.5" stroke-linecap="round" />
-              </svg>
-              <span style="font-size:clamp(12px,3.5vw,15px);color:#6b7280;line-height:1.5;">Flags low-confidence answers for SME review before submission</span>
-            </li>
-            <li style="display:flex;align-items:flex-start;gap:clamp(6px,2vw,10px);">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:3px;opacity:0.4;">
-                <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black" stroke-width="1.5" stroke-linecap="round" />
-              </svg>
-              <span style="font-size:clamp(12px,3.5vw,15px);color:#6b7280;line-height:1.5;">Saves hours of manual writing and cross-referencing per deal</span>
-            </li>
-          </ul>
-        </div>
+              <p
+                style="font-size:clamp(12px,3.5vw,15px);line-height:1.65;color:#6b7280;margin:0 0 clamp(10px,3vw,16px);">
+                Anseru generates a full response draft using your verified documentation and past approved answers.
+                Every answer is traceable to a real source, so drafts arrive ready for review, not ready to be rewritten
+                from scratch.
+              </p>
+              <ul
+                style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:clamp(8px,2.5vw,12px);">
+                <li style="display:flex;align-items:flex-start;gap:clamp(6px,2vw,10px);">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    style="flex-shrink:0;margin-top:3px;opacity:0.4;">
+                    <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
+                      stroke-width="1.5" stroke-linecap="round" />
+                  </svg>
+                  <span style="font-size:clamp(12px,3.5vw,15px);color:#6b7280;line-height:1.5;">Drafts complete
+                    responses from your verified internal knowledge base</span>
+                </li>
+                <li style="display:flex;align-items:flex-start;gap:clamp(6px,2vw,10px);">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    style="flex-shrink:0;margin-top:3px;opacity:0.4;">
+                    <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
+                      stroke-width="1.5" stroke-linecap="round" />
+                  </svg>
+                  <span style="font-size:clamp(12px,3.5vw,15px);color:#6b7280;line-height:1.5;">Flags low-confidence
+                    answers for SME review before submission</span>
+                </li>
+                <li style="display:flex;align-items:flex-start;gap:clamp(6px,2vw,10px);">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    style="flex-shrink:0;margin-top:3px;opacity:0.4;">
+                    <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
+                      stroke-width="1.5" stroke-linecap="round" />
+                  </svg>
+                  <span style="font-size:clamp(12px,3.5vw,15px);color:#6b7280;line-height:1.5;">Saves hours of manual
+                    writing and cross-referencing per deal</span>
+                </li>
+              </ul>
+            </div>
 
-        <!-- ── Slide 3: Approve ── -->
-        <div style="
+            <!-- ── Slide 3: Approve ── -->
+            <div style="
           width:100vw; height:100%;
           display:flex; flex-direction:column;
           padding: 0 clamp(14px,4vw,20px);
           overflow-y:auto; scrollbar-width:none;
           flex-shrink: 0;
         ">
-          <h3 style="font-size:clamp(18px,5.5vw,24px);font-weight:400;color:#111827;margin:0 0 clamp(10px,3vw,16px);line-height:1.2;">
-            SME Review &amp; Approval
-          </h3>
+              <h3
+                style="font-size:clamp(18px,5.5vw,24px);font-weight:400;color:#111827;margin:0 0 clamp(10px,3vw,16px);line-height:1.2;">
+                SME Review &amp; Approval
+              </h3>
 
-          <!-- Card -->
-          <div style="
+              <!-- Card -->
+              <div style="
             width:100%; flex-shrink:0;
             height:clamp(200px,55vw,280px);
             border-radius:12px; overflow:hidden;
             position:relative; margin-bottom:clamp(12px,3.5vw,20px);
             display: flex; flex-direction: column;
           " class="card-gradient-a4">
-            <img src="./src/assets/Group 1437253216.png" loading="lazy" alt=""
-              style="position:absolute;top:0;right:0;width:40%;height:40%;object-fit:contain;pointer-events:none;z-index:1;" />
-            <div class="noise-overlay"
-              style="position:absolute;inset:0;pointer-events:none;mix-blend-mode:overlay;z-index:0;"></div>
-            <div style="position:relative;z-index:3;padding:clamp(14px,4vw,20px);width:100%;box-sizing:border-box;">
-              <h4 style="font-size:clamp(13px,3.8vw,16px);font-weight:500;color:#fff;line-height:1.3;margin:0;">
-                Collaborate securely with robust human-in-the-loop workflows
-              </h4>
+                <img src="./src/assets/Group 1437253216.png" loading="lazy" alt=""
+                  style="position:absolute;top:0;right:0;width:40%;height:40%;object-fit:contain;pointer-events:none;z-index:1;" />
+                <div class="noise-overlay"
+                  style="position:absolute;inset:0;pointer-events:none;mix-blend-mode:overlay;z-index:0;"></div>
+                <div style="position:relative;z-index:3;padding:clamp(14px,4vw,20px);width:100%;box-sizing:border-box;">
+                  <h4 style="font-size:clamp(13px,3.8vw,16px);font-weight:500;color:#fff;line-height:1.3;margin:0;">
+                    Collaborate securely with robust human-in-the-loop workflows
+                  </h4>
+                </div>
+                <div
+                  style="position:relative;z-index:2;margin-top:auto;align-self:flex-end;width:78%;display:flex;justify-content:flex-end;">
+                  <img src="./src/assets/Intro Page (1).png" loading="lazy" alt="Approve"
+                    style="width:100%;height:auto;display:block;border-radius:8px 0 0 0;" />
+                </div>
+              </div>
+
+              <p
+                style="font-size:clamp(12px,3.5vw,15px);line-height:1.65;color:#6b7280;margin:0 0 clamp(10px,3vw,16px);">
+                Anseru focuses your experts on what only they can answer. Standard questions arrive pre-drafted and
+                ready to approve. Novel, flagged, and high-risk items are surfaced for review before anything leaves the
+                building.
+              </p>
+              <ul
+                style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:clamp(8px,2.5vw,12px);">
+                <li style="display:flex;align-items:flex-start;gap:clamp(6px,2vw,10px);">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    style="flex-shrink:0;margin-top:3px;opacity:0.4;">
+                    <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
+                      stroke-width="1.5" stroke-linecap="round" />
+                  </svg>
+                  <span style="font-size:clamp(12px,3.5vw,15px);color:#6b7280;line-height:1.5;">Routes only flagged and
+                    novel questions to subject matter experts</span>
+                </li>
+                <li style="display:flex;align-items:flex-start;gap:clamp(6px,2vw,10px);">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    style="flex-shrink:0;margin-top:3px;opacity:0.4;">
+                    <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
+                      stroke-width="1.5" stroke-linecap="round" />
+                  </svg>
+                  <span style="font-size:clamp(12px,3.5vw,15px);color:#6b7280;line-height:1.5;">Full audit trail of
+                    every review, edit, and approval decision</span>
+                </li>
+                <li style="display:flex;align-items:flex-start;gap:clamp(6px,2vw,10px);">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    style="flex-shrink:0;margin-top:3px;opacity:0.4;">
+                    <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
+                      stroke-width="1.5" stroke-linecap="round" />
+                  </svg>
+                  <span style="font-size:clamp(12px,3.5vw,15px);color:#6b7280;line-height:1.5;">Every submission is
+                    clean, compliant, and signed off before it goes out</span>
+                </li>
+              </ul>
             </div>
-            <div style="position:relative;z-index:2;margin-top:auto;align-self:flex-end;width:78%;display:flex;justify-content:flex-end;">
-              <img src="./src/assets/Intro Page (1).png" loading="lazy" alt="Approve"
-                style="width:100%;height:auto;display:block;border-radius:8px 0 0 0;" />
-            </div>
-          </div>
 
-          <p style="font-size:clamp(12px,3.5vw,15px);line-height:1.65;color:#6b7280;margin:0 0 clamp(10px,3vw,16px);">
-            Anseru focuses your experts on what only they can answer. Standard questions arrive pre-drafted and
-            ready to approve. Novel, flagged, and high-risk items are surfaced for review before anything leaves the building.
-          </p>
-          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:clamp(8px,2.5vw,12px);">
-            <li style="display:flex;align-items:flex-start;gap:clamp(6px,2vw,10px);">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:3px;opacity:0.4;">
-                <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black" stroke-width="1.5" stroke-linecap="round" />
-              </svg>
-              <span style="font-size:clamp(12px,3.5vw,15px);color:#6b7280;line-height:1.5;">Routes only flagged and novel questions to subject matter experts</span>
-            </li>
-            <li style="display:flex;align-items:flex-start;gap:clamp(6px,2vw,10px);">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:3px;opacity:0.4;">
-                <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black" stroke-width="1.5" stroke-linecap="round" />
-              </svg>
-              <span style="font-size:clamp(12px,3.5vw,15px);color:#6b7280;line-height:1.5;">Full audit trail of every review, edit, and approval decision</span>
-            </li>
-            <li style="display:flex;align-items:flex-start;gap:clamp(6px,2vw,10px);">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:3px;opacity:0.4;">
-                <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black" stroke-width="1.5" stroke-linecap="round" />
-              </svg>
-              <span style="font-size:clamp(12px,3.5vw,15px);color:#6b7280;line-height:1.5;">Every submission is clean, compliant, and signed off before it goes out</span>
-            </li>
-          </ul>
-        </div>
+          </div><!-- end track -->
+        </div><!-- end track wrapper -->
 
-      </div><!-- end track -->
-    </div><!-- end track wrapper -->
-
-    <!-- Dots -->
-    <div id="carousel-dots-mobile" style="
+        <!-- Dots -->
+        <div id="carousel-dots-mobile" style="
       display:flex; justify-content:center; align-items:center;
       gap:6px; padding: 10px 0 4px; flex-shrink:0;
     ">
-      <div class="carousel-dot" style="width:5px;height:5px;border-radius:1px;background:#9ca3af;transition:all 0.3s;"></div>
-      <div class="carousel-dot" style="width:5px;height:5px;border-radius:1px;background:#e5e7eb;transition:all 0.3s;"></div>
-      <div class="carousel-dot" style="width:5px;height:5px;border-radius:1px;background:#e5e7eb;transition:all 0.3s;"></div>
-      <div class="carousel-dot" style="width:5px;height:5px;border-radius:1px;background:#e5e7eb;transition:all 0.3s;"></div>
-    </div>
+          <div class="carousel-dot"
+            style="width:5px;height:5px;border-radius:1px;background:#9ca3af;transition:all 0.3s;"></div>
+          <div class="carousel-dot"
+            style="width:5px;height:5px;border-radius:1px;background:#e5e7eb;transition:all 0.3s;"></div>
+          <div class="carousel-dot"
+            style="width:5px;height:5px;border-radius:1px;background:#e5e7eb;transition:all 0.3s;"></div>
+          <div class="carousel-dot"
+            style="width:5px;height:5px;border-radius:1px;background:#e5e7eb;transition:all 0.3s;"></div>
+        </div>
 
-  </div>
-</div><!-- end mobile carousel -->
+      </div>
+    </div><!-- end mobile carousel -->
 
-<script>
-  (function () {
-    var mSection = document.getElementById('carousel-mobile-gsap');
-    if (!mSection) return;
+    <script>
+      (function () {
+        var mSection = document.getElementById('carousel-mobile-gsap');
+        if (!mSection) return;
 
-    var mTrack = document.getElementById('carousel-mobile-track');
-    var mDots = document.querySelectorAll('#carousel-dots-mobile .carousel-dot');
-    var mPills = [0, 1, 2, 3].map(function (i) { return document.getElementById('pill-nav-' + i); });
-    var SLIDES = 4;
+        var mTrack = document.getElementById('carousel-mobile-track');
+        var mDots = document.querySelectorAll('#carousel-dots-mobile .carousel-dot');
+        var mPills = [0, 1, 2, 3].map(function (i) { return document.getElementById('pill-nav-' + i); });
+        var SLIDES = 4;
 
-    function mSetActive(idx) {
-      idx = Math.max(0, Math.min(SLIDES - 1, idx));
-      mDots.forEach(function (d, i) {
-        d.style.background = i === idx ? '#9ca3af' : '#e5e7eb';
-      });
-      mPills.forEach(function (b, i) {
-        if (!b) return;
-        b.style.background = i === idx ? '#000' : 'transparent';
-        b.style.color = i === idx ? '#fff' : '#4b5563';
-      });
-      mTrack.style.transition = 'transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94)';
-      mTrack.style.transform = 'translateX(-' + (idx * 100) + 'vw)';
-    }
+        function mSetActive(idx) {
+          idx = Math.max(0, Math.min(SLIDES - 1, idx));
+          mDots.forEach(function (d, i) {
+            d.style.background = i === idx ? '#9ca3af' : '#e5e7eb';
+          });
+          mPills.forEach(function (b, i) {
+            if (!b) return;
+            b.style.background = i === idx ? '#000' : 'transparent';
+            b.style.color = i === idx ? '#fff' : '#4b5563';
+          });
+          mTrack.style.transition = 'transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94)';
+          mTrack.style.transform = 'translateX(-' + (idx * 100) + 'vw)';
+        }
 
-    function mOnScroll() {
-      var sectionTop = mSection.getBoundingClientRect().top + window.scrollY;
-      var scrolled = window.scrollY - sectionTop;
-      var range = mSection.offsetHeight - window.innerHeight;
-      var progress = Math.min(1, Math.max(0, scrolled / range));
-      var idx = Math.min(SLIDES - 1, Math.floor(progress * SLIDES));
-      mSetActive(idx);
-    }
+        function mOnScroll() {
+          var sectionTop = mSection.getBoundingClientRect().top + window.scrollY;
+          var scrolled = window.scrollY - sectionTop;
+          var range = mSection.offsetHeight - window.innerHeight;
+          var progress = Math.min(1, Math.max(0, scrolled / range));
+          var idx = Math.min(SLIDES - 1, Math.floor(progress * SLIDES));
+          mSetActive(idx);
+        }
 
-    window.scrollToMobileSlide = function (idx) {
-      idx = Math.max(0, Math.min(SLIDES - 1, idx));
-      var sectionTop = mSection.getBoundingClientRect().top + window.scrollY;
-      var range = mSection.offsetHeight - window.innerHeight;
-      var targetY = sectionTop + (idx / SLIDES) * range + 1;
-      window.scrollTo({ top: targetY, behavior: 'smooth' });
-    };
+        window.scrollToMobileSlide = function (idx) {
+          idx = Math.max(0, Math.min(SLIDES - 1, idx));
+          var sectionTop = mSection.getBoundingClientRect().top + window.scrollY;
+          var range = mSection.offsetHeight - window.innerHeight;
+          var targetY = sectionTop + (idx / SLIDES) * range + 1;
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
+        };
 
-    window.addEventListener('scroll', mOnScroll, { passive: true });
-    window.addEventListener('resize', mOnScroll);
-    mSetActive(0);
-  })();
-</script>
+        window.addEventListener('scroll', mOnScroll, { passive: true });
+        window.addEventListener('resize', mOnScroll);
+        mSetActive(0);
+      })();
+    </script>
 
-      <!-- ═══════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════
         DESKTOP CAROUSEL  (hidden below lg)
     ════════════════════════════════════════════ -->
-      <div id="carousel-desktop" class="hidden lg:block relative w-full bg-white" style="height: 400vh">
-        <div class="sticky top-0 w-full h-[100dvh] overflow-hidden flex flex-col">
+    <div id="carousel-desktop" class="hidden lg:block relative w-full bg-white" style="height: 400vh">
+      <div class="sticky top-0 w-full h-[100dvh] overflow-hidden flex flex-col">
 
-          <div class="relative z-20 pt-6 xl:pt-10 pb-0 text-center bg-white">
-            <p class="anseru-section-tag">How it Works</p>
-            <h2 class="anseru-section-title mt-1 tracking-tight">
-              How Anseru Turns Knowledge<br />Into Winning Deals
-            </h2>
-          </div>
-
-          <div class="relative flex-1 flex items-center pt-2 pb-10">
-            <div
-              class="absolute left-8 xl:left-[3.5rem] top-8 xl:top-12 flex flex-col items-center gap-4 z-30 opacity-80">
-              <span
-                class="scroll-down-text text-[10px] sm:text-[11px] font-semibold text-[#fe3f49] uppercase tracking-[0.2em]"
-                style="writing-mode:vertical-rl;transform:rotate(180deg)">SCROLL DOWN</span>
-              <svg width="12" height="40" viewBox="0 0 12 40" fill="none">
-                <path d="M6 0v38m0 0l-4-4m4 4l4-4" stroke="#fe3f49" stroke-width="1.2" stroke-linecap="round"
-                  stroke-linejoin="round" />
-              </svg>
-            </div>
-
-            <div id="carousel-strip" class="flex h-full will-change-transform" style="width:400vw">
-
-              <!-- Desktop Slide 1 -->
-              <div class="w-[100vw] h-full flex items-center justify-center px-16 xl:px-24">
-                <div
-                  class="w-full max-w-[1280px] mx-auto grid grid-cols-2 gap-12 xl:gap-20 items-center relative pl-8 xl:pl-12">
-                  <div class="space-y-3 xl:space-y-4 md:pr-4">
-                    <h2 class="text-[28px] lg:text-[32px] xl:text-[36px] leading-[1.1] font-[400] text-gray-900 mb-4">
-                      Connect your knowledge</h2>
-                    <p class="text-[14px] xl:text-[15px] text-[#6b7280] leading-[1.6]">Your single living source of truth.
-                      Anseru connects to where your knowledge already lives. Sync Google Drive, SharePoint, Teams, Jira,
-                      Slack, and Dropbox or upload your internal documents directly. Your answer library builds itself and
-                      stays current automatically.</p>
-                    <ul class="space-y-2 xl:space-y-3 pt-2">
-                      <li class="flex items-start gap-4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                          class="shrink-0 mt-1.5 opacity-40">
-                          <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
-                            stroke-width="1.5" stroke-linecap="round" />
-                        </svg><span class="text-[14px] xl:text-[15px] text-[#6b7280] leading-snug">Indexes past RFPs,
-                          security docs, and compliance content automatically</span></li>
-                      <li class="flex items-start gap-4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                          class="shrink-0 mt-1.5 opacity-40">
-                          <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
-                            stroke-width="1.5" stroke-linecap="round" />
-                        </svg><span class="text-[14px] xl:text-[15px] text-[#6b7280] leading-snug">Integrates with your
-                          existing storage and communication systems</span></li>
-                      <li class="flex items-start gap-4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                          class="shrink-0 mt-1.5 opacity-40">
-                          <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
-                            stroke-width="1.5" stroke-linecap="round" />
-                        </svg><span class="text-[14px] xl:text-[15px] text-[#6b7280] leading-snug">Improves continuously
-                          as your team uses and approves new answers</span></li>
-                    </ul>
-                  </div>
-                  <div
-                    class="relative w-full max-w-[600px] mx-auto h-[40vh] min-h-[300px] xl:h-[45vh] xl:min-h-[380px] card-gradient-a1 rounded-[24px] overflow-hidden shadow-2xl p-6 xl:p-10 text-white">
-                    <h3 class="text-[20px] xl:text-[28px] md:w-[85%] font-normal leading-[1.2] opacity-95">Turn complex
-                      RFPs into clear, winning responses</h3>
-                    <img src="./src/assets/Intro-Page.webp"
-                      class="absolute bottom-0 right-0 w-[88%] lg:w-[85%] rounded-tl-xl shadow-[0_-15px_40px_-15px_rgba(0,0,0,0.3)] object-cover" />
-                  </div>
-                </div>
-              </div>
-
-              <!-- Desktop Slide 2 -->
-              <div class="w-[100vw] h-full flex items-center justify-center px-16 xl:px-24">
-                <div
-                  class="w-full max-w-[1280px] mx-auto grid grid-cols-2 gap-12 xl:gap-20 items-center relative pl-8 xl:pl-12">
-                  <div class="space-y-3 xl:space-y-4 md:pr-4">
-                    <h2 class="text-[28px] lg:text-[32px] xl:text-[36px] leading-[1.1] font-[400] text-gray-900 mb-4">
-                      Upload RFPs &amp; Questionnaires</h2>
-                    <p class="text-[14px] xl:text-[15px] text-[#6b7280] leading-[1.6]">Drop in any document in any format.
-                      Anseru reads the full document, identifies every requirement, and maps each question to your
-                      verified knowledge base automatically.</p>
-                    <ul class="space-y-2 xl:space-y-3 pt-2">
-                      <li class="flex items-start gap-4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                          class="shrink-0 mt-1.5 opacity-40">
-                          <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
-                            stroke-width="1.5" stroke-linecap="round" />
-                        </svg><span class="text-[14px] xl:text-[15px] text-[#6b7280] leading-snug">Accepts PDF, DOCX, XLSX
-                          documents instantly</span></li>
-                      <li class="flex items-start gap-4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                          class="shrink-0 mt-1.5 opacity-40">
-                          <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
-                            stroke-width="1.5" stroke-linecap="round" />
-                        </svg><span class="text-[14px] xl:text-[15px] text-[#6b7280] leading-snug">Automatically
-                          classifies every embedded question accurately</span></li>
-                    </ul>
-                  </div>
-                  <div
-                    class="relative w-full max-w-[600px] mx-auto h-[40vh] min-h-[300px] xl:h-[45vh] xl:min-h-[380px] card-gradient-a2 rounded-[24px] overflow-hidden shadow-2xl p-6 xl:p-10 text-white">
-                    <h3 class="text-[20px] xl:text-[28px] md:w-[85%] font-normal leading-[1.2] opacity-95">Extract precise
-                      constraints with pinpoint accuracy</h3>
-                    <img src="./src/assets/Intro Page (3).png"
-                      class="absolute bottom-0 right-0 w-[88%] lg:w-[85%] rounded-tl-xl shadow-[0_-15px_40px_-15px_rgba(0,0,0,0.3)] object-cover" />
-                  </div>
-                </div>
-              </div>
-
-              <!-- Desktop Slide 3 -->
-              <div class="w-[100vw] h-full flex items-center justify-center px-16 xl:px-24">
-                <div
-                  class="w-full max-w-[1280px] mx-auto grid grid-cols-2 gap-12 xl:gap-20 items-center relative pl-8 xl:pl-12">
-                  <div class="space-y-3 xl:space-y-3 md:pr-4">
-                    <h2 class="text-[28px] lg:text-[32px] xl:text-[36px] leading-[1.1] font-[400] text-gray-900 mb-4">
-                      Generate AI Draft Responses</h2>
-                    <p class="text-[14px] xl:text-[15px] text-[#6b7280] leading-[1.6]">Anseru generates a full response
-                      draft using your verified documentation. Every answer is traceable to a real source, ready for
-                      review.</p>
-                    <ul class="space-y-2 xl:space-y-3 pt-2">
-                      <li class="flex items-start gap-4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                          class="shrink-0 mt-1.5 opacity-40">
-                          <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
-                            stroke-width="1.5" stroke-linecap="round" />
-                        </svg><span class="text-[14px] xl:text-[15px] text-[#6b7280] leading-snug">Drafts responses
-                          naturally from verified internal knowledge</span></li>
-                      <li class="flex items-start gap-4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                          class="shrink-0 mt-1.5 opacity-40">
-                          <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
-                            stroke-width="1.5" stroke-linecap="round" />
-                        </svg><span class="text-[14px] xl:text-[15px] text-[#6b7280] leading-snug">Contextually flags
-                          low-confidence answers for human review</span></li>
-                    </ul>
-                  </div>
-                  <div
-                    class="relative w-full max-w-[600px] mx-auto h-[40vh] min-h-[360px] xl:h-[45vh] xl:min-h-[360px] card-gradient-a3 rounded-[24px] overflow-hidden shadow-2xl p-6 xl:p-10 text-white">
-                    <h3 class="text-[20px] xl:text-[28px] md:w-[85%] font-normal leading-[1.2] opacity-95">Produce
-                      high-quality answers tied to real company data</h3>
-                    <img src="./src/assets/Intro Page (8).png"
-                      class="absolute bottom-0 right-0 w-[88%] lg:w-[85%] rounded-tl-xl shadow-[0_-15px_40px_-15px_rgba(0,0,0,0.3)] object-cover" />
-                  </div>
-                </div>
-              </div>
-
-              <!-- Desktop Slide 4 -->
-              <div class="w-[100vw] h-full flex items-center justify-center px-16 xl:px-24">
-                <div
-                  class="w-full max-w-[1280px] mx-auto grid grid-cols-2 gap-12 xl:gap-20 items-center relative pl-8 xl:pl-12">
-                  <div class="space-y-3 xl:space-y-3 md:pr-4">
-                    <h2 class="text-[28px] lg:text-[32px] xl:text-[36px] leading-[1.1] font-[400] text-gray-900 mb-4">SME
-                      Review &amp; Approval</h2>
-                    <p class="text-[14px] xl:text-[15px] text-[#6b7280] leading-[1.6]">Anseru focuses your experts on what
-                      only they can answer. High-risk items are surfaced for review before anything leaves the building
-                      safely.</p>
-                    <ul class="space-y-2 xl:space-y-3 pt-2">
-                      <li class="flex items-start gap-4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                          class="shrink-0 mt-1.5 opacity-40">
-                          <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
-                            stroke-width="1.5" stroke-linecap="round" />
-                        </svg><span class="text-[14px] xl:text-[15px] text-[#6b7280] leading-snug">Automatically routes
-                          flagged complex questions to specific experts</span></li>
-                      <li class="flex items-start gap-4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                          class="shrink-0 mt-1.5 opacity-40">
-                          <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
-                            stroke-width="1.5" stroke-linecap="round" />
-                        </svg><span class="text-[14px] xl:text-[15px] text-[#6b7280] leading-snug">Maintains a secure,
-                          auditable trail of every single review cycle</span></li>
-                    </ul>
-                  </div>
-                  <div
-                    class="relative w-full max-w-[600px] mx-auto h-[40vh] min-h-[300px] xl:h-[45vh] xl:min-h-[380px] card-gradient-a4 rounded-[24px] overflow-hidden shadow-2xl p-6 xl:p-10 text-white">
-                    <h3 class="text-[20px] xl:text-[28px] md:w-[85%] font-normal leading-[1.2] opacity-95">Collaborate
-                      securely with robust human-in-the-loop workflows</h3>
-                    <img src="./src/assets/Intro Page (1).png"
-                      class="absolute bottom-0 right-0 w-[88%] lg:w-[85%] rounded-tl-xl shadow-[0_-15px_40px_-15px_rgba(0,0,0,0.3)] object-cover" />
-                  </div>
-                </div>
-              </div>
-
-            </div><!-- end desktop strip -->
-          </div>
-
-          <!-- Desktop progress bars -->
-          <div class="absolute bottom-4 xl:bottom-8 left-21 right-0 w-full flex z-40">
-            <div class="flex gap-2 w-full max-w-[320px] pointer-events-auto">
-              <div onclick="if(window.scrollToDesktopSlide) window.scrollToDesktopSlide(0)"
-                class="flex-1 py-3 cursor-pointer flex items-center">
-                <div class="h-1 w-full bg-[#E5E7EB] relative overflow-hidden">
-                  <div id="prog-0"
-                    class="absolute top-0 left-0 bottom-0 bg-[#111827] w-full origin-left pointer-events-none"></div>
-                </div>
-              </div>
-              <div onclick="if(window.scrollToDesktopSlide) window.scrollToDesktopSlide(1)"
-                class="flex-1 py-3 cursor-pointer flex items-center">
-                <div class="h-1 w-full bg-[#E5E7EB] relative overflow-hidden">
-                  <div id="prog-1"
-                    class="absolute top-0 left-0 bottom-0 bg-[#111827] w-0 origin-left pointer-events-none"></div>
-                </div>
-              </div>
-              <div onclick="if(window.scrollToDesktopSlide) window.scrollToDesktopSlide(2)"
-                class="flex-1 py-3 cursor-pointer flex items-center">
-                <div class="h-1 w-full bg-[#E5E7EB] relative overflow-hidden">
-                  <div id="prog-2"
-                    class="absolute top-0 left-0 bottom-0 bg-[#111827] w-0 origin-left pointer-events-none"></div>
-                </div>
-              </div>
-              <div onclick="if(window.scrollToDesktopSlide) window.scrollToDesktopSlide(3)"
-                class="flex-1 py-3 cursor-pointer flex items-center">
-                <div class="h-1 w-full bg-[#E5E7EB] relative overflow-hidden">
-                  <div id="prog-3"
-                    class="absolute top-0 left-0 bottom-0 bg-[#111827] w-0 origin-left pointer-events-none"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
+        <div class="relative z-20 pt-6 xl:pt-10 pb-0 text-center bg-white">
+          <p class="anseru-section-tag">How it Works</p>
+          <h2 class="anseru-section-title mt-1 tracking-tight">
+            How Anseru Turns Knowledge<br />Into Winning Deals
+          </h2>
         </div>
-      </div><!-- end desktop carousel -->
+
+        <div class="relative flex-1 flex items-center pt-2 pb-10">
+          <div
+            class="absolute left-8 xl:left-[3.5rem] top-8 xl:top-12 flex flex-col items-center gap-4 z-30 opacity-80">
+            <span
+              class="scroll-down-text text-[10px] sm:text-[11px] font-semibold text-[#fe3f49] uppercase tracking-[0.2em]"
+              style="writing-mode:vertical-rl;transform:rotate(180deg)">SCROLL DOWN</span>
+            <svg width="12" height="40" viewBox="0 0 12 40" fill="none">
+              <path d="M6 0v38m0 0l-4-4m4 4l4-4" stroke="#fe3f49" stroke-width="1.2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+
+          <div id="carousel-strip" class="flex h-full will-change-transform" style="width:400vw">
+
+            <!-- Desktop Slide 1 -->
+            <div class="w-[100vw] h-full flex items-center justify-center px-16 xl:px-24">
+              <div
+                class="w-full max-w-[1280px] mx-auto grid grid-cols-2 gap-12 xl:gap-20 items-center relative pl-8 xl:pl-12">
+                <div class="space-y-3 xl:space-y-4 md:pr-4">
+                  <h2 class="text-[28px] lg:text-[32px] xl:text-[36px] leading-[1.1] font-[400] text-gray-900 mb-4">
+                    Connect your knowledge</h2>
+                  <p class="text-[14px] xl:text-[15px] text-[#6b7280] leading-[1.6]">Your single living source of truth.
+                    Anseru connects to where your knowledge already lives. Sync Google Drive, SharePoint, Teams, Jira,
+                    Slack, and Dropbox or upload your internal documents directly. Your answer library builds itself and
+                    stays current automatically.</p>
+                  <ul class="space-y-2 xl:space-y-3 pt-2">
+                    <li class="flex items-start gap-4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        class="shrink-0 mt-1.5 opacity-40">
+                        <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
+                          stroke-width="1.5" stroke-linecap="round" />
+                      </svg><span class="text-[14px] xl:text-[15px] text-[#6b7280] leading-snug">Indexes past RFPs,
+                        security docs, and compliance content automatically</span></li>
+                    <li class="flex items-start gap-4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        class="shrink-0 mt-1.5 opacity-40">
+                        <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
+                          stroke-width="1.5" stroke-linecap="round" />
+                      </svg><span class="text-[14px] xl:text-[15px] text-[#6b7280] leading-snug">Integrates with your
+                        existing storage and communication systems</span></li>
+                    <li class="flex items-start gap-4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        class="shrink-0 mt-1.5 opacity-40">
+                        <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
+                          stroke-width="1.5" stroke-linecap="round" />
+                      </svg><span class="text-[14px] xl:text-[15px] text-[#6b7280] leading-snug">Improves continuously
+                        as your team uses and approves new answers</span></li>
+                  </ul>
+                </div>
+                <div
+                  class="relative w-full max-w-[600px] mx-auto h-[40vh] min-h-[300px] xl:h-[45vh] xl:min-h-[380px] card-gradient-a1 rounded-[24px] overflow-hidden shadow-2xl p-6 xl:p-10 text-white">
+                  <h3 class="text-[20px] xl:text-[28px] md:w-[85%] font-normal leading-[1.2] opacity-95">Turn complex
+                    RFPs into clear, winning responses</h3>
+                  <img src="./src/assets/Intro-Page.webp"
+                    class="absolute bottom-0 right-0 w-[88%] lg:w-[85%] rounded-tl-xl shadow-[0_-15px_40px_-15px_rgba(0,0,0,0.3)] object-cover" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Desktop Slide 2 -->
+            <div class="w-[100vw] h-full flex items-center justify-center px-16 xl:px-24">
+              <div
+                class="w-full max-w-[1280px] mx-auto grid grid-cols-2 gap-12 xl:gap-20 items-center relative pl-8 xl:pl-12">
+                <div class="space-y-3 xl:space-y-4 md:pr-4">
+                  <h2 class="text-[28px] lg:text-[32px] xl:text-[36px] leading-[1.1] font-[400] text-gray-900 mb-4">
+                    Upload RFPs &amp; Questionnaires</h2>
+                  <p class="text-[14px] xl:text-[15px] text-[#6b7280] leading-[1.6]">Drop in any document in any format.
+                    Anseru reads the full document, identifies every requirement, and maps each question to your
+                    verified knowledge base automatically.</p>
+                  <ul class="space-y-2 xl:space-y-3 pt-2">
+                    <li class="flex items-start gap-4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        class="shrink-0 mt-1.5 opacity-40">
+                        <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
+                          stroke-width="1.5" stroke-linecap="round" />
+                      </svg><span class="text-[14px] xl:text-[15px] text-[#6b7280] leading-snug">Accepts PDF, DOCX, XLSX
+                        documents instantly</span></li>
+                    <li class="flex items-start gap-4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        class="shrink-0 mt-1.5 opacity-40">
+                        <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
+                          stroke-width="1.5" stroke-linecap="round" />
+                      </svg><span class="text-[14px] xl:text-[15px] text-[#6b7280] leading-snug">Automatically
+                        classifies every embedded question accurately</span></li>
+                  </ul>
+                </div>
+                <div
+                  class="relative w-full max-w-[600px] mx-auto h-[40vh] min-h-[300px] xl:h-[45vh] xl:min-h-[380px] card-gradient-a2 rounded-[24px] overflow-hidden shadow-2xl p-6 xl:p-10 text-white">
+                  <h3 class="text-[20px] xl:text-[28px] md:w-[85%] font-normal leading-[1.2] opacity-95">Extract precise
+                    constraints with pinpoint accuracy</h3>
+                  <img src="./src/assets/Intro Page (3).png"
+                    class="absolute bottom-0 right-0 w-[88%] lg:w-[85%] rounded-tl-xl shadow-[0_-15px_40px_-15px_rgba(0,0,0,0.3)] object-cover" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Desktop Slide 3 -->
+            <div class="w-[100vw] h-full flex items-center justify-center px-16 xl:px-24">
+              <div
+                class="w-full max-w-[1280px] mx-auto grid grid-cols-2 gap-12 xl:gap-20 items-center relative pl-8 xl:pl-12">
+                <div class="space-y-3 xl:space-y-3 md:pr-4">
+                  <h2 class="text-[28px] lg:text-[32px] xl:text-[36px] leading-[1.1] font-[400] text-gray-900 mb-4">
+                    Generate AI Draft Responses</h2>
+                  <p class="text-[14px] xl:text-[15px] text-[#6b7280] leading-[1.6]">Anseru generates a full response
+                    draft using your verified documentation. Every answer is traceable to a real source, ready for
+                    review.</p>
+                  <ul class="space-y-2 xl:space-y-3 pt-2">
+                    <li class="flex items-start gap-4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        class="shrink-0 mt-1.5 opacity-40">
+                        <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
+                          stroke-width="1.5" stroke-linecap="round" />
+                      </svg><span class="text-[14px] xl:text-[15px] text-[#6b7280] leading-snug">Drafts responses
+                        naturally from verified internal knowledge</span></li>
+                    <li class="flex items-start gap-4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        class="shrink-0 mt-1.5 opacity-40">
+                        <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
+                          stroke-width="1.5" stroke-linecap="round" />
+                      </svg><span class="text-[14px] xl:text-[15px] text-[#6b7280] leading-snug">Contextually flags
+                        low-confidence answers for human review</span></li>
+                  </ul>
+                </div>
+                <div
+                  class="relative w-full max-w-[600px] mx-auto h-[40vh] min-h-[360px] xl:h-[45vh] xl:min-h-[360px] card-gradient-a3 rounded-[24px] overflow-hidden shadow-2xl p-6 xl:p-10 text-white">
+                  <h3 class="text-[20px] xl:text-[28px] md:w-[85%] font-normal leading-[1.2] opacity-95">Produce
+                    high-quality answers tied to real company data</h3>
+                  <img src="./src/assets/Intro Page (8).png"
+                    class="absolute bottom-0 right-0 w-[88%] lg:w-[85%] rounded-tl-xl shadow-[0_-15px_40px_-15px_rgba(0,0,0,0.3)] object-cover" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Desktop Slide 4 -->
+            <div class="w-[100vw] h-full flex items-center justify-center px-16 xl:px-24">
+              <div
+                class="w-full max-w-[1280px] mx-auto grid grid-cols-2 gap-12 xl:gap-20 items-center relative pl-8 xl:pl-12">
+                <div class="space-y-3 xl:space-y-3 md:pr-4">
+                  <h2 class="text-[28px] lg:text-[32px] xl:text-[36px] leading-[1.1] font-[400] text-gray-900 mb-4">SME
+                    Review &amp; Approval</h2>
+                  <p class="text-[14px] xl:text-[15px] text-[#6b7280] leading-[1.6]">Anseru focuses your experts on what
+                    only they can answer. High-risk items are surfaced for review before anything leaves the building
+                    safely.</p>
+                  <ul class="space-y-2 xl:space-y-3 pt-2">
+                    <li class="flex items-start gap-4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        class="shrink-0 mt-1.5 opacity-40">
+                        <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
+                          stroke-width="1.5" stroke-linecap="round" />
+                      </svg><span class="text-[14px] xl:text-[15px] text-[#6b7280] leading-snug">Automatically routes
+                        flagged complex questions to specific experts</span></li>
+                    <li class="flex items-start gap-4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        class="shrink-0 mt-1.5 opacity-40">
+                        <path d="M12 2v20m10-10H2m17.07-7.07L4.93 19.07m0-14.14l14.14 14.14" stroke="black"
+                          stroke-width="1.5" stroke-linecap="round" />
+                      </svg><span class="text-[14px] xl:text-[15px] text-[#6b7280] leading-snug">Maintains a secure,
+                        auditable trail of every single review cycle</span></li>
+                  </ul>
+                </div>
+                <div
+                  class="relative w-full max-w-[600px] mx-auto h-[40vh] min-h-[300px] xl:h-[45vh] xl:min-h-[380px] card-gradient-a4 rounded-[24px] overflow-hidden shadow-2xl p-6 xl:p-10 text-white">
+                  <h3 class="text-[20px] xl:text-[28px] md:w-[85%] font-normal leading-[1.2] opacity-95">Collaborate
+                    securely with robust human-in-the-loop workflows</h3>
+                  <img src="./src/assets/Intro Page (1).png"
+                    class="absolute bottom-0 right-0 w-[88%] lg:w-[85%] rounded-tl-xl shadow-[0_-15px_40px_-15px_rgba(0,0,0,0.3)] object-cover" />
+                </div>
+              </div>
+            </div>
+
+          </div><!-- end desktop strip -->
+        </div>
+
+        <!-- Desktop progress bars -->
+        <div class="absolute bottom-4 xl:bottom-8 left-21 right-0 w-full flex z-40">
+          <div class="flex gap-2 w-full max-w-[320px] pointer-events-auto">
+            <div onclick="if(window.scrollToDesktopSlide) window.scrollToDesktopSlide(0)"
+              class="flex-1 py-3 cursor-pointer flex items-center">
+              <div class="h-1 w-full bg-[#E5E7EB] relative overflow-hidden">
+                <div id="prog-0"
+                  class="absolute top-0 left-0 bottom-0 bg-[#111827] w-full origin-left pointer-events-none"></div>
+              </div>
+            </div>
+            <div onclick="if(window.scrollToDesktopSlide) window.scrollToDesktopSlide(1)"
+              class="flex-1 py-3 cursor-pointer flex items-center">
+              <div class="h-1 w-full bg-[#E5E7EB] relative overflow-hidden">
+                <div id="prog-1"
+                  class="absolute top-0 left-0 bottom-0 bg-[#111827] w-0 origin-left pointer-events-none"></div>
+              </div>
+            </div>
+            <div onclick="if(window.scrollToDesktopSlide) window.scrollToDesktopSlide(2)"
+              class="flex-1 py-3 cursor-pointer flex items-center">
+              <div class="h-1 w-full bg-[#E5E7EB] relative overflow-hidden">
+                <div id="prog-2"
+                  class="absolute top-0 left-0 bottom-0 bg-[#111827] w-0 origin-left pointer-events-none"></div>
+              </div>
+            </div>
+            <div onclick="if(window.scrollToDesktopSlide) window.scrollToDesktopSlide(3)"
+              class="flex-1 py-3 cursor-pointer flex items-center">
+              <div class="h-1 w-full bg-[#E5E7EB] relative overflow-hidden">
+                <div id="prog-3"
+                  class="absolute top-0 left-0 bottom-0 bg-[#111827] w-0 origin-left pointer-events-none"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- end desktop carousel -->
 
 
-      <!-- ═══════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════
         SINGLE SCRIPT — mobile scroll-driven carousel
     ════════════════════════════════════════════ -->
-      <script>
-        (function () {
-          var mSection = document.getElementById('carousel-mobile-gsap');
-          if (!mSection) return;
+    <script>
+      (function () {
+        var mSection = document.getElementById('carousel-mobile-gsap');
+        if (!mSection) return;
 
-          var mTrack = document.getElementById('carousel-mobile-track');
-          var mDots = document.querySelectorAll('#carousel-dots-mobile .carousel-dot');
-          var mPills = [0, 1, 2, 3].map(function (i) { return document.getElementById('pill-nav-' + i); });
-          var SLIDES = 4;
+        var mTrack = document.getElementById('carousel-mobile-track');
+        var mDots = document.querySelectorAll('#carousel-dots-mobile .carousel-dot');
+        var mPills = [0, 1, 2, 3].map(function (i) { return document.getElementById('pill-nav-' + i); });
+        var SLIDES = 4;
 
-          function mSetActive(idx) {
-            idx = Math.max(0, Math.min(SLIDES - 1, idx));
+        function mSetActive(idx) {
+          idx = Math.max(0, Math.min(SLIDES - 1, idx));
 
-            mDots.forEach(function (d, i) {
-              d.style.background = i === idx ? '#9ca3af' : '#e5e7eb';
-            });
+          mDots.forEach(function (d, i) {
+            d.style.background = i === idx ? '#9ca3af' : '#e5e7eb';
+          });
 
-            mPills.forEach(function (b, i) {
-              if (!b) return;
-              b.style.background = i === idx ? '#000' : 'transparent';
-              b.style.color = i === idx ? '#fff' : '#4b5563';
-            });
+          mPills.forEach(function (b, i) {
+            if (!b) return;
+            b.style.background = i === idx ? '#000' : 'transparent';
+            b.style.color = i === idx ? '#fff' : '#4b5563';
+          });
 
-            mTrack.style.transition = 'transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94)';
-            mTrack.style.transform = 'translateX(-' + (idx * 100) + 'vw)';
-          }
+          mTrack.style.transition = 'transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94)';
+          mTrack.style.transform = 'translateX(-' + (idx * 100) + 'vw)';
+        }
 
-          function mOnScroll() {
-            var sectionTop = mSection.getBoundingClientRect().top + window.scrollY;
-            var scrolled = window.scrollY - sectionTop;
-            var range = mSection.offsetHeight - window.innerHeight;
-            var progress = Math.min(1, Math.max(0, scrolled / range));
-            var idx = Math.min(SLIDES - 1, Math.floor(progress * SLIDES));
-            mSetActive(idx);
-          }
+        function mOnScroll() {
+          var sectionTop = mSection.getBoundingClientRect().top + window.scrollY;
+          var scrolled = window.scrollY - sectionTop;
+          var range = mSection.offsetHeight - window.innerHeight;
+          var progress = Math.min(1, Math.max(0, scrolled / range));
+          var idx = Math.min(SLIDES - 1, Math.floor(progress * SLIDES));
+          mSetActive(idx);
+        }
 
-          window.scrollToMobileSlide = function (idx) {
-            idx = Math.max(0, Math.min(SLIDES - 1, idx));
-            var sectionTop = mSection.getBoundingClientRect().top + window.scrollY;
-            var range = mSection.offsetHeight - window.innerHeight;
-            var targetY = sectionTop + (idx / SLIDES) * range + 1;
-            window.scrollTo({ top: targetY, behavior: 'smooth' });
-          };
+        window.scrollToMobileSlide = function (idx) {
+          idx = Math.max(0, Math.min(SLIDES - 1, idx));
+          var sectionTop = mSection.getBoundingClientRect().top + window.scrollY;
+          var range = mSection.offsetHeight - window.innerHeight;
+          var targetY = sectionTop + (idx / SLIDES) * range + 1;
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
+        };
 
-          window.addEventListener('scroll', mOnScroll, { passive: true });
-          window.addEventListener('resize', mOnScroll);
-          mSetActive(0);
-        })();
-      </script>
+        window.addEventListener('scroll', mOnScroll, { passive: true });
+        window.addEventListener('resize', mOnScroll);
+        mSetActive(0);
+      })();
+    </script>
 
-    </section>
+  </section>
 
-<section data-section id="product" class="scroll-mt-4">
+  <section data-section id="product" class="scroll-mt-4">
     <div id="agents-mobile-carousel" class="lg:hidden relative w-full bg-white" style="height: 200vh">
-    <div class="sticky top-0 w-full h-[100dvh] overflow-hidden flex flex-col bg-white" style="padding: clamp(16px,4vw,24px) 0 8px;">
+      <div class="sticky top-0 w-full h-[100dvh] overflow-hidden flex flex-col bg-white"
+        style="padding: clamp(16px,4vw,24px) 0 8px;">
 
-      <!-- Header -->
-      <div style="padding: 0 clamp(14px,4vw,20px);" class="shrink-0 flex flex-col mb-4">
-        <div>
-          <p style="font-size: clamp(9px, 2.74vw, 14px); color:#6b7280; margin-bottom:4px; font-weight:400;">Proven Results</p>
-          <h2 style="font-size: clamp(13px, 5.97vw, 36px); line-height:1.1; font-weight:400; letter-spacing:-0.02em; color:#000; margin:0;">Two Super Agents</h2>
+        <!-- Header -->
+        <div style="padding: 0 clamp(14px,4vw,20px);" class="shrink-0 flex flex-col mb-4">
+          <div>
+            <p style="font-size: clamp(9px, 2.74vw, 14px); color:#6b7280; margin-bottom:4px; font-weight:400;">Proven
+              Results</p>
+            <h2
+              style="font-size: clamp(13px, 5.97vw, 36px); line-height:1.1; font-weight:400; letter-spacing:-0.02em; color:#000; margin:0;">
+              Two Super Agents</h2>
+          </div>
         </div>
-      </div>
 
-      <!-- Tab Pills -->
-      <div style="padding: 0 clamp(10px,4vw,20px); margin-bottom: clamp(14px,4vw,20px);" class="shrink-0 flex items-center">
-        <div class="inline-flex w-fit items-center gap-0.5 min-[250px]:gap-1 bg-gray-100 p-0.5 min-[250px]:p-1 rounded-xl flex-wrap">
-          <button id="mobile-tab-archer" onclick="if(window.scrollToAgentMobileSlide) window.scrollToAgentMobileSlide(0)"
-            style="font-size: clamp(9px, 2.74vw, 14px);"
-            class="flex items-center gap-1 min-[250px]:gap-2 px-2 min-[250px]:px-4 sm:px-5 py-1.5 min-[250px]:py-2.5 rounded-lg font-medium transition-all cursor-pointer bg-black text-white whitespace-nowrap">
-            Meet Archer
-            <img src="./src/assets/Sud.png" loading="lazy" alt="archer"
-              class="brightness-0 invert w-3 min-[250px]:w-4 h-3 min-[250px]:h-4" />
-          </button>
-          <button id="mobile-tab-knox" onclick="if(window.scrollToAgentMobileSlide) window.scrollToAgentMobileSlide(1)"
-            style="font-size: clamp(9px, 2.74vw, 14px)"
-            class="flex items-center gap-1 min-[250px]:gap-2 px-2 min-[250px]:px-4 sm:px-5 py-1.5 min-[250px]:py-2.5 rounded-lg font-medium transition-all cursor-pointer bg-transparent text-black hover:bg-gray-200 whitespace-nowrap">
-            Meet Knox
-            <img src="./src/assets/kg.png" loading="lazy" alt="knox"
-              class="w-3 min-[250px]:w-4 h-3 min-[250px]:h-4" />
-          </button>
+        <!-- Tab Pills -->
+        <div style="padding: 0 clamp(10px,4vw,20px); margin-bottom: clamp(14px,4vw,20px);"
+          class="shrink-0 flex items-center">
+          <div
+            class="inline-flex w-fit items-center gap-0.5 min-[250px]:gap-1 bg-gray-100 p-0.5 min-[250px]:p-1 rounded-xl flex-wrap">
+            <button id="mobile-tab-archer"
+              onclick="if(window.scrollToAgentMobileSlide) window.scrollToAgentMobileSlide(0)"
+              style="font-size: clamp(9px, 2.74vw, 14px);"
+              class="flex items-center gap-1 min-[250px]:gap-2 px-2 min-[250px]:px-4 sm:px-5 py-1.5 min-[250px]:py-2.5 rounded-lg font-medium transition-all cursor-pointer bg-black text-white whitespace-nowrap">
+              Meet Archer
+              <img src="./src/assets/Sud.png" loading="lazy" alt="archer"
+                class="brightness-0 invert w-3 min-[250px]:w-4 h-3 min-[250px]:h-4" />
+            </button>
+            <button id="mobile-tab-knox"
+              onclick="if(window.scrollToAgentMobileSlide) window.scrollToAgentMobileSlide(1)"
+              style="font-size: clamp(9px, 2.74vw, 14px)"
+              class="flex items-center gap-1 min-[250px]:gap-2 px-2 min-[250px]:px-4 sm:px-5 py-1.5 min-[250px]:py-2.5 rounded-lg font-medium transition-all cursor-pointer bg-transparent text-black hover:bg-gray-200 whitespace-nowrap">
+              Meet Knox
+              <img src="./src/assets/kg.png" loading="lazy" alt="knox"
+                class="w-3 min-[250px]:w-4 h-3 min-[250px]:h-4" />
+            </button>
+          </div>
         </div>
-      </div>
 
-      <!-- Slide Track Wrapper -->
-      <div class="relative flex-1 min-h-0" style="overflow:hidden; isolation: isolate;">
-        <div id="agents-mobile-track" style="
+        <!-- Slide Track Wrapper -->
+        <div class="relative flex-1 min-h-0" style="overflow:hidden; isolation: isolate;">
+          <div id="agents-mobile-track" style="
           display:flex; height:100%; width:200vw;
           transform:translateX(0); will-change:transform;
           transition: transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94);
         ">
 
-          <!-- ── Slide 0: Archer ── -->
-          <div style="
+            <!-- ── Slide 0: Archer ── -->
+            <div style="
             width:100vw; height:100%;
             display:flex; flex-direction:column;
             padding: 0 clamp(14px,4vw,20px);
             overflow-y:auto; scrollbar-width:none;
             flex-shrink: 0;
           ">
-            <div id="mobile-agent-archer" class="w-full pb-[40px]">
-              <div class="border border-[#e5e7eb] rounded-xl overflow-hidden flex flex-col">
+              <div id="mobile-agent-archer" class="w-full pb-[40px]">
+                <div class="border border-[#e5e7eb] rounded-xl overflow-hidden flex flex-col">
 
-                <!-- Hero Card -->
-                <div class="p-3.5 bg-white border-b border-[#e5e7eb]">
-                  <div class="relative flex flex-col justify-between overflow-hidden"
-                    style="
+                  <!-- Hero Card -->
+                  <div class="p-3.5 bg-white border-b border-[#e5e7eb]">
+                    <div class="relative flex flex-col justify-between overflow-hidden" style="
                       background: linear-gradient(180deg, #201cae 0%, #6aa4ee 100%);
                       padding: clamp(16px, 5vw, 32px);
                       height: clamp(240px, 75vw, 360px);
                       border-radius: 8px;
                     ">
-                    <div class="noise-overlay absolute inset-0 opacity-100 pointer-events-none"></div>
-                    <div class="relative">
-                      <img src="./src/assets/Frame (9).png" loading="lazy" alt=""
-                        style="width: clamp(60px, 18vw, 112px); height: auto; opacity: 0.9;" />
-                    </div>
-                    <div class="relative mt-auto">
-                      <h3 style="font-size: clamp(16px, 6.7vw, 32px); font-weight:400; color:#fff; margin-bottom: clamp(8px,2.5vw,16px); line-height:1.1;">
-                        RFP Agent
-                      </h3>
-                      <div class="flex flex-wrap" style="gap: clamp(4px, 1.5vw, 8px);">
-                        <span style="font-size: clamp(9px, 2.74vw, 13px); padding: clamp(3px,1vw,4px) clamp(6px,2vw,12px);"
-                          class="text-white bg-white/20 rounded-[4px] border border-white/40 font-normal">Instant RFP breakdown</span>
-                        <span style="font-size: clamp(9px, 2.74vw, 13px); padding: clamp(3px,1vw,4px) clamp(6px,2vw,12px);"
-                          class="text-white bg-white/20 rounded-[4px] border border-white/40 font-normal">Terminology translation</span>
-                        <span style="font-size: clamp(9px, 2.74vw, 13px); padding: clamp(3px,1vw,4px) clamp(6px,2vw,12px);"
-                          class="text-white bg-white/20 rounded-[4px] border border-white/40 font-normal">Proposal-ready answers</span>
+                      <div class="noise-overlay absolute inset-0 opacity-100 pointer-events-none"></div>
+                      <div class="relative">
+                        <img src="./src/assets/Frame (9).png" loading="lazy" alt=""
+                          style="width: clamp(60px, 18vw, 112px); height: auto; opacity: 0.9;" />
+                      </div>
+                      <div class="relative mt-auto">
+                        <h3
+                          style="font-size: clamp(16px, 6.7vw, 32px); font-weight:400; color:#fff; margin-bottom: clamp(8px,2.5vw,16px); line-height:1.1;">
+                          RFP Agent
+                        </h3>
+                        <div class="flex flex-wrap" style="gap: clamp(4px, 1.5vw, 8px);">
+                          <span
+                            style="font-size: clamp(9px, 2.74vw, 13px); padding: clamp(3px,1vw,4px) clamp(6px,2vw,12px);"
+                            class="text-white bg-white/20 rounded-[4px] border border-white/40 font-normal">Instant RFP
+                            breakdown</span>
+                          <span
+                            style="font-size: clamp(9px, 2.74vw, 13px); padding: clamp(3px,1vw,4px) clamp(6px,2vw,12px);"
+                            class="text-white bg-white/20 rounded-[4px] border border-white/40 font-normal">Terminology
+                            translation</span>
+                          <span
+                            style="font-size: clamp(9px, 2.74vw, 13px); padding: clamp(3px,1vw,4px) clamp(6px,2vw,12px);"
+                            class="text-white bg-white/20 rounded-[4px] border border-white/40 font-normal">Proposal-ready
+                            answers</span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <!-- Feature Grid -->
-                <div class="p-2 min-[250px]:p-4 relative overflow-hidden">
-                  <div class="absolute pointer-events-none"
-                    style="background-image: linear-gradient(to right,#000 1px,transparent 1px), linear-gradient(to bottom,#000 1px,transparent 1px); background-size:150px 150px;"></div>
-                  <div class="grid grid-cols-1 min-[250px]:grid-cols-2 grid-rows-4 min-[250px]:grid-rows-2 bg-[#f4f4f5] relative z-10">
-
-                    <div class="flex flex-col justify-between  min-[250px]:border-r border-[#e5e7eb]"
-                      style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
-                      <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
-                        Instant RFP<br />intelligence
-                      </h4>
-                      <p style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
-                        Automatically extracts key requirements, timelines, stakeholders, and evaluation criteria.
-                      </p>
+                  <!-- Feature Grid -->
+                  <div class="p-2 min-[250px]:p-4 relative overflow-hidden">
+                    <div class="absolute pointer-events-none"
+                      style="background-image: linear-gradient(to right,#000 1px,transparent 1px), linear-gradient(to bottom,#000 1px,transparent 1px); background-size:150px 150px;">
                     </div>
+                    <div
+                      class="grid grid-cols-1 min-[250px]:grid-cols-2 grid-rows-4 min-[250px]:grid-rows-2 bg-[#f4f4f5] relative z-10">
 
-                    <div class="flex flex-col justify-between border-b border-[#e5e7eb]"
-                      style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
-                      <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
-                        Terminology<br />mapping
-                      </h4>
-                      <p style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
-                        Translates feature requirements to your internal product language.
-                      </p>
+                      <div class="flex flex-col justify-between  min-[250px]:border-r border-[#e5e7eb]"
+                        style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
+                        <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
+                          Instant RFP<br />intelligence
+                        </h4>
+                        <p
+                          style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
+                          Automatically extracts key requirements, timelines, stakeholders, and evaluation criteria.
+                        </p>
+                      </div>
+
+                      <div class="flex flex-col justify-between border-b border-[#e5e7eb]"
+                        style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
+                        <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
+                          Terminology<br />mapping
+                        </h4>
+                        <p
+                          style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
+                          Translates feature requirements to your internal product language.
+                        </p>
+                      </div>
+
+                      <div
+                        class="flex flex-col justify-between border-b min-[250px]:border-b-0 min-[250px]:border-r border-[#e5e7eb]"
+                        style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
+                        <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
+                          Bid / No-Bid<br />clarity
+                        </h4>
+                        <p
+                          style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
+                          Helps teams decide whether to pursue.
+                        </p>
+                      </div>
+
+                      <div class="flex flex-col justify-between border-[#e5e7eb]"
+                        style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
+                        <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
+                          Structured proposal<br />generation
+                        </h4>
+                        <p
+                          style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
+                          Generates responses across technical, product, security, and legal sections with contextual
+                          intelligence.
+                        </p>
+                      </div>
+
                     </div>
-
-                    <div class="flex flex-col justify-between border-b min-[250px]:border-b-0 min-[250px]:border-r border-[#e5e7eb]"
-                      style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
-                      <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
-                        Bid / No-Bid<br />clarity
-                      </h4>
-                      <p style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
-                        Helps teams decide whether to pursue.
-                      </p>
-                    </div>
-
-                    <div class="flex flex-col justify-between border-[#e5e7eb]"
-                      style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
-                      <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
-                        Structured proposal<br />generation
-                      </h4>
-                      <p style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
-                        Generates responses across technical, product, security, and legal sections with contextual intelligence.
-                      </p>
-                    </div>
-
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- ── Slide 1: Knox ── -->
-          <div style="
+            <!-- ── Slide 1: Knox ── -->
+            <div style="
             width:100vw; height:100%;
             display:flex; flex-direction:column;
             padding: 0 clamp(14px,4vw,20px);
             overflow-y:auto; scrollbar-width:none;
             flex-shrink: 0;
           ">
-            <div id="mobile-agent-knox" class="w-full pb-[40px]">
-              <div class="border border-[#e5e7eb] rounded-xl overflow-hidden flex flex-col">
+              <div id="mobile-agent-knox" class="w-full pb-[40px]">
+                <div class="border border-[#e5e7eb] rounded-xl overflow-hidden flex flex-col">
 
-                <!-- Hero Card -->
-                <div class="p-3.5 bg-white border-b border-[#e5e7eb]">
-                  <div class="relative flex flex-col justify-between overflow-hidden"
-                    style="
+                  <!-- Hero Card -->
+                  <div class="p-3.5 bg-white border-b border-[#e5e7eb]">
+                    <div class="relative flex flex-col justify-between overflow-hidden" style="
                       background: linear-gradient(45deg, #1d80f9 0%, #e74f62 100%);
                       padding: clamp(16px, 5vw, 32px);
                       height: clamp(240px, 75vw, 360px);
                       border-radius: 8px;
                     ">
-                    <div class="noise-overlay absolute inset-0 opacity-100 pointer-events-none"></div>
-                    <div class="relative">
-                      <img src="./src/assets/Frame (10).png" loading="lazy" alt=""
-                        style="width: clamp(60px, 18vw, 112px); height: auto; opacity: 0.9;" />
-                    </div>
-                    <div class="relative mt-auto">
-                      <h3 style="font-size: clamp(14px, 5.97vw, 32px); font-weight:400; color:#fff; margin-bottom: clamp(8px,2.5vw,16px); line-height:1.1;">
-                        Security<br />Questionnaire Agent
-                      </h3>
-                      <div class="flex flex-wrap" style="gap: clamp(4px, 1.5vw, 8px);">
-                        <span style="font-size: clamp(9px, 2.74vw, 13px); padding: clamp(3px,1vw,4px) clamp(6px,2vw,12px);"
-                          class="text-white bg-white/20 rounded-[4px] border border-white/40 font-normal">Evidence-backed answers</span>
-                        <span style="font-size: clamp(9px, 2.74vw, 13px); padding: clamp(3px,1vw,4px) clamp(6px,2vw,12px);"
-                          class="text-white bg-white/20 rounded-[4px] border border-white/40 font-normal">No contradictions</span>
-                        <span style="font-size: clamp(9px, 2.74vw, 13px); padding: clamp(3px,1vw,4px) clamp(6px,2vw,12px);"
-                          class="text-white bg-white/20 rounded-[4px] border border-white/40 font-normal">Compliance-ready</span>
+                      <div class="noise-overlay absolute inset-0 opacity-100 pointer-events-none"></div>
+                      <div class="relative">
+                        <img src="./src/assets/Frame (10).png" loading="lazy" alt=""
+                          style="width: clamp(60px, 18vw, 112px); height: auto; opacity: 0.9;" />
+                      </div>
+                      <div class="relative mt-auto">
+                        <h3
+                          style="font-size: clamp(14px, 5.97vw, 32px); font-weight:400; color:#fff; margin-bottom: clamp(8px,2.5vw,16px); line-height:1.1;">
+                          Security<br />Questionnaire Agent
+                        </h3>
+                        <div class="flex flex-wrap" style="gap: clamp(4px, 1.5vw, 8px);">
+                          <span
+                            style="font-size: clamp(9px, 2.74vw, 13px); padding: clamp(3px,1vw,4px) clamp(6px,2vw,12px);"
+                            class="text-white bg-white/20 rounded-[4px] border border-white/40 font-normal">Evidence-backed
+                            answers</span>
+                          <span
+                            style="font-size: clamp(9px, 2.74vw, 13px); padding: clamp(3px,1vw,4px) clamp(6px,2vw,12px);"
+                            class="text-white bg-white/20 rounded-[4px] border border-white/40 font-normal">No
+                            contradictions</span>
+                          <span
+                            style="font-size: clamp(9px, 2.74vw, 13px); padding: clamp(3px,1vw,4px) clamp(6px,2vw,12px);"
+                            class="text-white bg-white/20 rounded-[4px] border border-white/40 font-normal">Compliance-ready</span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <!-- Feature Grid -->
-                <div class="p-2 min-[250px]:p-4 relative overflow-hidden">
-                  <div class="absolute inset-0 pointer-events-none opacity-[0.1]"
-                    style="background-image: linear-gradient(to right,#000 1px,transparent 1px), linear-gradient(to bottom,#000 1px,transparent 1px); background-size:150px 150px;"></div>
-                  <div class="grid grid-cols-1 min-[250px]:grid-cols-2 grid-rows-4 min-[250px]:grid-rows-2 bg-[#f4f4f5] relative z-10">
-
-                    <div class="flex flex-col justify-between border-b min-[250px]:border-r border-[#e5e7eb]"
-                      style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
-                      <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
-                        95%+ response<br />accuracy
-                      </h4>
-                      <p style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
-                        Generated from verified security documentation.
-                      </p>
+                  <!-- Feature Grid -->
+                  <div class="p-2 min-[250px]:p-4 relative overflow-hidden">
+                    <div class="absolute pointer-events-none opacity-[0.1]"
+                      style="background-image: linear-gradient(to right,#000 1px,transparent 1px), linear-gradient(to bottom,#000 1px,transparent 1px); background-size:150px 150px;">
                     </div>
+                    <div
+                      class="grid grid-cols-1 min-[250px]:grid-cols-2 grid-rows-4 min-[250px]:grid-rows-2 bg-[#f4f4f5] relative z-10">
 
-                    <div class="flex flex-col justify-between border-b border-[#e5e7eb]"
-                      style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
-                      <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
-                        70-90% faster<br />reviews
-                      </h4>
-                      <p style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
-                        Eliminates repetitive questionnaires saving SME time.
-                      </p>
+                      <div class="flex flex-col justify-between border-b min-[250px]:border-r border-[#e5e7eb]"
+                        style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
+                        <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
+                          95%+ response<br />accuracy
+                        </h4>
+                        <p
+                          style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
+                          Generated from verified security documentation.
+                        </p>
+                      </div>
+
+                      <div class="flex flex-col justify-between border-b border-[#e5e7eb]"
+                        style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
+                        <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
+                          70-90% faster<br />reviews
+                        </h4>
+                        <p
+                          style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
+                          Eliminates repetitive questionnaires saving SME time.
+                        </p>
+                      </div>
+
+                      <div
+                        class="flex flex-col justify-between border-b min-[250px]:border-b-0 min-[250px]:border-r border-[#e5e7eb]"
+                        style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
+                        <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
+                          Audit-ready<br />answers
+                        </h4>
+                        <p
+                          style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
+                          Aligned with current policies and controls.
+                        </p>
+                      </div>
+
+                      <div class="flex flex-col justify-between border-[#e5e7eb]"
+                        style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
+                        <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
+                          Evidence-backed<br />responses
+                        </h4>
+                        <p
+                          style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
+                          Every answer is grounded in policies, certifications, and security evidence.
+                        </p>
+                      </div>
+
                     </div>
-
-                    <div class="flex flex-col justify-between border-b min-[250px]:border-b-0 min-[250px]:border-r border-[#e5e7eb]"
-                      style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
-                      <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
-                        Audit-ready<br />answers
-                      </h4>
-                      <p style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
-                        Aligned with current policies and controls.
-                      </p>
-                    </div>
-
-                    <div class="flex flex-col justify-between border-[#e5e7eb]"
-                      style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
-                      <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
-                        Evidence-backed<br />responses
-                      </h4>
-                      <p style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
-                        Every answer is grounded in policies, certifications, and security evidence.
-                      </p>
-                    </div>
-
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  
-  <script>
-    (function () {
-      var aSection = document.getElementById('agents-mobile-carousel');
-      if (!aSection) return;
 
-      var aTrack = document.getElementById('agents-mobile-track');
-      var aPills = [
-        document.getElementById('mobile-tab-archer'),
-        document.getElementById('mobile-tab-knox')
-      ];
-      var SLIDES = 2;
+    <script>
+      (function () {
+        var aSection = document.getElementById('agents-mobile-carousel');
+        if (!aSection) return;
 
-      function aSetActive(idx) {
-        idx = Math.max(0, Math.min(SLIDES - 1, idx));
-        aPills.forEach(function (b, i) {
-          if (!b) return;
-          var isActive = i === idx;
-          b.className = isActive
-            ? 'flex items-center gap-1 min-[250px]:gap-2 px-2 min-[250px]:px-4 sm:px-5 py-1.5 min-[250px]:py-2.5 rounded-lg font-medium transition-all cursor-pointer bg-black text-white whitespace-nowrap'
-            : 'flex items-center gap-1 min-[250px]:gap-2 px-2 min-[250px]:px-4 sm:px-5 py-1.5 min-[250px]:py-2.5 rounded-lg font-medium transition-all cursor-pointer bg-transparent text-black hover:bg-gray-200 whitespace-nowrap';
-          
-          var img = b.querySelector('img');
-          if (img) {
-            img.className = isActive
-              ? 'brightness-0 invert w-3 min-[250px]:w-4 h-3 min-[250px]:h-4'
-              : 'w-3 min-[250px]:w-4 h-3 min-[250px]:h-4';
-          }
-        });
-        aTrack.style.transition = 'transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94)';
-        aTrack.style.transform = 'translateX(-' + (idx * 100) + 'vw)';
-      }
+        var aTrack = document.getElementById('agents-mobile-track');
+        var aPills = [
+          document.getElementById('mobile-tab-archer'),
+          document.getElementById('mobile-tab-knox')
+        ];
+        var SLIDES = 2;
 
-      function aOnScroll() {
-        var sectionTop = aSection.getBoundingClientRect().top + window.scrollY;
-        var scrolled = window.scrollY - sectionTop;
-        var Mathmin = Math.min;
-        var Mathmax = Math.max;
-        var range = aSection.offsetHeight - window.innerHeight;
-        var progress = Mathmin(1, Mathmax(0, scrolled / range));
-        var idx = Mathmin(SLIDES - 1, Math.floor(progress * SLIDES));
-        aSetActive(idx);
-      }
+        function aSetActive(idx) {
+          idx = Math.max(0, Math.min(SLIDES - 1, idx));
+          aPills.forEach(function (b, i) {
+            if (!b) return;
+            var isActive = i === idx;
+            b.className = isActive
+              ? 'flex items-center gap-1 min-[250px]:gap-2 px-2 min-[250px]:px-4 sm:px-5 py-1.5 min-[250px]:py-2.5 rounded-lg font-medium transition-all cursor-pointer bg-black text-white whitespace-nowrap'
+              : 'flex items-center gap-1 min-[250px]:gap-2 px-2 min-[250px]:px-4 sm:px-5 py-1.5 min-[250px]:py-2.5 rounded-lg font-medium transition-all cursor-pointer bg-transparent text-black hover:bg-gray-200 whitespace-nowrap';
 
-      window.scrollToAgentMobileSlide = function (idx) {
-        idx = Math.max(0, Math.min(SLIDES - 1, idx));
-        var sectionTop = aSection.getBoundingClientRect().top + window.scrollY;
-        var range = aSection.offsetHeight - window.innerHeight;
-        var targetY = sectionTop + (idx / SLIDES) * range + 1;
-        window.scrollTo({ top: targetY, behavior: 'smooth' });
-      };
+            var img = b.querySelector('img');
+            if (img) {
+              img.className = isActive
+                ? 'brightness-0 invert w-3 min-[250px]:w-4 h-3 min-[250px]:h-4'
+                : 'w-3 min-[250px]:w-4 h-3 min-[250px]:h-4';
+            }
+          });
+          aTrack.style.transition = 'transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94)';
+          aTrack.style.transform = 'translateX(-' + (idx * 100) + 'vw)';
+        }
 
-      window.addEventListener('scroll', aOnScroll, { passive: true });
-      window.addEventListener('resize', aOnScroll);
-      aSetActive(0);
-    })();
-  </script>
-  <!-- Desktop section unchanged -->
-  <div id="two-agents-desktop" class="hidden lg:block w-full bg-white relative" style="height: 200vh">
-    <!-- ... your existing desktop code stays exactly as-is ... -->
-  </div>
-</section>
+        function aOnScroll() {
+          var sectionTop = aSection.getBoundingClientRect().top + window.scrollY;
+          var scrolled = window.scrollY - sectionTop;
+          var Mathmin = Math.min;
+          var Mathmax = Math.max;
+          var range = aSection.offsetHeight - window.innerHeight;
+          var progress = Mathmin(1, Mathmax(0, scrolled / range));
+          var idx = Mathmin(SLIDES - 1, Math.floor(progress * SLIDES));
+          aSetActive(idx);
+        }
+
+        window.scrollToAgentMobileSlide = function (idx) {
+          idx = Math.max(0, Math.min(SLIDES - 1, idx));
+          var sectionTop = aSection.getBoundingClientRect().top + window.scrollY;
+          var range = aSection.offsetHeight - window.innerHeight;
+          var targetY = sectionTop + (idx / SLIDES) * range + 1;
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
+        };
+
+        window.addEventListener('scroll', aOnScroll, { passive: true });
+        window.addEventListener('resize', aOnScroll);
+        aSetActive(0);
+      })();
+    </script>
+    <!-- Desktop section unchanged -->
+    <div id="two-agents-desktop" class="hidden lg:block w-full bg-white relative" style="height: 200vh">
+      <!-- ... your existing desktop code stays exactly as-is ... -->
+    </div>
+  </section>
 
 
   <section data-section id="features" class="scroll-mt-12 mt-[1120px] md:mt-[200px] lg:mt-[280px]">
@@ -2239,7 +2363,7 @@
     </div>
   </section>
 
-<section data-section id="security" class="scroll-mt-5">
+  <section data-section id="security" class="scroll-mt-5">
     <div class="w-full bg-white overflow-hidden px-6 md:px-12 font-sans">
       <div class="max-w-300 mx-auto pt-16">
         <div class="flex flex-col items-center justify-center text-center gap-12 mb-15">
@@ -2707,35 +2831,43 @@
                     <div
                       class="w-[85px] h-[85px] md:w-[115px] md:h-[115px] rounded-2xl md:rounded-[24px] bg-[#F7F7F7] flex items-center justify-center shrink-0">
                       <img src="./src/assets/seismic icon.png" loading="lazy" alt="seismic"
-                        class="w-10 h-10 md:w-12 md:h-12 object-contain" /></div>
+                        class="w-10 h-10 md:w-12 md:h-12 object-contain" />
+                    </div>
                     <div
                       class="w-[85px] h-[85px] md:w-[115px] md:h-[115px] rounded-2xl md:rounded-[24px] bg-[#F7F7F7] flex items-center justify-center shrink-0">
                       <img src="./src/assets/drive icon.png" loading="lazy" alt="drive"
-                        class="w-10 h-10 md:w-12 md:h-12 object-contain" /></div>
+                        class="w-10 h-10 md:w-12 md:h-12 object-contain" />
+                    </div>
                     <div
                       class="w-[85px] h-[85px] md:w-[115px] md:h-[115px] rounded-2xl md:rounded-[24px] bg-[#F7F7F7] flex items-center justify-center shrink-0">
                       <img src="./src/assets/zendesk icon.png" loading="lazy" alt="zendesk"
-                        class="w-10 h-10 md:w-12 md:h-12 object-contain" /></div>
+                        class="w-10 h-10 md:w-12 md:h-12 object-contain" />
+                    </div>
                     <div
                       class="w-[85px] h-[85px] md:w-[115px] md:h-[115px] rounded-2xl md:rounded-[24px] bg-[#F7F7F7] flex items-center justify-center shrink-0">
                       <img src="./src/assets/onedrive icon.png" loading="lazy" alt="onedrive"
-                        class="w-10 h-10 md:w-12 md:h-12 object-contain" /></div>
+                        class="w-10 h-10 md:w-12 md:h-12 object-contain" />
+                    </div>
                     <div
                       class="w-[85px] h-[85px] md:w-[115px] md:h-[115px] rounded-2xl md:rounded-[24px] bg-[#F7F7F7] flex items-center justify-center shrink-0">
                       <img src="./src/assets/seismic icon.png" loading="lazy" alt="seismic"
-                        class="w-10 h-10 md:w-12 md:h-12 object-contain" /></div>
+                        class="w-10 h-10 md:w-12 md:h-12 object-contain" />
+                    </div>
                     <div
                       class="w-[85px] h-[85px] md:w-[115px] md:h-[115px] rounded-2xl md:rounded-[24px] bg-[#F7F7F7] flex items-center justify-center shrink-0">
                       <img src="./src/assets/drive icon.png" loading="lazy" alt="drive"
-                        class="w-10 h-10 md:w-12 md:h-12 object-contain" /></div>
+                        class="w-10 h-10 md:w-12 md:h-12 object-contain" />
+                    </div>
                     <div
                       class="w-[85px] h-[85px] md:w-[115px] md:h-[115px] rounded-2xl md:rounded-[24px] bg-[#F7F7F7] flex items-center justify-center shrink-0">
                       <img src="./src/assets/zendesk icon.png" loading="lazy" alt="zendesk"
-                        class="w-10 h-10 md:w-12 md:h-12 object-contain" /></div>
+                        class="w-10 h-10 md:w-12 md:h-12 object-contain" />
+                    </div>
                     <div
                       class="w-[85px] h-[85px] md:w-[115px] md:h-[115px] rounded-2xl md:rounded-[24px] bg-[#F7F7F7] flex items-center justify-center shrink-0">
                       <img src="./src/assets/onedrive icon.png" loading="lazy" alt="onedrive"
-                        class="w-10 h-10 md:w-12 md:h-12 object-contain" /></div>
+                        class="w-10 h-10 md:w-12 md:h-12 object-contain" />
+                    </div>
                   </div>
                 </div>
                 <!-- Desktop Col 2 - down -->
@@ -2745,27 +2877,33 @@
                     <div
                       class="w-[85px] h-[85px] md:w-[115px] md:h-[115px] rounded-2xl md:rounded-[24px] bg-[#F7F7F7] flex items-center justify-center shrink-0">
                       <img src="./src/assets/highspot icon.png" loading="lazy" alt="highspot"
-                        class="w-10 h-10 md:w-12 md:h-12 object-contain" /></div>
+                        class="w-10 h-10 md:w-12 md:h-12 object-contain" />
+                    </div>
                     <div
                       class="w-[85px] h-[85px] md:w-[115px] md:h-[115px] rounded-2xl md:rounded-[24px] bg-[#F7F7F7] flex items-center justify-center shrink-0">
                       <img src="./src/assets/slack icon.png" loading="lazy" alt="slack"
-                        class="w-10 h-10 md:w-12 md:h-12 object-contain" /></div>
+                        class="w-10 h-10 md:w-12 md:h-12 object-contain" />
+                    </div>
                     <div
                       class="w-[85px] h-[85px] md:w-[115px] md:h-[115px] rounded-2xl md:rounded-[24px] bg-[#F7F7F7] flex items-center justify-center shrink-0">
                       <img src="./src/assets/gong icon.png" loading="lazy" alt="gong"
-                        class="w-10 h-10 md:w-12 md:h-12 object-contain" /></div>
+                        class="w-10 h-10 md:w-12 md:h-12 object-contain" />
+                    </div>
                     <div
                       class="w-[85px] h-[85px] md:w-[115px] md:h-[115px] rounded-2xl md:rounded-[24px] bg-[#F7F7F7] flex items-center justify-center shrink-0">
                       <img src="./src/assets/highspot icon.png" loading="lazy" alt="highspot"
-                        class="w-10 h-10 md:w-12 md:h-12 object-contain" /></div>
+                        class="w-10 h-10 md:w-12 md:h-12 object-contain" />
+                    </div>
                     <div
                       class="w-[85px] h-[85px] md:w-[115px] md:h-[115px] rounded-2xl md:rounded-[24px] bg-[#F7F7F7] flex items-center justify-center shrink-0">
                       <img src="./src/assets/slack icon.png" loading="lazy" alt="slack"
-                        class="w-10 h-10 md:w-12 md:h-12 object-contain" /></div>
+                        class="w-10 h-10 md:w-12 md:h-12 object-contain" />
+                    </div>
                     <div
                       class="w-[85px] h-[85px] md:w-[115px] md:h-[115px] rounded-2xl md:rounded-[24px] bg-[#F7F7F7] flex items-center justify-center shrink-0">
                       <img src="./src/assets/gong icon.png" loading="lazy" alt="gong"
-                        class="w-10 h-10 md:w-12 md:h-12 object-contain" /></div>
+                        class="w-10 h-10 md:w-12 md:h-12 object-contain" />
+                    </div>
                   </div>
                 </div>
                 <!-- Desktop Col 3 - up -->
@@ -2775,35 +2913,43 @@
                     <div
                       class="w-[85px] h-[85px] md:w-[115px] md:h-[115px] rounded-2xl md:rounded-[24px] bg-[#F7F7F7] flex items-center justify-center shrink-0">
                       <img src="./src/assets/Hubspot Icon.png" loading="lazy" alt="hubspot"
-                        class="w-10 h-10 md:w-12 md:h-12 object-contain" /></div>
+                        class="w-10 h-10 md:w-12 md:h-12 object-contain" />
+                    </div>
                     <div
                       class="w-[85px] h-[85px] md:w-[115px] md:h-[115px] rounded-2xl md:rounded-[24px] bg-[#F7F7F7] flex items-center justify-center shrink-0">
                       <img src="./src/assets/zendesk icon.png" loading="lazy" alt="zendesk"
-                        class="w-10 h-10 md:w-12 md:h-12 object-contain" /></div>
+                        class="w-10 h-10 md:w-12 md:h-12 object-contain" />
+                    </div>
                     <div
                       class="w-[85px] h-[85px] md:w-[115px] md:h-[115px] rounded-2xl md:rounded-[24px] bg-[#F7F7F7] flex items-center justify-center shrink-0">
                       <img src="./src/assets/notion icon.png" loading="lazy" alt="notion"
-                        class="w-10 h-10 md:w-12 md:h-12 object-contain" /></div>
+                        class="w-10 h-10 md:w-12 md:h-12 object-contain" />
+                    </div>
                     <div
                       class="w-[85px] h-[85px] md:w-[115px] md:h-[115px] rounded-2xl md:rounded-[24px] bg-[#F7F7F7] flex items-center justify-center shrink-0">
                       <img src="./src/assets/teams icon.png" loading="lazy" alt="teams"
-                        class="w-10 h-10 md:w-12 md:h-12 object-contain" /></div>
+                        class="w-10 h-10 md:w-12 md:h-12 object-contain" />
+                    </div>
                     <div
                       class="w-[85px] h-[85px] md:w-[115px] md:h-[115px] rounded-2xl md:rounded-[24px] bg-[#F7F7F7] flex items-center justify-center shrink-0">
                       <img src="./src/assets/Hubspot Icon.png" loading="lazy" alt="hubspot"
-                        class="w-10 h-10 md:w-12 md:h-12 object-contain" /></div>
+                        class="w-10 h-10 md:w-12 md:h-12 object-contain" />
+                    </div>
                     <div
                       class="w-[85px] h-[85px] md:w-[115px] md:h-[115px] rounded-2xl md:rounded-[24px] bg-[#F7F7F7] flex items-center justify-center shrink-0">
                       <img src="./src/assets/zendesk icon.png" loading="lazy" alt="zendesk"
-                        class="w-10 h-10 md:w-12 md:h-12 object-contain" /></div>
+                        class="w-10 h-10 md:w-12 md:h-12 object-contain" />
+                    </div>
                     <div
                       class="w-[85px] h-[85px] md:w-[115px] md:h-[115px] rounded-2xl md:rounded-[24px] bg-[#F7F7F7] flex items-center justify-center shrink-0">
                       <img src="./src/assets/notion icon.png" loading="lazy" alt="notion"
-                        class="w-10 h-10 md:w-12 md:h-12 object-contain" /></div>
+                        class="w-10 h-10 md:w-12 md:h-12 object-contain" />
+                    </div>
                     <div
                       class="w-[85px] h-[85px] md:w-[115px] md:h-[115px] rounded-2xl md:rounded-[24px] bg-[#F7F7F7] flex items-center justify-center shrink-0">
                       <img src="./src/assets/teams icon.png" loading="lazy" alt="teams"
-                        class="w-10 h-10 md:w-12 md:h-12 object-contain" /></div>
+                        class="w-10 h-10 md:w-12 md:h-12 object-contain" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -2850,169 +2996,221 @@
 
 
 
-<section data-section id="faq" class="scroll-mt-5">
-  <section class="w-full pt-16 md:py-24 bg-[#f3f4f6]">
-    <div class="max-w-[1400px] mx-auto px-4 min-[250px]:px-6 md:px-12">
+  <section data-section id="faq" class="scroll-mt-5">
+    <section class="w-full pt-16 md:py-24 bg-[#f3f4f6]">
+      <div class="max-w-[1400px] mx-auto px-4 min-[250px]:px-6 md:px-12">
 
-      <!-- Header — always left -->
-      <div class="mb-10">
-        <p class="anseru-section-tag">FAQs</p>
-        <h2 class="anseru-section-title text-[clamp(24px,7vw,40px)]">Frequently Asked Questions</h2>
-      </div>
+        <!-- Header — always left aligned -->
+        <div class="mb-10">
+          <p class="anseru-section-tag">FAQs</p>
+          <h2 class="anseru-section-title text-[clamp(24px,7vw,40px)]">Frequently Asked Questions</h2>
+        </div>
 
-      <!-- Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 items-start">
+        <!-- FAQ list — single col -->
+        <div class="flex flex-col w-full gap-3 md:gap-4 items-start md:items-center">
 
-        <!-- Left column -->
-        <div class="flex flex-col gap-3 items-start" id="faq-col-left">
-
-          <div class="faq-item flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden" style="width:fit-content; max-width:100%;">
-            <div class="faq-trigger flex items-center gap-2 py-3 px-4 cursor-pointer hover:bg-gray-50 transition-all select-none">
-              <img src="./src/assets/Frame (11).png" loading="lazy" alt="" style="width:14px;height:14px;flex-shrink:0;opacity:0.55;" />
-              <span style="font-size:clamp(12px,2.985vw,15px); color:#000; font-weight:400; line-height:1.3; white-space:nowrap;">What is Anseru?</span>
-              <span class="faq-icon" style="font-size:clamp(14px,3.5vw,18px); color:#000; font-weight:300; margin-left:8px; flex-shrink:0; line-height:1;">+</span>
-            </div>
-            <div class="faq-answer overflow-hidden" style="max-height:0; transition:max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98),opacity 0.3s; opacity:0; min-width:100%;">
-              <div style="padding:4px 16px 16px 34px;">
-                <p style="font-size:clamp(11px,2.74vw,14px); color:#6b7280; line-height:1.6; margin:0;">
-                  Anseru is a deal intelligence platform designed for enterprise sales teams. It helps companies respond to RFPs, security questionnaires, and compliance requests by turning past deal knowledge into structured, reusable intelligence.
-                </p>
+            <div
+              class="faq-item inline-flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden w-fit max-w-full">
+              <div
+                class="faq-trigger flex items-center gap-3 py-4 px-5 cursor-pointer hover:bg-gray-50 transition-all select-none">
+                <img src="./src/assets/Frame (11).png" loading="lazy" alt="" class="shrink-0 w-4 h-4 opacity-60" />
+                <span
+                  class="text-[12px] min-[402px]:text-[14px] sm:text-[15px] text-black font-normal leading-snug text-left">What
+                  is Anseru?</span>
+                <span class="faq-icon text-black text-lg leading-none ml-2 shrink-0 font-light">+</span>
+              </div>
+              <div class="faq-answer overflow-hidden w-0 min-w-full"
+                style="max-height:0; transition: max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98), opacity 0.3s; opacity:0;">
+                <div class="px-5 pb-5 pt-1 pl-[44px] pr-5">
+                  <p class="text-gray-500 text-sm leading-relaxed">
+                    Anseru is a deal intelligence platform designed for enterprise sales teams. It helps companies
+                    respond to RFPs, security questionnaires, and compliance requests by turning past deal knowledge
+                    into structured, reusable intelligence.
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="faq-item flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden" style="width:fit-content; max-width:100%;">
-            <div class="faq-trigger flex items-center gap-2 py-3 px-4 cursor-pointer hover:bg-gray-50 transition-all select-none">
-              <img src="./src/assets/Frame (11).png" loading="lazy" alt="" style="width:14px;height:14px;flex-shrink:0;opacity:0.55;" />
-              <span style="font-size:clamp(12px,2.985vw,15px); color:#000; font-weight:400; line-height:1.3; white-space:nowrap;">How is Anseru different from traditional RFP tools?</span>
-              <span class="faq-icon" style="font-size:clamp(14px,3.5vw,18px); color:#000; font-weight:300; margin-left:8px; flex-shrink:0; line-height:1;">+</span>
-            </div>
-            <div class="faq-answer overflow-hidden" style="max-height:0; transition:max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98),opacity 0.3s; opacity:0; min-width:100%;">
-              <div style="padding:4px 16px 16px 34px;">
-                <p style="font-size:clamp(11px,2.74vw,14px); color:#6b7280; line-height:1.6; margin:0;">
-                  Most RFP tools focus on storing answers or generating responses. Anseru focuses on understanding the deal context — including industry, compliance requirements, and prior responses — so teams don't have to start from scratch each time.
-                </p>
+            <div
+              class="faq-item inline-flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden w-fit max-w-full">
+              <div
+                class="faq-trigger flex items-center gap-3 py-4 px-5 cursor-pointer hover:bg-gray-50 transition-all select-none">
+                <img src="./src/assets/Frame (11).png" loading="lazy" alt="" class="shrink-0 w-4 h-4 opacity-60" />
+                <span
+                  class="text-[12px] min-[402px]:text-[14px] sm:text-[15px] text-black font-normal leading-snug text-left">How
+                  is Anseru different from traditional RFP tools?</span>
+                <span class="faq-icon text-black text-lg leading-none ml-2 shrink-0 font-light">+</span>
+              </div>
+              <div class="faq-answer overflow-hidden w-0 min-w-full"
+                style="max-height:0; transition: max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98), opacity 0.3s; opacity:0;">
+                <div class="px-5 pb-5 pt-1 pl-[44px] pr-5">
+                  <p class="text-gray-500 text-sm leading-relaxed">
+                    Most RFP tools focus on storing answers or generating responses. Anseru focuses on understanding the
+                    deal context — including industry, compliance requirements, and prior responses — so teams don't
+                    have to start from scratch each time.
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="faq-item flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden" style="width:fit-content; max-width:100%;">
-            <div class="faq-trigger flex items-center gap-2 py-3 px-4 cursor-pointer hover:bg-gray-50 transition-all select-none">
-              <img src="./src/assets/Frame (11).png" loading="lazy" alt="" style="width:14px;height:14px;flex-shrink:0;opacity:0.55;" />
-              <span style="font-size:clamp(12px,2.985vw,15px); color:#000; font-weight:400; line-height:1.3; white-space:nowrap;">Who is Anseru built for?</span>
-              <span class="faq-icon" style="font-size:clamp(14px,3.5vw,18px); color:#000; font-weight:300; margin-left:8px; flex-shrink:0; line-height:1;">+</span>
-            </div>
-            <div class="faq-answer overflow-hidden" style="max-height:0; transition:max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98),opacity 0.3s; opacity:0; min-width:100%;">
-              <div style="padding:4px 16px 16px 34px;">
-                <p style="font-size:clamp(11px,2.74vw,14px); color:#6b7280; line-height:1.6; margin:0;">
-                  Anseru is built for teams involved in complex enterprise deals, including solutions engineering, security and compliance, and revenue operations. These teams typically collaborate to respond to procurement and due diligence requests.
-                </p>
+            <div
+              class="faq-item inline-flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden w-fit max-w-full">
+              <div
+                class="faq-trigger flex items-center gap-3 py-4 px-5 cursor-pointer hover:bg-gray-50 transition-all select-none">
+                <img src="./src/assets/Frame (11).png" loading="lazy" alt="" class="shrink-0 w-4 h-4 opacity-60" />
+                <span
+                  class="text-[12px] min-[402px]:text-[14px] sm:text-[15px] text-black font-normal leading-snug text-left">Who
+                  is Anseru built for?</span>
+                <span class="faq-icon text-black text-lg leading-none ml-2 shrink-0 font-light">+</span>
+              </div>
+              <div class="faq-answer overflow-hidden w-0 min-w-full"
+                style="max-height:0; transition: max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98), opacity 0.3s; opacity:0;">
+                <div class="px-5 pb-5 pt-1 pl-[44px] pr-5">
+                  <p class="text-gray-500 text-sm leading-relaxed">
+                    Anseru is built for teams involved in complex enterprise deals, including solutions engineering,
+                    security and compliance, and revenue operations.
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="faq-item flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden" style="width:fit-content; max-width:100%;">
-            <div class="faq-trigger flex items-center gap-2 py-3 px-4 cursor-pointer hover:bg-gray-50 transition-all select-none">
-              <img src="./src/assets/Frame (11).png" loading="lazy" alt="" style="width:14px;height:14px;flex-shrink:0;opacity:0.55;" />
-              <span style="font-size:clamp(12px,2.985vw,15px); color:#000; font-weight:400; line-height:1.3; white-space:nowrap;">How quickly can we start seeing value?</span>
-              <span class="faq-icon" style="font-size:clamp(14px,3.5vw,18px); color:#000; font-weight:300; margin-left:8px; flex-shrink:0; line-height:1;">+</span>
-            </div>
-            <div class="faq-answer overflow-hidden" style="max-height:0; transition:max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98),opacity 0.3s; opacity:0; min-width:100%;">
-              <div style="padding:4px 16px 16px 34px;">
-                <p style="font-size:clamp(11px,2.74vw,14px); color:#6b7280; line-height:1.6; margin:0;">
-                  Teams typically see value within their first few deals. As more RFPs or security questionnaires are processed, Anseru begins reusing existing knowledge and reduces manual effort over time.
-                </p>
+            <div
+              class="faq-item inline-flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden w-fit max-w-full">
+              <div
+                class="faq-trigger flex items-center gap-3 py-4 px-5 cursor-pointer hover:bg-gray-50 transition-all select-none">
+                <img src="./src/assets/Frame (11).png" loading="lazy" alt="" class="shrink-0 w-4 h-4 opacity-60" />
+                <span
+                  class="text-[12px] min-[402px]:text-[14px] sm:text-[15px] text-black font-normal leading-snug text-left">How
+                  quickly can we start seeing value?</span>
+                <span class="faq-icon text-black text-lg leading-none ml-2 shrink-0 font-light">+</span>
+              </div>
+              <div class="faq-answer overflow-hidden w-0 min-w-full"
+                style="max-height:0; transition: max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98), opacity 0.3s; opacity:0;">
+                <div class="px-5 pb-5 pt-1 pl-[44px] pr-5">
+                  <p class="text-gray-500 text-sm leading-relaxed">
+                    Teams typically see value within their first few deals. As more RFPs or security questionnaires are
+                    processed, Anseru begins reusing existing knowledge and reduces manual effort over time.
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="faq-item flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden" style="width:fit-content; max-width:100%;">
-            <div class="faq-trigger flex items-center gap-2 py-3 px-4 cursor-pointer hover:bg-gray-50 transition-all select-none">
-              <img src="./src/assets/Frame (11).png" loading="lazy" alt="" style="width:14px;height:14px;flex-shrink:0;opacity:0.55;" />
-              <span style="font-size:clamp(12px,2.985vw,15px); color:#000; font-weight:400; line-height:1.3; white-space:nowrap;">How accurate are the responses generated by Anseru?</span>
-              <span class="faq-icon" style="font-size:clamp(14px,3.5vw,18px); color:#000; font-weight:300; margin-left:8px; flex-shrink:0; line-height:1;">+</span>
-            </div>
-            <div class="faq-answer overflow-hidden" style="max-height:0; transition:max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98),opacity 0.3s; opacity:0; min-width:100%;">
-              <div style="padding:4px 16px 16px 34px;">
-                <p style="font-size:clamp(11px,2.74vw,14px); color:#6b7280; line-height:1.6; margin:0;">
-                  Anseru combines AI-generated responses with validation layers such as source references, review workflows, and internal standards. This ensures responses are reliable, auditable, and aligned with company guidelines.
-                </p>
+            <div
+              class="faq-item inline-flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden w-fit max-w-full">
+              <div
+                class="faq-trigger flex items-center gap-3 py-4 px-5 cursor-pointer hover:bg-gray-50 transition-all select-none">
+                <img src="./src/assets/Frame (11).png" loading="lazy" alt="" class="shrink-0 w-4 h-4 opacity-60" />
+                <span
+                  class="text-[12px] min-[402px]:text-[14px] sm:text-[15px] text-black font-normal leading-snug text-left">How
+                  accurate are the responses generated by Anseru?</span>
+                <span class="faq-icon text-black text-lg leading-none ml-2 shrink-0 font-light">+</span>
+              </div>
+              <div class="faq-answer overflow-hidden w-0 min-w-full"
+                style="max-height:0; transition: max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98), opacity 0.3s; opacity:0;">
+                <div class="px-5 pb-5 pt-1 pl-[44px] pr-5">
+                  <p class="text-gray-500 text-sm leading-relaxed">
+                    Anseru combines AI-generated responses with validation layers such as source references, review
+                    workflows, and internal standards. This ensures responses are reliable, auditable, and aligned with
+                    company guidelines.
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+
+            <div
+              class="faq-item inline-flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden w-fit max-w-full">
+              <div
+                class="faq-trigger flex items-center gap-3 py-4 px-5 cursor-pointer hover:bg-gray-50 transition-all select-none">
+                <img src="./src/assets/Frame (11).png" loading="lazy" alt="" class="shrink-0 w-4 h-4 opacity-60" />
+                <span
+                  class="text-[12px] min-[402px]:text-[14px] sm:text-[15px] text-black font-normal leading-snug text-left">How
+                  does Anseru improve over time?</span>
+                <span class="faq-icon text-black text-lg leading-none ml-2 shrink-0 font-light">+</span>
+              </div>
+              <div class="faq-answer overflow-hidden w-0 min-w-full"
+                style="max-height:0; transition: max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98), opacity 0.3s; opacity:0;">
+                <div class="px-5 pb-5 pt-1 pl-[44px] pr-5">
+                  <p class="text-gray-500 text-sm leading-relaxed">
+                    Anseru learns from every interaction, edit, approval, and past response captured across deals. This
+                    allows the system to continuously improve accuracy and relevance over time.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="faq-item inline-flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden w-fit max-w-full">
+              <div
+                class="faq-trigger flex items-center gap-3 py-4 px-5 cursor-pointer hover:bg-gray-50 transition-all select-none">
+                <img src="./src/assets/Frame (11).png" loading="lazy" alt="" class="shrink-0 w-4 h-4 opacity-60" />
+                <span
+                  class="text-[12px] min-[402px]:text-[14px] sm:text-[15px] text-black font-normal leading-snug text-left">How
+                  does Anseru integrate with our existing tools?</span>
+                <span class="faq-icon text-black text-lg leading-none ml-2 shrink-0 font-light">+</span>
+              </div>
+              <div class="faq-answer overflow-hidden w-0 min-w-full"
+                style="max-height:0; transition: max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98), opacity 0.3s; opacity:0;">
+                <div class="px-5 pb-5 pt-1 pl-[44px] pr-5">
+                  <p class="text-gray-500 text-sm leading-relaxed">
+                    Anseru is designed to work alongside your existing systems, including CRM platforms, document
+                    repositories, and collaboration tools. It pulls in relevant knowledge while allowing teams to
+                    continue working within familiar workflows.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="faq-item inline-flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden w-fit max-w-full">
+              <div
+                class="faq-trigger flex items-center gap-3 py-4 px-5 cursor-pointer hover:bg-gray-50 transition-all select-none">
+                <img src="./src/assets/Frame (11).png" loading="lazy" alt="" class="shrink-0 w-4 h-4 opacity-60" />
+                <span
+                  class="text-[12px] min-[402px]:text-[14px] sm:text-[15px] text-black font-normal leading-snug text-left">How
+                  do you ensure our data is secure?</span>
+                <span class="faq-icon text-black text-lg leading-none ml-2 shrink-0 font-light">+</span>
+              </div>
+              <div class="faq-answer overflow-hidden w-0 min-w-full"
+                style="max-height:0; transition: max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98), opacity 0.3s; opacity:0;">
+                <div class="px-5 pb-5 pt-1 pl-[44px] pr-5">
+                  <p class="text-gray-500 text-sm leading-relaxed">
+                    Anseru is built with enterprise-grade security in mind, including strict data isolation, access
+                    controls, and auditability. Customer data is handled within secure environments and protected
+                    according to compliance standards.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="faq-item inline-flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden w-fit max-w-full">
+              <div
+                class="faq-trigger flex items-center gap-3 py-4 px-5 cursor-pointer hover:bg-gray-50 transition-all select-none">
+                <img src="./src/assets/Frame (11).png" loading="lazy" alt="" class="shrink-0 w-4 h-4 opacity-60" />
+                <span
+                  class="text-[12px] min-[402px]:text-[14px] sm:text-[15px] text-black font-normal leading-snug text-left">Do
+                  you use our data to train shared AI models?</span>
+                <span class="faq-icon text-black text-lg leading-none ml-2 shrink-0 font-light">+</span>
+              </div>
+              <div class="faq-answer overflow-hidden w-0 min-w-full"
+                style="max-height:0; transition: max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98), opacity 0.3s; opacity:0;">
+                <div class="px-5 pb-5 pt-1 pl-[44px] pr-5">
+                  <p class="text-gray-500 text-sm leading-relaxed">
+                    No. Customer data is not used to train shared or public models. Each organization's data remains
+                    isolated and is used only to improve its own responses and intelligence within the platform.
+                  </p>
+                </div>
+              </div>
+            </div>
 
         </div>
 
-        <!-- Right column -->
-        <div class="flex flex-col gap-3 items-start" id="faq-col-right">
+        <!-- Bottom padding to breathe -->
+        <div class="pb-16 md:pb-24"></div>
 
-          <div class="faq-item flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden" style="width:fit-content; max-width:100%;">
-            <div class="faq-trigger flex items-center gap-2 py-3 px-4 cursor-pointer hover:bg-gray-50 transition-all select-none">
-              <img src="./src/assets/Frame (11).png" loading="lazy" alt="" style="width:14px;height:14px;flex-shrink:0;opacity:0.55;" />
-              <span style="font-size:clamp(12px,2.985vw,15px); color:#000; font-weight:400; line-height:1.3; white-space:nowrap;">How does Anseru improve over time?</span>
-              <span class="faq-icon" style="font-size:clamp(14px,3.5vw,18px); color:#000; font-weight:300; margin-left:8px; flex-shrink:0; line-height:1;">+</span>
-            </div>
-            <div class="faq-answer overflow-hidden" style="max-height:0; transition:max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98),opacity 0.3s; opacity:0; min-width:100%;">
-              <div style="padding:4px 16px 16px 34px;">
-                <p style="font-size:clamp(11px,2.74vw,14px); color:#6b7280; line-height:1.6; margin:0;">
-                  Anseru learns from every interaction, edit, approval, and past response captured across deals. This allows the system to continuously improve accuracy and relevance over time.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="faq-item flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden" style="width:fit-content; max-width:100%;">
-            <div class="faq-trigger flex items-center gap-2 py-3 px-4 cursor-pointer hover:bg-gray-50 transition-all select-none">
-              <img src="./src/assets/Frame (11).png" loading="lazy" alt="" style="width:14px;height:14px;flex-shrink:0;opacity:0.55;" />
-              <span style="font-size:clamp(12px,2.985vw,15px); color:#000; font-weight:400; line-height:1.3; white-space:nowrap;">How does Anseru integrate with our existing tools?</span>
-              <span class="faq-icon" style="font-size:clamp(14px,3.5vw,18px); color:#000; font-weight:300; margin-left:8px; flex-shrink:0; line-height:1;">+</span>
-            </div>
-            <div class="faq-answer overflow-hidden" style="max-height:0; transition:max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98),opacity 0.3s; opacity:0; min-width:100%;">
-              <div style="padding:4px 16px 16px 34px;">
-                <p style="font-size:clamp(11px,2.74vw,14px); color:#6b7280; line-height:1.6; margin:0;">
-                  Anseru is designed to work alongside your existing systems, including CRM platforms, document repositories, and collaboration tools. It pulls in relevant knowledge while allowing teams to continue working within familiar workflows.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="faq-item flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden" style="width:fit-content; max-width:100%;">
-            <div class="faq-trigger flex items-center gap-2 py-3 px-4 cursor-pointer hover:bg-gray-50 transition-all select-none">
-              <img src="./src/assets/Frame (11).png" loading="lazy" alt="" style="width:14px;height:14px;flex-shrink:0;opacity:0.55;" />
-              <span style="font-size:clamp(12px,2.985vw,15px); color:#000; font-weight:400; line-height:1.3; white-space:nowrap;">How do you ensure our data is secure?</span>
-              <span class="faq-icon" style="font-size:clamp(14px,3.5vw,18px); color:#000; font-weight:300; margin-left:8px; flex-shrink:0; line-height:1;">+</span>
-            </div>
-            <div class="faq-answer overflow-hidden" style="max-height:0; transition:max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98),opacity 0.3s; opacity:0; min-width:100%;">
-              <div style="padding:4px 16px 16px 34px;">
-                <p style="font-size:clamp(11px,2.74vw,14px); color:#6b7280; line-height:1.6; margin:0;">
-                  Anseru is built with enterprise-grade security in mind, including strict data isolation, access controls, and auditability. Customer data is handled within secure environments and protected according to compliance standards.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="faq-item flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden" style="width:fit-content; max-width:100%;">
-            <div class="faq-trigger flex items-center gap-2 py-3 px-4 cursor-pointer hover:bg-gray-50 transition-all select-none">
-              <img src="./src/assets/Frame (11).png" loading="lazy" alt="" style="width:14px;height:14px;flex-shrink:0;opacity:0.55;" />
-              <span style="font-size:clamp(12px,2.985vw,15px); color:#000; font-weight:400; line-height:1.3; white-space:nowrap;">Do you use our data to train shared AI models?</span>
-              <span class="faq-icon" style="font-size:clamp(14px,3.5vw,18px); color:#000; font-weight:300; margin-left:8px; flex-shrink:0; line-height:1;">+</span>
-            </div>
-            <div class="faq-answer overflow-hidden" style="max-height:0; transition:max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98),opacity 0.3s; opacity:0; min-width:100%;">
-              <div style="padding:4px 16px 16px 34px;">
-                <p style="font-size:clamp(11px,2.74vw,14px); color:#6b7280; line-height:1.6; margin:0;">
-                  No. Customer data is not used to train shared or public models. Each organization's data remains isolated and is used only to improve its own responses and intelligence within the platform.
-                </p>
-              </div>
-            </div>
-          </div>
-
-        </div>
       </div>
-
-      <div class="pb-16 md:pb-24"></div>
-    </div>
+    </section>
   </section>
-</section>
 
   <div data-section class="w-full flex flex-col font-sans">
 
@@ -3025,21 +3223,25 @@
           alt="" />
 
         <!-- Mobile Floating Tags -->
-<div class="absolute z-10 flex flex-col items-start gap-[10px] md:hidden h-fit"
-     style="left: 20px; top: 13px; width: fit-content; background: rgba(255,255,255,0.08); border-radius: 4.32px; border: 1px solid rgba(255, 255, 255, 0.074); box-sizing: border-box; padding: 16px 16px 16px 16px;">
-  <div style="border: 1px solid rgb(255, 255, 255); background: rgba(255,255,255,0.08); color: white; padding: 6px 20px; border-radius: 4.32px; font-size: 15px; font-weight: 300; letter-spacing: 0.04em; white-space: nowrap;">
-    Autonomous Deal Agents
-  </div>
-  <div style="border: 1px solid rgb(255, 255, 255); background: rgba(255,255,255,0.08); color: white; padding: 6px 20px; border-radius: 4.32px; font-size: 15px; font-weight: 300; letter-spacing: 0.04em; white-space: nowrap;">
-    Living Knowledge Engine
-  </div>
-  <div style="border: 1px solid rgb(255, 255, 255); background: rgba(255,255,255,0.08); color: white; padding: 6px 20px; border-radius: 4.32px; font-size: 15px; font-weight: 300; letter-spacing: 0.04em; white-space: nowrap;">
-    Deep Enterprise Integrations
-  </div>
-  <div style="border: 1px solid rgb(255, 255, 255); background: rgba(255,255,255,0.08); color: white; padding: 6px 20px; border-radius: 4.32px; font-size: 15px; font-weight: 300; letter-spacing: 0.04em; white-space: nowrap;">
-    Multi-Agent Orchestration
-  </div>
-</div>
+        <div class="absolute z-10 flex flex-col items-start gap-[10px] md:hidden h-fit"
+          style="left: 20px; top: 13px; width: fit-content; background: rgba(255,255,255,0.08); border-radius: 4.32px; border: 1px solid rgba(255, 255, 255, 0.074); box-sizing: border-box; padding: 16px 16px 16px 16px;">
+          <div
+            style="border: 1px solid rgb(255, 255, 255); background: rgba(255,255,255,0.08); color: white; padding: 6px 20px; border-radius: 4.32px; font-size: 15px; font-weight: 300; letter-spacing: 0.04em; white-space: nowrap;">
+            Autonomous Deal Agents
+          </div>
+          <div
+            style="border: 1px solid rgb(255, 255, 255); background: rgba(255,255,255,0.08); color: white; padding: 6px 20px; border-radius: 4.32px; font-size: 15px; font-weight: 300; letter-spacing: 0.04em; white-space: nowrap;">
+            Living Knowledge Engine
+          </div>
+          <div
+            style="border: 1px solid rgb(255, 255, 255); background: rgba(255,255,255,0.08); color: white; padding: 6px 20px; border-radius: 4.32px; font-size: 15px; font-weight: 300; letter-spacing: 0.04em; white-space: nowrap;">
+            Deep Enterprise Integrations
+          </div>
+          <div
+            style="border: 1px solid rgb(255, 255, 255); background: rgba(255,255,255,0.08); color: white; padding: 6px 20px; border-radius: 4.32px; font-size: 15px; font-weight: 300; letter-spacing: 0.04em; white-space: nowrap;">
+            Multi-Agent Orchestration
+          </div>
+        </div>
 
         <!-- Desktop Glass Panel -->
         <div

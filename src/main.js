@@ -533,25 +533,114 @@ function buildRFPWorkflow() {
 function initFAQ() {
   let openIndex = null;
   const items = document.querySelectorAll(".faq-item");
+  
   items.forEach((item, idx) => {
+    item._idx = idx; 
     item.querySelector(".faq-trigger").addEventListener("click", () => {
       const isOpen = openIndex === idx;
+      
       if (openIndex !== null && openIndex !== idx) {
+        // Closing previous item
         const prev = items[openIndex];
-        prev.querySelector(".faq-answer").style.maxHeight = "0";
-        prev.querySelector(".faq-answer").style.opacity = "0";
+        const prevAns = prev.querySelector(".faq-answer");
+        const prevInner = prevAns.firstElementChild;
+        
+        const curW = prev.getBoundingClientRect().width;
+        prev.style.transition = "none";
+        prev.style.width = "fit-content";
+        const targetW = prev.getBoundingClientRect().width;
+        prev.style.width = curW + "px";
+        
+        prevAns.style.transition = "none";
+        prevAns.style.maxHeight = prevAns.scrollHeight + "px";
+        
+        // Prevent text squishing
+        if (prevInner) prevInner.style.width = curW + "px";
+        
+        prev.offsetHeight; // flush
+        
+        prev.style.transition = "width 0.4s cubic-bezier(0.04,0.62,0.23,0.98)";
+        prevAns.style.transition = "max-height 0.4s cubic-bezier(0.04,0.62,0.23,0.98), opacity 0.3s ease";
+        prev.style.width = targetW + "px";
+        prevAns.style.maxHeight = "0px";
+        prevAns.style.opacity = "0";
         prev.querySelector(".faq-icon").textContent = "+";
+        
+        setTimeout(() => {
+          if (openIndex !== prev._idx) {
+             prev.style.width = "";
+             if (prevInner) prevInner.style.width = "";
+          }
+        }, 400);
       }
+      
       openIndex = isOpen ? null : idx;
       const ans = item.querySelector(".faq-answer");
+      const inner = ans.firstElementChild;
+      
       if (!isOpen) {
-        ans.style.maxHeight = ans.scrollHeight + "px";
+        // Opening current item
+        const curW = item.getBoundingClientRect().width;
+        
+        item.style.transition = "none";
+        ans.style.transition = "none";
+        item.style.width = "100%";
+        ans.style.maxHeight = "none";
+        if (inner) inner.style.width = ""; // ensure it takes 100%
+        
+        const targetW = item.getBoundingClientRect().width;
+        const targetH = ans.scrollHeight;
+        
+        item.style.width = curW + "px";
+        ans.style.maxHeight = "0px";
+        
+        if (inner) inner.style.width = targetW + "px";
+        item.offsetHeight; // flush
+        
+        item.style.transition = "width 0.4s cubic-bezier(0.04,0.62,0.23,0.98)";
+        ans.style.transition = "max-height 0.4s cubic-bezier(0.04,0.62,0.23,0.98), opacity 0.4s ease";
+        item.style.width = targetW + "px";
+        ans.style.maxHeight = targetH + "px";
         ans.style.opacity = "1";
         item.querySelector(".faq-icon").textContent = "−";
+        
+        setTimeout(() => {
+          if (openIndex === idx) {
+            item.style.width = "100%";
+            ans.style.maxHeight = "1500px";
+            if (inner) inner.style.width = "";
+          }
+        }, 400);
+        
       } else {
-        ans.style.maxHeight = "0";
+        // Closing current item
+        const curW = item.getBoundingClientRect().width;
+        
+        item.style.transition = "none";
+        item.style.width = "fit-content";
+        const targetW = item.getBoundingClientRect().width;
+        item.style.width = curW + "px";
+        
+        ans.style.transition = "none";
+        ans.style.maxHeight = ans.scrollHeight + "px";
+        if (inner) inner.style.width = curW + "px";
+        
+        item.offsetHeight; // flush
+        
+        item.style.transition = "width 0.4s cubic-bezier(0.04,0.62,0.23,0.98)";
+        ans.style.transition = "max-height 0.4s cubic-bezier(0.04,0.62,0.23,0.98), opacity 0.3s ease";
+        
+        item.style.width = targetW + "px";
+        ans.style.maxHeight = "0px";
         ans.style.opacity = "0";
         item.querySelector(".faq-icon").textContent = "+";
+        
+        setTimeout(() => {
+          if (openIndex !== idx) {
+            item.style.width = "";
+            if (inner) inner.style.width = "";
+          }
+        }, 400);
       }
     });
   });
