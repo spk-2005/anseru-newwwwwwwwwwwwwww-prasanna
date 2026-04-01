@@ -1683,28 +1683,30 @@
 
     </section>
 
-  <section data-section id="product" class="scroll-mt-4">
-  <div class="lg:hidden w-full bg-white pb-7 px-2 min-[250px]:px-4 sm:px-6">
-    <div class="max-w-[1200px] mx-auto w-full">
+<section data-section id="product" class="scroll-mt-4">
+    <div id="agents-mobile-carousel" class="lg:hidden relative w-full bg-white" style="height: 200vh">
+    <div class="sticky top-0 w-full h-[100dvh] overflow-hidden flex flex-col bg-white" style="padding: clamp(16px,4vw,24px) 0 8px;">
 
       <!-- Header -->
-      <div class="flex flex-col gap-4 mb-6">
+      <div style="padding: 0 clamp(14px,4vw,20px);" class="shrink-0 flex flex-col mb-4">
         <div>
           <p style="font-size: clamp(9px, 2.74vw, 14px); color:#6b7280; margin-bottom:4px; font-weight:400;">Proven Results</p>
           <h2 style="font-size: clamp(13px, 5.97vw, 36px); line-height:1.1; font-weight:400; letter-spacing:-0.02em; color:#000; margin:0;">Two Super Agents</h2>
         </div>
+      </div>
 
-        <!-- Tab Pills -->
+      <!-- Tab Pills -->
+      <div style="padding: 0 clamp(10px,4vw,20px); margin-bottom: clamp(14px,4vw,20px);" class="shrink-0 flex items-center">
         <div class="inline-flex w-fit items-center gap-0.5 min-[250px]:gap-1 bg-gray-100 p-0.5 min-[250px]:p-1 rounded-xl flex-wrap">
-          <button id="tab-archer" onclick="switchAgent('archer')"
+          <button id="mobile-tab-archer" onclick="if(window.scrollToAgentMobileSlide) window.scrollToAgentMobileSlide(0)"
             style="font-size: clamp(9px, 2.74vw, 14px);"
             class="flex items-center gap-1 min-[250px]:gap-2 px-2 min-[250px]:px-4 sm:px-5 py-1.5 min-[250px]:py-2.5 rounded-lg font-medium transition-all cursor-pointer bg-black text-white whitespace-nowrap">
             Meet Archer
             <img src="./src/assets/Sud.png" loading="lazy" alt="archer"
               class="brightness-0 invert w-3 min-[250px]:w-4 h-3 min-[250px]:h-4" />
           </button>
-          <button id="tab-knox" onclick="switchAgent('knox')"
-            style="font-size: clamp(9px, 2.74vw, 14px);"
+          <button id="mobile-tab-knox" onclick="if(window.scrollToAgentMobileSlide) window.scrollToAgentMobileSlide(1)"
+            style="font-size: clamp(9px, 2.74vw, 14px)"
             class="flex items-center gap-1 min-[250px]:gap-2 px-2 min-[250px]:px-4 sm:px-5 py-1.5 min-[250px]:py-2.5 rounded-lg font-medium transition-all cursor-pointer bg-transparent text-black hover:bg-gray-200 whitespace-nowrap">
             Meet Knox
             <img src="./src/assets/kg.png" loading="lazy" alt="knox"
@@ -1713,179 +1715,261 @@
         </div>
       </div>
 
-      <!-- ── Archer Agent ── -->
-      <div id="mobile-agent-archer">
-        <div class="border border-[#e5e7eb] rounded-xl overflow-hidden flex flex-col">
+      <!-- Slide Track Wrapper -->
+      <div class="relative flex-1 min-h-0" style="overflow:hidden; isolation: isolate;">
+        <div id="agents-mobile-track" style="
+          display:flex; height:100%; width:200vw;
+          transform:translateX(0); will-change:transform;
+          transition: transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94);
+        ">
 
-          <!-- Hero Card -->
-          <div class="p-3.5 bg-white border-b border-[#e5e7eb]">
-            <div class="relative flex flex-col justify-between overflow-hidden"
-              style="
-                background: linear-gradient(180deg, #201cae 0%, #6aa4ee 100%);
-                padding: clamp(16px, 5vw, 32px);
-                height: clamp(240px, 75vw, 360px);
-                border-radius: 8px;
-              ">
-              <div class="noise-overlay absolute inset-0 opacity-100 pointer-events-none"></div>
-              <div class="relative">
-                <img src="./src/assets/Frame (9).png" loading="lazy" alt=""
-                  style="width: clamp(60px, 18vw, 112px); height: auto; opacity: 0.9;" />
-              </div>
-              <div class="relative mt-auto">
-                <h3 style="font-size: clamp(16px, 6.7vw, 32px); font-weight:400; color:#fff; margin-bottom: clamp(8px,2.5vw,16px); line-height:1.1;">
-                  RFP Agent
-                </h3>
-                <div class="flex flex-wrap" style="gap: clamp(4px, 1.5vw, 8px);">
-                  <span style="font-size: clamp(9px, 2.74vw, 13px); padding: clamp(3px,1vw,4px) clamp(6px,2vw,12px);"
-                    class="text-white bg-white/20 rounded-[4px] border border-white/40 font-normal">Instant RFP breakdown</span>
-                  <span style="font-size: clamp(9px, 2.74vw, 13px); padding: clamp(3px,1vw,4px) clamp(6px,2vw,12px);"
-                    class="text-white bg-white/20 rounded-[4px] border border-white/40 font-normal">Terminology translation</span>
-                  <span style="font-size: clamp(9px, 2.74vw, 13px); padding: clamp(3px,1vw,4px) clamp(6px,2vw,12px);"
-                    class="text-white bg-white/20 rounded-[4px] border border-white/40 font-normal">Proposal-ready answers</span>
+          <!-- ── Slide 0: Archer ── -->
+          <div style="
+            width:100vw; height:100%;
+            display:flex; flex-direction:column;
+            padding: 0 clamp(14px,4vw,20px);
+            overflow-y:auto; scrollbar-width:none;
+            flex-shrink: 0;
+          ">
+            <div id="mobile-agent-archer" class="w-full pb-[40px]">
+              <div class="border border-[#e5e7eb] rounded-xl overflow-hidden flex flex-col">
+
+                <!-- Hero Card -->
+                <div class="p-3.5 bg-white border-b border-[#e5e7eb]">
+                  <div class="relative flex flex-col justify-between overflow-hidden"
+                    style="
+                      background: linear-gradient(180deg, #201cae 0%, #6aa4ee 100%);
+                      padding: clamp(16px, 5vw, 32px);
+                      height: clamp(240px, 75vw, 360px);
+                      border-radius: 8px;
+                    ">
+                    <div class="noise-overlay absolute inset-0 opacity-100 pointer-events-none"></div>
+                    <div class="relative">
+                      <img src="./src/assets/Frame (9).png" loading="lazy" alt=""
+                        style="width: clamp(60px, 18vw, 112px); height: auto; opacity: 0.9;" />
+                    </div>
+                    <div class="relative mt-auto">
+                      <h3 style="font-size: clamp(16px, 6.7vw, 32px); font-weight:400; color:#fff; margin-bottom: clamp(8px,2.5vw,16px); line-height:1.1;">
+                        RFP Agent
+                      </h3>
+                      <div class="flex flex-wrap" style="gap: clamp(4px, 1.5vw, 8px);">
+                        <span style="font-size: clamp(9px, 2.74vw, 13px); padding: clamp(3px,1vw,4px) clamp(6px,2vw,12px);"
+                          class="text-white bg-white/20 rounded-[4px] border border-white/40 font-normal">Instant RFP breakdown</span>
+                        <span style="font-size: clamp(9px, 2.74vw, 13px); padding: clamp(3px,1vw,4px) clamp(6px,2vw,12px);"
+                          class="text-white bg-white/20 rounded-[4px] border border-white/40 font-normal">Terminology translation</span>
+                        <span style="font-size: clamp(9px, 2.74vw, 13px); padding: clamp(3px,1vw,4px) clamp(6px,2vw,12px);"
+                          class="text-white bg-white/20 rounded-[4px] border border-white/40 font-normal">Proposal-ready answers</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Feature Grid -->
+                <div class="p-2 min-[250px]:p-4 relative overflow-hidden">
+                  <div class="absolute pointer-events-none"
+                    style="background-image: linear-gradient(to right,#000 1px,transparent 1px), linear-gradient(to bottom,#000 1px,transparent 1px); background-size:150px 150px;"></div>
+                  <div class="grid grid-cols-1 min-[250px]:grid-cols-2 grid-rows-4 min-[250px]:grid-rows-2 bg-[#f4f4f5] relative z-10">
+
+                    <div class="flex flex-col justify-between  min-[250px]:border-r border-[#e5e7eb]"
+                      style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
+                      <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
+                        Instant RFP<br />intelligence
+                      </h4>
+                      <p style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
+                        Automatically extracts key requirements, timelines, stakeholders, and evaluation criteria.
+                      </p>
+                    </div>
+
+                    <div class="flex flex-col justify-between border-b border-[#e5e7eb]"
+                      style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
+                      <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
+                        Terminology<br />mapping
+                      </h4>
+                      <p style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
+                        Translates feature requirements to your internal product language.
+                      </p>
+                    </div>
+
+                    <div class="flex flex-col justify-between border-b min-[250px]:border-b-0 min-[250px]:border-r border-[#e5e7eb]"
+                      style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
+                      <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
+                        Bid / No-Bid<br />clarity
+                      </h4>
+                      <p style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
+                        Helps teams decide whether to pursue.
+                      </p>
+                    </div>
+
+                    <div class="flex flex-col justify-between border-[#e5e7eb]"
+                      style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
+                      <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
+                        Structured proposal<br />generation
+                      </h4>
+                      <p style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
+                        Generates responses across technical, product, security, and legal sections with contextual intelligence.
+                      </p>
+                    </div>
+
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Feature Grid -->
-          <div class="p-2 min-[250px]:p-4 relative overflow-hidden">
-            <div class="absolute inset-0 pointer-events-none opacity-[0.1]"
-              style="background-image: linear-gradient(to right,#000 1px,transparent 1px), linear-gradient(to bottom,#000 1px,transparent 1px); background-size:150px 150px;"></div>
-            <div class="grid grid-cols-1 min-[250px]:grid-cols-2 grid-rows-4 min-[250px]:grid-rows-2 bg-[#f4f4f5] relative z-10">
+          <!-- ── Slide 1: Knox ── -->
+          <div style="
+            width:100vw; height:100%;
+            display:flex; flex-direction:column;
+            padding: 0 clamp(14px,4vw,20px);
+            overflow-y:auto; scrollbar-width:none;
+            flex-shrink: 0;
+          ">
+            <div id="mobile-agent-knox" class="w-full pb-[40px]">
+              <div class="border border-[#e5e7eb] rounded-xl overflow-hidden flex flex-col">
 
-              <div class="flex flex-col justify-between border-b min-[250px]:border-r border-[#e5e7eb]"
-                style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
-                <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
-                  Instant RFP<br />intelligence
-                </h4>
-                <p style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
-                  Automatically extracts key requirements, timelines, stakeholders, and evaluation criteria.
-                </p>
-              </div>
+                <!-- Hero Card -->
+                <div class="p-3.5 bg-white border-b border-[#e5e7eb]">
+                  <div class="relative flex flex-col justify-between overflow-hidden"
+                    style="
+                      background: linear-gradient(45deg, #1d80f9 0%, #e74f62 100%);
+                      padding: clamp(16px, 5vw, 32px);
+                      height: clamp(240px, 75vw, 360px);
+                      border-radius: 8px;
+                    ">
+                    <div class="noise-overlay absolute inset-0 opacity-100 pointer-events-none"></div>
+                    <div class="relative">
+                      <img src="./src/assets/Frame (10).png" loading="lazy" alt=""
+                        style="width: clamp(60px, 18vw, 112px); height: auto; opacity: 0.9;" />
+                    </div>
+                    <div class="relative mt-auto">
+                      <h3 style="font-size: clamp(14px, 5.97vw, 32px); font-weight:400; color:#fff; margin-bottom: clamp(8px,2.5vw,16px); line-height:1.1;">
+                        Security<br />Questionnaire Agent
+                      </h3>
+                      <div class="flex flex-wrap" style="gap: clamp(4px, 1.5vw, 8px);">
+                        <span style="font-size: clamp(9px, 2.74vw, 13px); padding: clamp(3px,1vw,4px) clamp(6px,2vw,12px);"
+                          class="text-white bg-white/20 rounded-[4px] border border-white/40 font-normal">Evidence-backed answers</span>
+                        <span style="font-size: clamp(9px, 2.74vw, 13px); padding: clamp(3px,1vw,4px) clamp(6px,2vw,12px);"
+                          class="text-white bg-white/20 rounded-[4px] border border-white/40 font-normal">No contradictions</span>
+                        <span style="font-size: clamp(9px, 2.74vw, 13px); padding: clamp(3px,1vw,4px) clamp(6px,2vw,12px);"
+                          class="text-white bg-white/20 rounded-[4px] border border-white/40 font-normal">Compliance-ready</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-              <div class="flex flex-col justify-between border-b border-[#e5e7eb]"
-                style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
-                <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
-                  Terminology<br />mapping
-                </h4>
-                <p style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
-                  Translates feature requirements to your internal product language.
-                </p>
-              </div>
+                <!-- Feature Grid -->
+                <div class="p-2 min-[250px]:p-4 relative overflow-hidden">
+                  <div class="absolute inset-0 pointer-events-none opacity-[0.1]"
+                    style="background-image: linear-gradient(to right,#000 1px,transparent 1px), linear-gradient(to bottom,#000 1px,transparent 1px); background-size:150px 150px;"></div>
+                  <div class="grid grid-cols-1 min-[250px]:grid-cols-2 grid-rows-4 min-[250px]:grid-rows-2 bg-[#f4f4f5] relative z-10">
 
-              <div class="flex flex-col justify-between border-b min-[250px]:border-b-0 min-[250px]:border-r border-[#e5e7eb]"
-                style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
-                <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
-                  Bid / No-Bid<br />clarity
-                </h4>
-                <p style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
-                  Helps teams decide whether to pursue.
-                </p>
-              </div>
+                    <div class="flex flex-col justify-between border-b min-[250px]:border-r border-[#e5e7eb]"
+                      style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
+                      <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
+                        95%+ response<br />accuracy
+                      </h4>
+                      <p style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
+                        Generated from verified security documentation.
+                      </p>
+                    </div>
 
-              <div class="flex flex-col justify-between border-[#e5e7eb]"
-                style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
-                <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
-                  Structured proposal<br />generation
-                </h4>
-                <p style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
-                  Generates responses across technical, product, security, and legal sections with contextual intelligence.
-                </p>
-              </div>
+                    <div class="flex flex-col justify-between border-b border-[#e5e7eb]"
+                      style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
+                      <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
+                        70-90% faster<br />reviews
+                      </h4>
+                      <p style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
+                        Eliminates repetitive questionnaires saving SME time.
+                      </p>
+                    </div>
 
-            </div>
-          </div>
-        </div>
-      </div>
+                    <div class="flex flex-col justify-between border-b min-[250px]:border-b-0 min-[250px]:border-r border-[#e5e7eb]"
+                      style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
+                      <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
+                        Audit-ready<br />answers
+                      </h4>
+                      <p style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
+                        Aligned with current policies and controls.
+                      </p>
+                    </div>
 
-      <!-- ── Knox Agent ── -->
-      <div id="mobile-agent-knox" class="hidden">
-        <div class="border border-[#e5e7eb] rounded-xl overflow-hidden flex flex-col">
+                    <div class="flex flex-col justify-between border-[#e5e7eb]"
+                      style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
+                      <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
+                        Evidence-backed<br />responses
+                      </h4>
+                      <p style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
+                        Every answer is grounded in policies, certifications, and security evidence.
+                      </p>
+                    </div>
 
-          <!-- Hero Card -->
-          <div class="p-3.5 bg-white border-b border-[#e5e7eb]">
-            <div class="relative flex flex-col justify-between overflow-hidden"
-              style="
-                background: linear-gradient(45deg, #1d80f9 0%, #e74f62 100%);
-                padding: clamp(16px, 5vw, 32px);
-                height: clamp(240px, 75vw, 360px);
-                border-radius: 8px;
-              ">
-              <div class="noise-overlay absolute inset-0 opacity-100 pointer-events-none"></div>
-              <div class="relative">
-                <img src="./src/assets/Frame (10).png" loading="lazy" alt=""
-                  style="width: clamp(60px, 18vw, 112px); height: auto; opacity: 0.9;" />
-              </div>
-              <div class="relative mt-auto">
-                <h3 style="font-size: clamp(14px, 5.97vw, 32px); font-weight:400; color:#fff; margin-bottom: clamp(8px,2.5vw,16px); line-height:1.1;">
-                  Security<br />Questionnaire Agent
-                </h3>
-                <div class="flex flex-wrap" style="gap: clamp(4px, 1.5vw, 8px);">
-                  <span style="font-size: clamp(9px, 2.74vw, 13px); padding: clamp(3px,1vw,4px) clamp(6px,2vw,12px);"
-                    class="text-white bg-white/20 rounded-[4px] border border-white/40 font-normal">Evidence-backed answers</span>
-                  <span style="font-size: clamp(9px, 2.74vw, 13px); padding: clamp(3px,1vw,4px) clamp(6px,2vw,12px);"
-                    class="text-white bg-white/20 rounded-[4px] border border-white/40 font-normal">No contradictions</span>
-                  <span style="font-size: clamp(9px, 2.74vw, 13px); padding: clamp(3px,1vw,4px) clamp(6px,2vw,12px);"
-                    class="text-white bg-white/20 rounded-[4px] border border-white/40 font-normal">Compliance-ready</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Feature Grid -->
-          <div class="p-2 min-[250px]:p-4 relative overflow-hidden">
-            <div class="absolute inset-0 pointer-events-none opacity-[0.1]"
-              style="background-image: linear-gradient(to right,#000 1px,transparent 1px), linear-gradient(to bottom,#000 1px,transparent 1px); background-size:150px 150px;"></div>
-            <div class="grid grid-cols-1 min-[250px]:grid-cols-2 grid-rows-4 min-[250px]:grid-rows-2 bg-[#f4f4f5] relative z-10">
-
-              <div class="flex flex-col justify-between border-b min-[250px]:border-r border-[#e5e7eb]"
-                style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
-                <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
-                  95%+ response<br />accuracy
-                </h4>
-                <p style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
-                  Generated from verified security documentation.
-                </p>
-              </div>
-
-              <div class="flex flex-col justify-between border-b border-[#e5e7eb]"
-                style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
-                <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
-                  70-90% faster<br />reviews
-                </h4>
-                <p style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
-                  Eliminates repetitive questionnaires saving SME time.
-                </p>
-              </div>
-
-              <div class="flex flex-col justify-between border-b min-[250px]:border-b-0 min-[250px]:border-r border-[#e5e7eb]"
-                style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
-                <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
-                  Audit-ready<br />answers
-                </h4>
-                <p style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
-                  Aligned with current policies and controls.
-                </p>
-              </div>
-
-              <div class="flex flex-col justify-between border-[#e5e7eb]"
-                style="padding: clamp(10px, 3.5vw, 24px); min-height: clamp(100px, 35vw, 160px);">
-                <h4 style="font-size: clamp(11px, 3.73vw, 16px); font-weight:400; color:#000; line-height:1.2;">
-                  Evidence-backed<br />responses
-                </h4>
-                <p style="font-size: clamp(10px, 3vw, 13px); color:#6b7280; line-height:1.4; margin-top: clamp(6px,2vw,12px);">
-                  Every answer is grounded in policies, certifications, and security evidence.
-                </p>
-              </div>
-
-            </div>
-          </div>
         </div>
       </div>
-
     </div>
   </div>
+  
+  <script>
+    (function () {
+      var aSection = document.getElementById('agents-mobile-carousel');
+      if (!aSection) return;
 
+      var aTrack = document.getElementById('agents-mobile-track');
+      var aPills = [
+        document.getElementById('mobile-tab-archer'),
+        document.getElementById('mobile-tab-knox')
+      ];
+      var SLIDES = 2;
+
+      function aSetActive(idx) {
+        idx = Math.max(0, Math.min(SLIDES - 1, idx));
+        aPills.forEach(function (b, i) {
+          if (!b) return;
+          var isActive = i === idx;
+          b.className = isActive
+            ? 'flex items-center gap-1 min-[250px]:gap-2 px-2 min-[250px]:px-4 sm:px-5 py-1.5 min-[250px]:py-2.5 rounded-lg font-medium transition-all cursor-pointer bg-black text-white whitespace-nowrap'
+            : 'flex items-center gap-1 min-[250px]:gap-2 px-2 min-[250px]:px-4 sm:px-5 py-1.5 min-[250px]:py-2.5 rounded-lg font-medium transition-all cursor-pointer bg-transparent text-black hover:bg-gray-200 whitespace-nowrap';
+          
+          var img = b.querySelector('img');
+          if (img) {
+            img.className = isActive
+              ? 'brightness-0 invert w-3 min-[250px]:w-4 h-3 min-[250px]:h-4'
+              : 'w-3 min-[250px]:w-4 h-3 min-[250px]:h-4';
+          }
+        });
+        aTrack.style.transition = 'transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94)';
+        aTrack.style.transform = 'translateX(-' + (idx * 100) + 'vw)';
+      }
+
+      function aOnScroll() {
+        var sectionTop = aSection.getBoundingClientRect().top + window.scrollY;
+        var scrolled = window.scrollY - sectionTop;
+        var Mathmin = Math.min;
+        var Mathmax = Math.max;
+        var range = aSection.offsetHeight - window.innerHeight;
+        var progress = Mathmin(1, Mathmax(0, scrolled / range));
+        var idx = Mathmin(SLIDES - 1, Math.floor(progress * SLIDES));
+        aSetActive(idx);
+      }
+
+      window.scrollToAgentMobileSlide = function (idx) {
+        idx = Math.max(0, Math.min(SLIDES - 1, idx));
+        var sectionTop = aSection.getBoundingClientRect().top + window.scrollY;
+        var range = aSection.offsetHeight - window.innerHeight;
+        var targetY = sectionTop + (idx / SLIDES) * range + 1;
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
+      };
+
+      window.addEventListener('scroll', aOnScroll, { passive: true });
+      window.addEventListener('resize', aOnScroll);
+      aSetActive(0);
+    })();
+  </script>
   <!-- Desktop section unchanged -->
   <div id="two-agents-desktop" class="hidden lg:block w-full bg-white relative" style="height: 200vh">
     <!-- ... your existing desktop code stays exactly as-is ... -->
@@ -2154,6 +2238,253 @@
       </div>
     </div>
   </section>
+
+<section data-section id="security" class="scroll-mt-5">
+    <div class="w-full bg-white overflow-hidden px-6 md:px-12 font-sans">
+      <div class="max-w-300 mx-auto pt-16">
+        <div class="flex flex-col items-center justify-center text-center gap-12 mb-15">
+          <div class="max-w-xl mx-auto">
+            <p class="anseru-section-tag mx-auto">Security And Compliance</p>
+            <h2 class="anseru-section-title mx-auto text-center">
+              Safely connect agents to<br class="hidden md:block" />
+              company knowledge
+            </h2>
+          </div>
+        </div>
+        <div class="relative w-full flex flex-col items-center pb-16">
+          <div class="hidden md:flex justify-center w-full pt-10 pb-5">
+            <div class="relative" style="width: 910px; height: 560px">
+              <div class="absolute" style="
+                    top: 80px;
+                    left: 180px;
+                    width: 340px;
+                    height: 340px;
+                    background: #eef2ff;
+                    border-radius: 50%;
+                    filter: blur(70px);
+                    opacity: 0.8;
+                    z-index: 0;
+                  "></div>
+              <div class="absolute" style="
+                    top: 80px;
+                    left: 390px;
+                    width: 340px;
+                    height: 340px;
+                    background: #fff1f2;
+                    border-radius: 50%;
+                    filter: blur(70px);
+                    opacity: 0.8;
+                    z-index: 0;
+                  "></div>
+              <div class="absolute" style="left: 205px; top: 30px; width: 500px; height: 500px">
+                <svg class="absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 500 500">
+                  <circle cx="250" cy="250" r="215" fill="none" stroke="#e5e7eb" stroke-width="2.5"
+                    stroke-dasharray="6 6" />
+                </svg>
+                <div
+                  class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-45 h-50 z-10 flex items-center justify-center">
+                  <img src="./src/assets/shield.png" loading="lazy" alt=""
+                    class="absolute inset-0 w-full h-full object-contain" />
+                  <div class="absolute inset-0 w-full h-full flex items-center justify-center z-0">
+                    <svg viewBox="0 0 100 110" class="w-35 h-40 text-[#eee5e7]">
+                      <path d="M50 0 L100 20 L100 60 C100 85 50 110 50 110 C50 110 0 85 0 60 L0 20 Z"
+                        fill="currentColor" />
+                    </svg>
+                  </div>
+                  <div
+                    class="relative z-20 w-[60px] h-[60px] rounded-full shadow-lg flex items-center justify-center overflow-hidden bg-black">
+                    <img src="./src/assets/Anseru_3 2.png" loading="lazy" alt="Anseru Logo"
+                      class="w-full h-full object-cover scale-60" />
+                  </div>
+                </div>
+                <!-- Node 1 – Top Right -->
+                <div class="absolute z-20" style="top: 20%; left: 81%; transform: translate(-50%, -50%);">
+                  <div
+                    class="relative w-[86px] h-[86px] rounded-full overflow-hidden flex items-center justify-center p-5"
+                    style="
+                        background: linear-gradient(
+                          135deg,
+                          #2837a2 0%,
+                          #5b82e2 100%
+                        );
+                      ">
+                    <img src="./src/assets/ri_ai.png" loading="lazy" alt="" />
+                  </div>
+                  <div class="absolute left-[calc(100%+24px)] top-1/2 -translate-y-1/2 w-[280px] text-left">
+                    <h4 class="font-medium text-[#111827] mb-1.5 leading-tight">
+                      Responsible AI &amp; Model Usage
+                    </h4>
+                    <p class="text-[14px] text-[#6b7280] leading-relaxed">
+                      Customer data is never used to train shared or public AI
+                      models.
+                    </p>
+                  </div>
+                </div>
+                <!-- Node 2 - Bottom Right -->
+                <div class="absolute z-20" style="top: 70%; left: 88%; transform: translate(-50%, -50%);">
+                  <div
+                    class="relative w-[86px] h-[86px] rounded-full overflow-hidden flex items-center justify-center p-5"
+                    style="
+                        background: linear-gradient(
+                          180deg,
+                          #fe404b 0%,
+                          #61b6ef 100%
+                        );
+                      ">
+                    <img src="./src/assets/material-symbols-light_verified-outline.png" loading="lazy" alt="" />
+                  </div>
+                  <div class="absolute left-[calc(100%+24px)] top-1/2 -translate-y-1/2 w-[280px] text-left">
+                    <h4 class="font-medium text-[#111827] mb-1.5 leading-tight">
+                      Verifiable &amp; Trusted Answers
+                    </h4>
+                    <p class="text-[14px] text-[#6b7280] leading-relaxed">
+                      Every response is grounded in your company knowledge
+                      with traceable sources and review workflows.
+                    </p>
+                  </div>
+                </div>
+                <!-- Node 3 - Bottom Left -->
+                <div class="absolute z-20" style="top: 88%; left: 28%; transform: translate(-50%, -50%);">
+                  <div
+                    class="relative w-[86px] h-[86px] rounded-full overflow-hidden flex items-center justify-center p-5"
+                    style="
+                        background: linear-gradient(
+                          180deg,
+                          #2b2b2b 0%,
+                          #5b21b6 100%
+                        );
+                      ">
+                    <img src="./src/assets/material-symbols_switch-access-outline.png" loading="lazy" alt="" />
+                  </div>
+                  <div class="absolute right-[calc(100%+24px)] top-1/2 -translate-y-1/2 w-[280px] text-right">
+                    <h4 class="font-medium text-[#111827] mb-1.5 leading-tight">
+                      Access Control &amp; Governance
+                    </h4>
+                    <p class="text-[14px] text-[#6b7280] leading-relaxed">
+                      Granular permissions and audit logs ensure only
+                      authorized users can access sensitive information.
+                    </p>
+                  </div>
+                </div>
+                <!-- Node 4 - Top Left -->
+                <div class="absolute z-20" style="top: 37%; left: 9%; transform: translate(-50%, -50%);">
+                  <div
+                    class="relative w-[86px] h-[86px] rounded-full overflow-hidden flex items-center justify-center p-5"
+                    style="
+                        background: linear-gradient(
+                          180deg,
+                          #71b2cc 0%,
+                          #d4d145 100%
+                        );
+                      ">
+                    <img src="./src/assets/arcticons_secure-tan.png" loading="lazy" alt="" />
+                  </div>
+                  <div class="absolute right-[calc(100%+24px)] top-1/2 -translate-y-1/2 w-[280px] text-right">
+                    <h4 class="font-medium text-[#111827] mb-1.5 leading-tight">
+                      Secure Infrastructure
+                    </h4>
+                    <p class="text-[14px] text-[#6b7280] leading-relaxed">
+                      Your data is protected with encryption, secure storage,
+                      and isolated customer environments.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex md:hidden flex-col items-center gap-10 w-full">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+              <div class="flex items-start gap-4 p-4 rounded-xl border border-gray-100 bg-gray-50">
+                <div class="w-[52px] h-[52px] rounded-full shrink-0 flex items-center justify-center p-3" style="
+                      background: linear-gradient(
+                        135deg,
+                        #2837a2 0%,
+                        #5b82e2 100%
+                      );
+                    ">
+                  <img src="./src/assets/ri_ai.png" loading="lazy" alt="" class="w-full h-full object-contain" />
+                </div>
+                <div>
+                  <h4 class="font-medium text-[#111827] mb-1 text-[15px] leading-tight">
+                    Responsible AI &amp; Model Usage
+                  </h4>
+                  <p class="text-[13px] text-[#6b7280] leading-relaxed">
+                    Customer data is never used to train shared or public AI
+                    models.
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start gap-4 p-4 rounded-xl border border-gray-100 bg-gray-50">
+                <div class="w-[52px] h-[52px] rounded-full shrink-0 flex items-center justify-center p-3" style="
+                      background: linear-gradient(
+                        180deg,
+                        #fe404b 0%,
+                        #61b6ef 100%
+                      );
+                    ">
+                  <img src="./src/assets/material-symbols-light_verified-outline.png" loading="lazy" alt=""
+                    class="w-full h-full object-contain" />
+                </div>
+                <div>
+                  <h4 class="font-medium text-[#111827] mb-1 text-[15px] leading-tight">
+                    Verifiable &amp; Trusted Answers
+                  </h4>
+                  <p class="text-[13px] text-[#6b7280] leading-relaxed">
+                    Every response is grounded in your company knowledge with
+                    traceable sources.
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start gap-4 p-4 rounded-xl border border-gray-100 bg-gray-50">
+                <div class="w-[52px] h-[52px] rounded-full shrink-0 flex items-center justify-center p-3" style="
+                      background: linear-gradient(
+                        180deg,
+                        #2b2b2b 0%,
+                        #5b21b6 100%
+                      );
+                    ">
+                  <img src="./src/assets/material-symbols_switch-access-outline.png" loading="lazy" alt=""
+                    class="w-full h-full object-contain" />
+                </div>
+                <div>
+                  <h4 class="font-medium text-[#111827] mb-1 text-[15px] leading-tight">
+                    Access Control &amp; Governance
+                  </h4>
+                  <p class="text-[13px] text-[#6b7280] leading-relaxed">
+                    Granular permissions and audit logs ensure only authorized
+                    users access sensitive information.
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start gap-4 p-4 rounded-xl border border-gray-100 bg-gray-50">
+                <div class="w-[52px] h-[52px] rounded-full shrink-0 flex items-center justify-center p-3" style="
+                      background: linear-gradient(
+                        180deg,
+                        #71b2cc 0%,
+                        #d4d145 100%
+                      );
+                    ">
+                  <img src="./src/assets/arcticons_secure-tan.png" loading="lazy" alt=""
+                    class="w-full h-full object-contain" />
+                </div>
+                <div>
+                  <h4 class="font-medium text-[#111827] mb-1 text-[15px] leading-tight">
+                    Secure Infrastructure
+                  </h4>
+                  <p class="text-[13px] text-[#6b7280] leading-relaxed">
+                    Your data is protected with encryption, secure storage,
+                    and isolated customer environments.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
   <section data-section id="integration" class="scroll-mt-5">
     <section class="py-12  overflow-hidden">
       <div class="max-w-[1400px] mx-auto">
@@ -2191,7 +2522,7 @@
             <div style="
     position: absolute; bottom: 0; left: 0; right: 0; z-index: 10;
     height: clamp(24px, 6vw, 40px);
-    background: linear-gradient(to top, #ffffff, transparent);
+    
     pointer-events: none;
   "></div>
 
@@ -2253,7 +2584,7 @@
               </div>
 
               <!-- ── Column 2: scrolls DOWN, pushed down ── -->
-              <div style="flex: 1.15; overflow: hidden; margin-top: clamp(36px, 10vw, 56px);">
+              <div style="flex: 1.15; overflow: hidden; ">
                 <div
                   style="animation: mobileIntDown 18s linear infinite; display: flex; flex-direction: column; gap: 4px;">
                   <div
@@ -2291,7 +2622,7 @@
               </div>
 
               <!-- ── Column 3: scrolls UP, slight offset ── -->
-              <div style="flex: 1; overflow: hidden; margin-top: clamp(18px, 5vw, 28px);">
+              <div style="flex: 1; overflow: hidden; ">
                 <div
                   style="animation: mobileIntUp 20s linear infinite; display: flex; flex-direction: column; gap: 4px;">
                   <div
@@ -2519,263 +2850,169 @@
 
 
 
-  <section data-section id="faq" class="scroll-mt-5">
-    <section class="w-full pt-16 md:py-24">
-      <div class="max-w-[1400px] mx-auto px-2 min-[250px]:px-6 md:px-12">
-        <div class="mb-10 text-center md:text-left">
-          <p class="anseru-section-tag">FAQs</p>
-          <h2 class="anseru-section-title text-[clamp(24px,7vw,40px)]">Frequently Asked Questions</h2>
+<section data-section id="faq" class="scroll-mt-5">
+  <section class="w-full pt-16 md:py-24 bg-[#f3f4f6]">
+    <div class="max-w-[1400px] mx-auto px-4 min-[250px]:px-6 md:px-12">
+
+      <!-- Header — always left -->
+      <div class="mb-10">
+        <p class="anseru-section-tag">FAQs</p>
+        <h2 class="anseru-section-title text-[clamp(24px,7vw,40px)]">Frequently Asked Questions</h2>
+      </div>
+
+      <!-- Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 items-start">
+
+        <!-- Left column -->
+        <div class="flex flex-col gap-3 items-start" id="faq-col-left">
+
+          <div class="faq-item flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden" style="width:fit-content; max-width:100%;">
+            <div class="faq-trigger flex items-center gap-2 py-3 px-4 cursor-pointer hover:bg-gray-50 transition-all select-none">
+              <img src="./src/assets/Frame (11).png" loading="lazy" alt="" style="width:14px;height:14px;flex-shrink:0;opacity:0.55;" />
+              <span style="font-size:clamp(12px,2.985vw,15px); color:#000; font-weight:400; line-height:1.3; white-space:nowrap;">What is Anseru?</span>
+              <span class="faq-icon" style="font-size:clamp(14px,3.5vw,18px); color:#000; font-weight:300; margin-left:8px; flex-shrink:0; line-height:1;">+</span>
+            </div>
+            <div class="faq-answer overflow-hidden" style="max-height:0; transition:max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98),opacity 0.3s; opacity:0; min-width:100%;">
+              <div style="padding:4px 16px 16px 34px;">
+                <p style="font-size:clamp(11px,2.74vw,14px); color:#6b7280; line-height:1.6; margin:0;">
+                  Anseru is a deal intelligence platform designed for enterprise sales teams. It helps companies respond to RFPs, security questionnaires, and compliance requests by turning past deal knowledge into structured, reusable intelligence.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden" style="width:fit-content; max-width:100%;">
+            <div class="faq-trigger flex items-center gap-2 py-3 px-4 cursor-pointer hover:bg-gray-50 transition-all select-none">
+              <img src="./src/assets/Frame (11).png" loading="lazy" alt="" style="width:14px;height:14px;flex-shrink:0;opacity:0.55;" />
+              <span style="font-size:clamp(12px,2.985vw,15px); color:#000; font-weight:400; line-height:1.3; white-space:nowrap;">How is Anseru different from traditional RFP tools?</span>
+              <span class="faq-icon" style="font-size:clamp(14px,3.5vw,18px); color:#000; font-weight:300; margin-left:8px; flex-shrink:0; line-height:1;">+</span>
+            </div>
+            <div class="faq-answer overflow-hidden" style="max-height:0; transition:max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98),opacity 0.3s; opacity:0; min-width:100%;">
+              <div style="padding:4px 16px 16px 34px;">
+                <p style="font-size:clamp(11px,2.74vw,14px); color:#6b7280; line-height:1.6; margin:0;">
+                  Most RFP tools focus on storing answers or generating responses. Anseru focuses on understanding the deal context — including industry, compliance requirements, and prior responses — so teams don't have to start from scratch each time.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden" style="width:fit-content; max-width:100%;">
+            <div class="faq-trigger flex items-center gap-2 py-3 px-4 cursor-pointer hover:bg-gray-50 transition-all select-none">
+              <img src="./src/assets/Frame (11).png" loading="lazy" alt="" style="width:14px;height:14px;flex-shrink:0;opacity:0.55;" />
+              <span style="font-size:clamp(12px,2.985vw,15px); color:#000; font-weight:400; line-height:1.3; white-space:nowrap;">Who is Anseru built for?</span>
+              <span class="faq-icon" style="font-size:clamp(14px,3.5vw,18px); color:#000; font-weight:300; margin-left:8px; flex-shrink:0; line-height:1;">+</span>
+            </div>
+            <div class="faq-answer overflow-hidden" style="max-height:0; transition:max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98),opacity 0.3s; opacity:0; min-width:100%;">
+              <div style="padding:4px 16px 16px 34px;">
+                <p style="font-size:clamp(11px,2.74vw,14px); color:#6b7280; line-height:1.6; margin:0;">
+                  Anseru is built for teams involved in complex enterprise deals, including solutions engineering, security and compliance, and revenue operations. These teams typically collaborate to respond to procurement and due diligence requests.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden" style="width:fit-content; max-width:100%;">
+            <div class="faq-trigger flex items-center gap-2 py-3 px-4 cursor-pointer hover:bg-gray-50 transition-all select-none">
+              <img src="./src/assets/Frame (11).png" loading="lazy" alt="" style="width:14px;height:14px;flex-shrink:0;opacity:0.55;" />
+              <span style="font-size:clamp(12px,2.985vw,15px); color:#000; font-weight:400; line-height:1.3; white-space:nowrap;">How quickly can we start seeing value?</span>
+              <span class="faq-icon" style="font-size:clamp(14px,3.5vw,18px); color:#000; font-weight:300; margin-left:8px; flex-shrink:0; line-height:1;">+</span>
+            </div>
+            <div class="faq-answer overflow-hidden" style="max-height:0; transition:max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98),opacity 0.3s; opacity:0; min-width:100%;">
+              <div style="padding:4px 16px 16px 34px;">
+                <p style="font-size:clamp(11px,2.74vw,14px); color:#6b7280; line-height:1.6; margin:0;">
+                  Teams typically see value within their first few deals. As more RFPs or security questionnaires are processed, Anseru begins reusing existing knowledge and reduces manual effort over time.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden" style="width:fit-content; max-width:100%;">
+            <div class="faq-trigger flex items-center gap-2 py-3 px-4 cursor-pointer hover:bg-gray-50 transition-all select-none">
+              <img src="./src/assets/Frame (11).png" loading="lazy" alt="" style="width:14px;height:14px;flex-shrink:0;opacity:0.55;" />
+              <span style="font-size:clamp(12px,2.985vw,15px); color:#000; font-weight:400; line-height:1.3; white-space:nowrap;">How accurate are the responses generated by Anseru?</span>
+              <span class="faq-icon" style="font-size:clamp(14px,3.5vw,18px); color:#000; font-weight:300; margin-left:8px; flex-shrink:0; line-height:1;">+</span>
+            </div>
+            <div class="faq-answer overflow-hidden" style="max-height:0; transition:max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98),opacity 0.3s; opacity:0; min-width:100%;">
+              <div style="padding:4px 16px 16px 34px;">
+                <p style="font-size:clamp(11px,2.74vw,14px); color:#6b7280; line-height:1.6; margin:0;">
+                  Anseru combines AI-generated responses with validation layers such as source references, review workflows, and internal standards. This ensures responses are reliable, auditable, and aligned with company guidelines.
+                </p>
+              </div>
+            </div>
+          </div>
+
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <div class="flex flex-col gap-3" id="faq-col-left">
-            <div class="faq-item flex flex-col border border-gray-100 bg-white rounded-sm overflow-hidden">
-              <div
-                class="faq-trigger flex items-center justify-between py-4 px-4 cursor-pointer hover:bg-gray-100 transition-all select-none">
-                <div class="flex items-center gap-3">
-                  <img src="./src/assets/Frame (11).png" loading="lazy" alt="" /><span
-                    class="text-[15px] text-black font-normal">What is Anseru?</span>
-                </div>
-                <span class="faq-icon text-black text-lg leading-none ml-4 shrink-0 font-light">+</span>
-              </div>
-              <div class="faq-answer overflow-hidden" style="
-                    max-height: 0;
-                    transition:
-                      max-height 0.3s cubic-bezier(0.04, 0.62, 0.23, 0.98),
-                      opacity 0.3s;
-                    opacity: 0;
-                  ">
-                <div class="px-4 pb-4 pt-1 ml-7 mr-6">
-                  <p class="text-gray-600 text-sm leading-relaxed">
-                    Anseru is a deal intelligence platform designed for
-                    enterprise sales teams. It helps companies respond to
-                    RFPs, security questionnaires, and compliance requests by
-                    turning past deal knowledge into structured, reusable
-                    intelligence.
-                  </p>
-                </div>
-              </div>
+
+        <!-- Right column -->
+        <div class="flex flex-col gap-3 items-start" id="faq-col-right">
+
+          <div class="faq-item flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden" style="width:fit-content; max-width:100%;">
+            <div class="faq-trigger flex items-center gap-2 py-3 px-4 cursor-pointer hover:bg-gray-50 transition-all select-none">
+              <img src="./src/assets/Frame (11).png" loading="lazy" alt="" style="width:14px;height:14px;flex-shrink:0;opacity:0.55;" />
+              <span style="font-size:clamp(12px,2.985vw,15px); color:#000; font-weight:400; line-height:1.3; white-space:nowrap;">How does Anseru improve over time?</span>
+              <span class="faq-icon" style="font-size:clamp(14px,3.5vw,18px); color:#000; font-weight:300; margin-left:8px; flex-shrink:0; line-height:1;">+</span>
             </div>
-            <div class="faq-item flex flex-col border border-gray-100 bg-white rounded-sm overflow-hidden">
-              <div
-                class="faq-trigger flex items-center justify-between py-4 px-4 cursor-pointer hover:bg-gray-100 transition-all select-none">
-                <div class="flex items-center gap-3">
-                  <img src="./src/assets/Frame (11).png" loading="lazy" alt="" /><span
-                    class="text-[15px] text-black font-normal">How is Anseru different from traditional RFP
-                    tools?</span>
-                </div>
-                <span class="faq-icon text-black text-lg leading-none ml-4 shrink-0 font-light">+</span>
-              </div>
-              <div class="faq-answer overflow-hidden" style="
-                    max-height: 0;
-                    transition:
-                      max-height 0.3s cubic-bezier(0.04, 0.62, 0.23, 0.98),
-                      opacity 0.3s;
-                    opacity: 0;
-                  ">
-                <div class="px-4 pb-4 pt-1 ml-7 mr-6">
-                  <p class="text-gray-600 text-sm leading-relaxed">
-                    Most RFP tools focus on storing answers or generating
-                    responses. Anseru focuses on understanding the deal
-                    context — including industry, compliance requirements, and
-                    prior responses — so teams don't have to start from
-                    scratch each time.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="faq-item flex flex-col border border-gray-100 bg-white rounded-sm overflow-hidden">
-              <div
-                class="faq-trigger flex items-center justify-between py-4 px-4 cursor-pointer hover:bg-gray-100 transition-all select-none">
-                <div class="flex items-center gap-3">
-                  <img src="./src/assets/Frame (11).png" loading="lazy" alt="" /><span
-                    class="text-[15px] text-black font-normal">Who is Anseru built for?</span>
-                </div>
-                <span class="faq-icon text-black text-lg leading-none ml-4 shrink-0 font-light">+</span>
-              </div>
-              <div class="faq-answer overflow-hidden" style="
-                    max-height: 0;
-                    transition:
-                      max-height 0.3s cubic-bezier(0.04, 0.62, 0.23, 0.98),
-                      opacity 0.3s;
-                    opacity: 0;
-                  ">
-                <div class="px-4 pb-4 pt-1 ml-7 mr-6">
-                  <p class="text-gray-600 text-sm leading-relaxed">
-                    Anseru is built for teams involved in complex enterprise
-                    deals, including solutions engineering, security and
-                    compliance, and revenue operations. These teams typically
-                    collaborate to respond to procurement and due diligence
-                    requests.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="faq-item flex flex-col border border-gray-100 bg-white rounded-sm overflow-hidden">
-              <div
-                class="faq-trigger flex items-center justify-between py-4 px-4 cursor-pointer hover:bg-gray-100 transition-all select-none">
-                <div class="flex items-center gap-3">
-                  <img src="./src/assets/Frame (11).png" loading="lazy" alt="" /><span
-                    class="text-[15px] text-black font-normal">How quickly can we start seeing value?</span>
-                </div>
-                <span class="faq-icon text-black text-lg leading-none ml-4 shrink-0 font-light">+</span>
-              </div>
-              <div class="faq-answer overflow-hidden" style="
-                    max-height: 0;
-                    transition:
-                      max-height 0.3s cubic-bezier(0.04, 0.62, 0.23, 0.98),
-                      opacity 0.3s;
-                    opacity: 0;
-                  ">
-                <div class="px-4 pb-4 pt-1 ml-7 mr-6">
-                  <p class="text-gray-600 text-sm leading-relaxed">
-                    Teams typically see value within their first few deals. As
-                    more RFPs or security questionnaires are processed, Anseru
-                    begins reusing existing knowledge and reduces manual
-                    effort over time.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="faq-item flex flex-col border border-gray-100 bg-white rounded-sm overflow-hidden">
-              <div
-                class="faq-trigger flex items-center justify-between py-4 px-4 cursor-pointer hover:bg-gray-100 transition-all select-none">
-                <div class="flex items-center gap-3">
-                  <img src="./src/assets/Frame (11).png" loading="lazy" alt="" /><span
-                    class="text-[15px] text-black font-normal">How accurate are the responses generated by
-                    Anseru?</span>
-                </div>
-                <span class="faq-icon text-black text-lg leading-none ml-4 shrink-0 font-light">+</span>
-              </div>
-              <div class="faq-answer overflow-hidden" style="
-                    max-height: 0;
-                    transition:
-                      max-height 0.3s cubic-bezier(0.04, 0.62, 0.23, 0.98),
-                      opacity 0.3s;
-                    opacity: 0;
-                  ">
-                <div class="px-4 pb-4 pt-1 ml-7 mr-6">
-                  <p class="text-gray-600 text-sm leading-relaxed">
-                    Anseru combines AI-generated responses with validation
-                    layers such as source references, review workflows, and
-                    internal standards. This ensures responses are reliable,
-                    auditable, and aligned with company guidelines.
-                  </p>
-                </div>
+            <div class="faq-answer overflow-hidden" style="max-height:0; transition:max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98),opacity 0.3s; opacity:0; min-width:100%;">
+              <div style="padding:4px 16px 16px 34px;">
+                <p style="font-size:clamp(11px,2.74vw,14px); color:#6b7280; line-height:1.6; margin:0;">
+                  Anseru learns from every interaction, edit, approval, and past response captured across deals. This allows the system to continuously improve accuracy and relevance over time.
+                </p>
               </div>
             </div>
           </div>
-          <div class="flex flex-col gap-3" id="faq-col-right">
-            <div class="faq-item flex flex-col border border-gray-100 bg-white rounded-sm overflow-hidden">
-              <div
-                class="faq-trigger flex items-center justify-between py-4 px-4 cursor-pointer hover:bg-gray-100 transition-all select-none">
-                <div class="flex items-center gap-3">
-                  <img src="./src/assets/Frame (11).png" loading="lazy" alt="" /><span
-                    class="text-[15px] text-black font-normal">How does Anseru improve over time?</span>
-                </div>
-                <span class="faq-icon text-black text-lg leading-none ml-4 shrink-0 font-light">+</span>
-              </div>
-              <div class="faq-answer overflow-hidden" style="
-                    max-height: 0;
-                    transition:
-                      max-height 0.3s cubic-bezier(0.04, 0.62, 0.23, 0.98),
-                      opacity 0.3s;
-                    opacity: 0;
-                  ">
-                <div class="px-4 pb-4 pt-1 ml-7 mr-6">
-                  <p class="text-gray-600 text-sm leading-relaxed">
-                    Anseru learns from every interaction, edit, approval, and
-                    past response captured across deals. This allows the
-                    system to continuously improve accuracy and relevance over
-                    time.
-                  </p>
-                </div>
-              </div>
+
+          <div class="faq-item flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden" style="width:fit-content; max-width:100%;">
+            <div class="faq-trigger flex items-center gap-2 py-3 px-4 cursor-pointer hover:bg-gray-50 transition-all select-none">
+              <img src="./src/assets/Frame (11).png" loading="lazy" alt="" style="width:14px;height:14px;flex-shrink:0;opacity:0.55;" />
+              <span style="font-size:clamp(12px,2.985vw,15px); color:#000; font-weight:400; line-height:1.3; white-space:nowrap;">How does Anseru integrate with our existing tools?</span>
+              <span class="faq-icon" style="font-size:clamp(14px,3.5vw,18px); color:#000; font-weight:300; margin-left:8px; flex-shrink:0; line-height:1;">+</span>
             </div>
-            <div class="faq-item flex flex-col border border-gray-100 bg-white rounded-sm overflow-hidden">
-              <div
-                class="faq-trigger flex items-center justify-between py-4 px-4 cursor-pointer hover:bg-gray-100 transition-all select-none">
-                <div class="flex items-center gap-3">
-                  <img src="./src/assets/Frame (11).png" loading="lazy" alt="" /><span
-                    class="text-[15px] text-black font-normal">How does Anseru integrate with our existing tools?</span>
-                </div>
-                <span class="faq-icon text-black text-lg leading-none ml-4 shrink-0 font-light">+</span>
-              </div>
-              <div class="faq-answer overflow-hidden" style="
-                    max-height: 0;
-                    transition:
-                      max-height 0.3s cubic-bezier(0.04, 0.62, 0.23, 0.98),
-                      opacity 0.3s;
-                    opacity: 0;
-                  ">
-                <div class="px-4 pb-4 pt-1 ml-7 mr-6">
-                  <p class="text-gray-600 text-sm leading-relaxed">
-                    Anseru is designed to work alongside your existing
-                    systems, including CRM platforms, document repositories,
-                    and collaboration tools. It pulls in relevant knowledge
-                    while allowing teams to continue working within familiar
-                    workflows.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="faq-item flex flex-col border border-gray-100 bg-white rounded-sm overflow-hidden">
-              <div
-                class="faq-trigger flex items-center justify-between py-4 px-4 cursor-pointer hover:bg-gray-100 transition-all select-none">
-                <div class="flex items-center gap-3">
-                  <img src="./src/assets/Frame (11).png" loading="lazy" alt="" /><span
-                    class="text-[15px] text-black font-normal">How do you ensure our data is secure?</span>
-                </div>
-                <span class="faq-icon text-black text-lg leading-none ml-4 shrink-0 font-light">+</span>
-              </div>
-              <div class="faq-answer overflow-hidden" style="
-                    max-height: 0;
-                    transition:
-                      max-height 0.3s cubic-bezier(0.04, 0.62, 0.23, 0.98),
-                      opacity 0.3s;
-                    opacity: 0;
-                  ">
-                <div class="px-4 pb-4 pt-1 ml-7 mr-6">
-                  <p class="text-gray-600 text-sm leading-relaxed">
-                    Anseru is built with enterprise-grade security in mind,
-                    including strict data isolation, access controls, and
-                    auditability. Customer data is handled within secure
-                    environments and protected according to compliance
-                    standards.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="faq-item flex flex-col border border-gray-100 bg-white rounded-sm overflow-hidden">
-              <div
-                class="faq-trigger flex items-center justify-between py-4 px-4 cursor-pointer hover:bg-gray-100 transition-all select-none">
-                <div class="flex items-center gap-3">
-                  <img src="./src/assets/Frame (11).png" loading="lazy" alt="" /><span
-                    class="text-[15px] text-black font-normal">Do you use our data to train shared AI models?</span>
-                </div>
-                <span class="faq-icon text-black text-lg leading-none ml-4 shrink-0 font-light">+</span>
-              </div>
-              <div class="faq-answer overflow-hidden" style="
-                    max-height: 0;
-                    transition:
-                      max-height 0.3s cubic-bezier(0.04, 0.62, 0.23, 0.98),
-                      opacity 0.3s;
-                    opacity: 0;
-                  ">
-                <div class="px-4 pb-4 pt-1 ml-7 mr-6">
-                  <p class="text-gray-600 text-sm leading-relaxed">
-                    No. Customer data is not used to train shared or public
-                    models. Each organization's data remains isolated and is
-                    used only to improve its own responses and intelligence
-                    within the platform.
-                  </p>
-                </div>
+            <div class="faq-answer overflow-hidden" style="max-height:0; transition:max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98),opacity 0.3s; opacity:0; min-width:100%;">
+              <div style="padding:4px 16px 16px 34px;">
+                <p style="font-size:clamp(11px,2.74vw,14px); color:#6b7280; line-height:1.6; margin:0;">
+                  Anseru is designed to work alongside your existing systems, including CRM platforms, document repositories, and collaboration tools. It pulls in relevant knowledge while allowing teams to continue working within familiar workflows.
+                </p>
               </div>
             </div>
           </div>
+
+          <div class="faq-item flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden" style="width:fit-content; max-width:100%;">
+            <div class="faq-trigger flex items-center gap-2 py-3 px-4 cursor-pointer hover:bg-gray-50 transition-all select-none">
+              <img src="./src/assets/Frame (11).png" loading="lazy" alt="" style="width:14px;height:14px;flex-shrink:0;opacity:0.55;" />
+              <span style="font-size:clamp(12px,2.985vw,15px); color:#000; font-weight:400; line-height:1.3; white-space:nowrap;">How do you ensure our data is secure?</span>
+              <span class="faq-icon" style="font-size:clamp(14px,3.5vw,18px); color:#000; font-weight:300; margin-left:8px; flex-shrink:0; line-height:1;">+</span>
+            </div>
+            <div class="faq-answer overflow-hidden" style="max-height:0; transition:max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98),opacity 0.3s; opacity:0; min-width:100%;">
+              <div style="padding:4px 16px 16px 34px;">
+                <p style="font-size:clamp(11px,2.74vw,14px); color:#6b7280; line-height:1.6; margin:0;">
+                  Anseru is built with enterprise-grade security in mind, including strict data isolation, access controls, and auditability. Customer data is handled within secure environments and protected according to compliance standards.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden" style="width:fit-content; max-width:100%;">
+            <div class="faq-trigger flex items-center gap-2 py-3 px-4 cursor-pointer hover:bg-gray-50 transition-all select-none">
+              <img src="./src/assets/Frame (11).png" loading="lazy" alt="" style="width:14px;height:14px;flex-shrink:0;opacity:0.55;" />
+              <span style="font-size:clamp(12px,2.985vw,15px); color:#000; font-weight:400; line-height:1.3; white-space:nowrap;">Do you use our data to train shared AI models?</span>
+              <span class="faq-icon" style="font-size:clamp(14px,3.5vw,18px); color:#000; font-weight:300; margin-left:8px; flex-shrink:0; line-height:1;">+</span>
+            </div>
+            <div class="faq-answer overflow-hidden" style="max-height:0; transition:max-height 0.3s cubic-bezier(0.04,0.62,0.23,0.98),opacity 0.3s; opacity:0; min-width:100%;">
+              <div style="padding:4px 16px 16px 34px;">
+                <p style="font-size:clamp(11px,2.74vw,14px); color:#6b7280; line-height:1.6; margin:0;">
+                  No. Customer data is not used to train shared or public models. Each organization's data remains isolated and is used only to improve its own responses and intelligence within the platform.
+                </p>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
-    </section>
+
+      <div class="pb-16 md:pb-24"></div>
+    </div>
   </section>
+</section>
 
   <div data-section class="w-full flex flex-col font-sans">
 
