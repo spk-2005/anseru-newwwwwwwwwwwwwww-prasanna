@@ -488,7 +488,8 @@ section[data-section] {
 }
 
 .wf-title {
-  text-align: left !important;
+  text-align: center !important;
+  width: 100%;
   font-size: clamp(18px, 5.5vw, 28px);
   font-weight: 400; /* Removed bold */
   color: #000;
