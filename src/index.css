@@ -455,6 +455,12 @@ section[data-section] {
   overflow: hidden;
 }
 
+@media (min-width: 1024px) {
+  .wf-wrap {
+    display: none !important;
+  }
+}
+
 .wf-tag {
   font-size: 12px;
   text-align: left;
@@ -481,7 +487,7 @@ section[data-section] {
 }
 
 .wf-title {
-  text-align: center;
+  text-align: left;
   font-size: clamp(18px, 5.5vw, 28px);
   font-weight: 700;
   color: #000;
@@ -520,7 +526,7 @@ section[data-section] {
   gap: 16px;
   position: relative;
   z-index: 2;
-  opacity: 0.2;
+  opacity: 0.4;
   transition: opacity 0.5s ease;
   min-height: 48px; /* Increased to accommodate 40px circles */
 }
@@ -542,45 +548,22 @@ section[data-section] {
 
 .step-node-col {
   position: relative;
-  width: 48px;
+  width: 49.5px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   align-self: stretch;
-  /* Spans full row height */
 }
 
-/* Localized Vertical Backbone Segment (Between Rings) */
-.step-node-col::before {
-  content: "";
+.workflow-backbone {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
+  left: 24px;
   width: 1.5px;
-  background-color: #D9D9D9;
+  background: #D9D9D9;
   transform: translateX(-50%);
   z-index: 0;
-}
-
-/* Specific line trimming for first and last rows to align with outer edges of icons */
-.step-row:first-child .step-node-col::before {
-  background: linear-gradient(to bottom, 
-      transparent 0%, 
-      transparent calc(50% + 20px), 
-      #D9D9D9 calc(50% + 20px), 
-      #D9D9D9 100%
-  );
-}
-
-.step-row:last-child .step-node-col::before {
-  background: linear-gradient(to bottom, 
-      #D9D9D9 0%, 
-      #D9D9D9 calc(50% - 20px), 
-      transparent calc(50% - 20px), 
-      transparent 100%
-  );
+  pointer-events: none;
 }
 
 .node-wrapper {
@@ -592,6 +575,8 @@ section[data-section] {
   justify-content: center;
   z-index: 5;
   flex-shrink: 0;
+  background: white; /* Opaque white circle to cut the backbone */
+  border-radius: 50%;
 }
 
 .half-ring {
@@ -665,14 +650,27 @@ section[data-section] {
   width: 40px;
 }
 
+.connector-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+  border: 1.2px solid #D9D9D9; 
+  border-radius: 50%;
+  background: white; /* Cuts backbone inside rings too */
+  z-index: -1;
+}
+
 .connector-symbol {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #d1d5db;
-  opacity: 0.5;
+  color: #D9D9D9;
+  opacity: 0.6;
 }
 
 .symbol-left {

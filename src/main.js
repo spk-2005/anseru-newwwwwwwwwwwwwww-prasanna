@@ -541,8 +541,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initMobileCarousel();
   initDesktopCarousel();
   initDesktopTwoAgents();
-  buildRFPWorkflow();
-  initWorkflowHeaderAnimations();
   initFAQ();
   initFeatures();
 });
@@ -626,7 +624,7 @@ import riAiIcon from "./assets/ri_ai.png";
           </div>
           ${i < STEPS.length - 1 ? `
           <div class="connector-symbols">
-            <div class="connector-ring"></div>
+            
             <div class="connector-symbol symbol-left">
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="7 11 12 6 17 11"></polyline>
@@ -654,10 +652,18 @@ import riAiIcon from "./assets/ri_ai.png";
     const backbone = stepsList.querySelector(".workflow-backbone");
     const allWrappers = stepsList.querySelectorAll(".node-wrapper");
     if (backbone && allWrappers.length > 1) {
-      const first = allWrappers[0];
-      const last = allWrappers[allWrappers.length - 1];
-      const startY = first.offsetTop + first.offsetHeight / 2;
-      const endY = last.offsetTop + last.offsetHeight / 2;
+      const getRelativeCenter = (el) => {
+        let top = 0;
+        let curr = el;
+        while (curr && curr !== stepsList) {
+          top += curr.offsetTop;
+          curr = curr.offsetParent;
+        }
+        return top + el.offsetHeight / 2;
+      };
+
+      const startY = getRelativeCenter(allWrappers[0]);
+      const endY = getRelativeCenter(allWrappers[allWrappers.length - 1]);
       backbone.style.top = `${startY}px`;
       backbone.style.height = `${endY - startY}px`;
     }
@@ -665,65 +671,96 @@ import riAiIcon from "./assets/ri_ai.png";
 
     const rows = gsap.utils.toArray(".step-row");
 
-    // Create GSAP Timeline for pinning and sequential animation
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: section,
-        start: "top top",
-        end: "+=2000", // Adjusted scroll length
-        pin: true,
-        scrub: 0.5, // Smoother scrub
-        anticipatePin: 1,
-      },
-    });
+    // Create GSAP Timeline for pinning and sequential animation (on mobile only)
+    let mm = gsap.matchMedia();
+    mm.add("(max-width: 1023px)", () => {
+      // Set initial state for all rows to ensure they start at 0.4 opacity
+      gsap.set(rows, { opacity: 0.4 });
 
-    // Animate each row's opacity and the active state
-    rows.forEach((row, i) => {
-      const circle = row.querySelector(".node-circle");
-      const ring = row.querySelector(".half-ring");
-      const icon = circle.querySelector("img");
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top top", // Stick at the top of the screen
+          end: "+=2500", // Slightly longer for 9 steps
+          pin: true,
+          scrub: 1, // Smoother scrub
+          anticipatePin: 1,
+        },
+      });
 
-      const startTime = i * 4;
+      // Animate each row's opacity and the active state
+      rows.forEach((row, i) => {
+        const circle = row.querySelector(".node-circle");
+        const ring = row.querySelector(".half-ring");
+        const icon = circle.querySelector("img");
 
-      // Opacity of the whole row
-      tl.to(row, {
-        opacity: 1,
-        duration: 2,
-      }, startTime);
+        const startTime = i * 4;
 
-      // Circle gradient and scale
-      tl.to(circle, {
-        background: "linear-gradient(135deg, #FF3B8D 0%, #4D79FF 100%)",
-        scale: 1.1,
-        boxShadow: "0 4px 12px rgba(77, 121, 255, 0.3)",
-        duration: 2,
-      }, startTime);
-
-      // Ring border color
-      if (ring) {
-        tl.to(ring, {
-          borderColor: "#e5e7eb",
+        // Opacity of the whole row - animation should start from 0.4 to 1
+        tl.to(row, {
+          opacity: 1,
           duration: 2,
         }, startTime);
-      }
 
-      // Icon inversion
-      tl.to(icon, {
-        filter: "brightness(0) invert(1)",
-        opacity: 1,
-        duration: 2,
-      }, startTime);
+        // Circle gradient and scale
+        tl.to(circle, {
+          background: "linear-gradient(135deg, #FF3B8D 0%, #4D79FF 100%)",
+          scale: 1.1,
+          boxShadow: "0 4px 12px rgba(77, 121, 255, 0.3)",
+          duration: 2,
+        }, startTime);
+
+        // Ring border color
+        if (ring) {
+          tl.to(ring, {
+            borderColor: "#e5e7eb",
+            duration: 2,
+          }, startTime);
+        }
+
+        // Icon inversion
+        tl.to(icon, {
+          filter: "brightness(0) invert(1)",
+          opacity: 1,
+          duration: 2,
+        }, startTime);
+
+        // After this row is done, if not the last one, we can dim it slightly back or keep it bright.
+        // The user didn't specify, but keeping it bright is usually better for reading the whole timeline.
+      });
+
+      // Add a small buffer at the end
+      tl.to({}, { duration: 4 });
     });
-
-
-    // Add some padding at the end
-    tl.to({}, { duration: 2 });
   }
 
-document.addEventListener("DOMContentLoaded", () => {
-  initWorkflow();
-});
-window.addEventListener("resize", () => {
-  initWorkflow();
-});
+  // Use a single DOMContentLoaded listener for the whole file if possible, or just this IIFE
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initWorkflow);
+  } else {
+    initWorkflow();
+  }
+
+  window.addEventListener("resize", () => {
+    // Re-check backbone position on resize
+    const stepsList = document.getElementById("steps-list");
+    const backbone = stepsList?.querySelector(".workflow-backbone");
+    const allWrappers = stepsList?.querySelectorAll(".node-wrapper");
+    if (backbone && allWrappers && allWrappers.length > 1) {
+      const getRelativeCenter = (el) => {
+        let top = 0;
+        let curr = el;
+        while (curr && curr !== stepsList) {
+          top += curr.offsetTop;
+          curr = curr.offsetParent;
+        }
+        return top + el.offsetHeight / 2;
+      };
+      const startY = getRelativeCenter(allWrappers[0]);
+      const endY = getRelativeCenter(allWrappers[allWrappers.length - 1]);
+      backbone.style.top = `${startY}px`;
+      backbone.style.height = `${endY - startY}px`;
+    }
+  });
+
 })();
