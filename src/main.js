@@ -30,9 +30,8 @@ function updateCarouselIndicators(activeSlide) {
     if (!container) return;
     container.querySelectorAll(".carousel-ind-btn").forEach((btn) => {
       const isActive = Number(btn.dataset.idx) === activeSlide;
-      btn.className = `carousel-ind-btn text-[13px] sm:text-[15px] font-medium transition-colors cursor-pointer px-3 sm:px-4 py-2 rounded-full ${
-        isActive ? "text-black bg-gray-100" : "text-gray-400 hover:text-gray-600"
-      }`;
+      btn.className = `carousel-ind-btn text-[13px] sm:text-[15px] font-medium transition-colors cursor-pointer px-3 sm:px-4 py-2 rounded-full ${isActive ? "text-black bg-gray-100" : "text-gray-400 hover:text-gray-600"
+        }`;
     });
   });
 }
@@ -45,9 +44,8 @@ function updateMobileDots(activeSlide) {
   if (!container) return;
   container.querySelectorAll(".carousel-dot").forEach((dot) => {
     const isActive = Number(dot.dataset.dot) === activeSlide;
-    dot.className = `carousel-dot rounded-full transition-all duration-300 ${
-      isActive ? "w-5 h-2 bg-gray-700" : "w-2 h-2 bg-gray-300"
-    }`;
+    dot.className = `carousel-dot rounded-full transition-all duration-300 ${isActive ? "w-5 h-2 bg-gray-700" : "w-2 h-2 bg-gray-300"
+      }`;
   });
 }
 
@@ -239,418 +237,78 @@ function initDesktopTwoAgents() {
   });
 }
 
-// ── RFP Workflow SVG ─────────────────────────────────────────────────────────
-const rfpNodes = [
-  { title: 'Proposal Architecture',    angle: 0,   tx: -115, ty: -115, g1: '#6DA8EF', g2: '#F3E21F' },
-  { title: 'First Winnable Draft',     angle: 40,  tx: 50,   ty: -90,  g1: '#320a6a', g2: '#5713d0' },
-  { title: 'SME Collaboration',        angle: 80,  tx: 58,   ty: -30,  g1: '#201CAE', g2: '#6AA4EE' },
-  { title: 'Final Proposal',           angle: 120, tx: 58,   ty: -10,  g1: '#fe3f49', g2: '#49abf5' },
-  { title: 'Win–Loss Capture',         angle: 160, tx: 50,   ty: 32,   g1: '#6DA8EF', g2: '#F3E21F' },
-  { title: 'Smarter Next Deal',        angle: 200, tx: -115, ty: 68,   g1: '#fe3f49', g2: '#49abf5' },
-  { title: 'RFP Decomposition',        angle: 240, tx: -310, ty: -5,   g1: '#367AE6', g2: '#CE5575' },
-  { title: 'Deal Qualification',       angle: 280, tx: -275, ty: -38,  g1: '#201CAE', g2: '#6AA4EE' },
-  { title: 'Requirement Intelligence', angle: 320, tx: -255, ty: -92,  g1: '#367AE6', g2: '#CE5575' },
-];
-const CX = 550, CY = 530, R = 280, NR = 22, NUM_TICKS = 400;
-
-function polar(cx, cy, r, deg) {
-  const rad = (deg - 90) * Math.PI / 180;
-  return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
-}
-
-function buildRFPWorkflow() {
-  const container = document.getElementById('rfp-workflow-svg-container');
-  if (!container) return;
-
-  const ns = 'http://www.w3.org/2000/svg';
-  const CX = 550, CY = 530;
-
-  function polar(cx, cy, r, deg) {
-    const rad = (deg - 90) * Math.PI / 180;
-    return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
-  }
-
-function buildSVG() {
-  container.innerHTML = '';
-
-  const containerW = container.offsetWidth || window.innerWidth;
-
-  const isXS = containerW < 400;
-  const isSM = containerW < 600;
-  const isMD = containerW < 900;
-
-  const titleFontSize = isXS ? 18 : isSM ? 21 : isMD ? 24 : 29;
-  const lineHeight    = titleFontSize * 1.28;
-  const CHAR_LIMIT    = 16;
-  const rScale        = R / 280;
-
-  const centerFontSize1 = isXS ? 30 : isSM ? 36 : isMD ? 42 : 48;
-  const centerFontSize2 = isXS ? 34 : isSM ? 42 : isMD ? 48 : 56;
-
-  // ── KEY FIX: narrow viewBox on mobile so diagram fills width ──
-  // Instead of always using 1100-wide viewBox (which makes the circle tiny),
-  // we tighten the viewBox around CX=550, CY=530 based on R
-  // Find this block inside buildSVG() and update pad values:
-    
-const pad = isXS ? 280 : isSM ? 300 : 300;
-const vbX1 = CX - R - pad;
-const vbY1 = CY - R - pad;
-const vbW  = (R + pad) * 2;
-const vbH  = (R + pad) * 2;
-
-  const svg = document.createElementNS(ns, 'svg');
-  svg.setAttribute('viewBox', `${vbX1} ${vbY1} ${vbW} ${vbH}`);
-  svg.setAttribute('width', '100%');
-  svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-  svg.style.cssText = 'display:block;width:100%;background:white;';
-
-  // ── defs ──
-  const defs = document.createElementNS(ns, 'defs');
-
-  rfpNodes.forEach((n, i) => {
-    const lg = document.createElementNS(ns, 'linearGradient');
-    lg.setAttribute('id', `rfpg${i}`);
-    lg.setAttribute('x1', '0%'); lg.setAttribute('y1', '0%');
-    lg.setAttribute('x2', '0%'); lg.setAttribute('y2', '100%');
-    ['0%', '100%'].forEach((offset, si) => {
-      const s = document.createElementNS(ns, 'stop');
-      s.setAttribute('offset', offset);
-      s.setAttribute('stop-color', si === 0 ? n.g1 : n.g2);
-      lg.appendChild(s);
-    });
-    defs.appendChild(lg);
-  });
-
-  const textGrad = document.createElementNS(ns, 'linearGradient');
-  textGrad.setAttribute('id', 'centerTextGrad');
-  textGrad.setAttribute('x1', '0%'); textGrad.setAttribute('y1', '0%');
-  textGrad.setAttribute('x2', '100%'); textGrad.setAttribute('y2', '0%');
-  [['0%', '#1C32E6'], ['50%', '#4A6CF7'], ['100%', '#1C32E6']].forEach(([offset, color]) => {
-    const s = document.createElementNS(ns, 'stop');
-    s.setAttribute('offset', offset);
-    s.setAttribute('stop-color', color);
-    textGrad.appendChild(s);
-  });
-  defs.appendChild(textGrad);
-
-  const clipCircle = document.createElementNS(ns, 'clipPath');
-  clipCircle.setAttribute('id', 'centerClip');
-  const clipC = document.createElementNS(ns, 'circle');
-  clipC.setAttribute('cx', CX); clipC.setAttribute('cy', CY);
-  clipC.setAttribute('r', String(R - 8));
-  clipCircle.appendChild(clipC);
-  defs.appendChild(clipCircle);
-
-  const iconGlowGrad = document.createElementNS(ns, 'radialGradient');
-  iconGlowGrad.setAttribute('id', 'iconGlowGrad');
-  iconGlowGrad.setAttribute('cx', '50%'); iconGlowGrad.setAttribute('cy', '50%');
-  iconGlowGrad.setAttribute('r', '50%');
-  [['0%','#2C48DB','0.22'],['45%','#1C32E6','0.10'],['100%','#1C32E6','0.0']].forEach(([o,c,op]) => {
-    const s = document.createElementNS(ns, 'stop');
-    s.setAttribute('offset', o); s.setAttribute('stop-color', c); s.setAttribute('stop-opacity', op);
-    iconGlowGrad.appendChild(s);
-  });
-  defs.appendChild(iconGlowGrad);
-
-  ['arrow-outer', 'arrow-inner'].forEach((id, i) => {
-    const m = document.createElementNS(ns, 'marker');
-    m.setAttribute('id', id);
-    m.setAttribute('viewBox', '0 0 10 10');
-    m.setAttribute('refX', '8'); m.setAttribute('refY', '5');
-    m.setAttribute('markerWidth', '6'); m.setAttribute('markerHeight', '6');
-    m.setAttribute('orient', 'auto-start-reverse');
-    const p = document.createElementNS(ns, 'path');
-    p.setAttribute('d', 'M 0 1 L 10 5 L 0 9 z');
-    p.setAttribute('fill', i === 0 ? '#4f46e5' : '#8b5cf6');
-    m.appendChild(p);
-    defs.appendChild(m);
-  });
-
-  svg.appendChild(defs);
-
-  // ── Tick ring ──
-  const tickG = document.createElementNS(ns, 'g');
-  tickG.setAttribute('opacity', '0.8');
-  for (let i = 0; i < NUM_TICKS; i++) {
-    const a = (i * 360) / NUM_TICKS;
-    const s = polar(CX, CY, R - 2, a), e = polar(CX, CY, R + 2, a);
-    const line = document.createElementNS(ns, 'line');
-    line.setAttribute('x1', s.x); line.setAttribute('y1', s.y);
-    line.setAttribute('x2', e.x); line.setAttribute('y2', e.y);
-    line.setAttribute('stroke', '#6b7280');
-    line.setAttribute('stroke-width', '1');
-    line.setAttribute('stroke-linecap', 'round');
-    tickG.appendChild(line);
-  }
-  svg.appendChild(tickG);
-
-  // ── Arc feedback arrows ──
-  const outerS = polar(CX, CY, R + 30, 206), outerE = polar(CX, CY, R + 30, 234);
-  const innerS = polar(CX, CY, R - 30, 234), innerE = polar(CX, CY, R - 30, 206);
-
-  const pa1 = document.createElementNS(ns, 'path');
-  pa1.setAttribute('d', `M ${outerS.x} ${outerS.y} A ${R+30} ${R+30} 0 0 1 ${outerE.x} ${outerE.y}`);
-  pa1.setAttribute('fill', 'none'); pa1.setAttribute('stroke', '#4f46e5');
-  pa1.setAttribute('stroke-width', '1.5'); pa1.setAttribute('stroke-dasharray', '4 4');
-  pa1.setAttribute('marker-end', 'url(#arrow-outer)');
-  svg.appendChild(pa1);
-
-  const pa2 = document.createElementNS(ns, 'path');
-  pa2.setAttribute('d', `M ${innerS.x} ${innerS.y} A ${R-30} ${R-30} 0 0 0 ${innerE.x} ${innerE.y}`);
-  pa2.setAttribute('fill', 'none'); pa2.setAttribute('stroke', '#8b5cf6');
-  pa2.setAttribute('stroke-width', '1.5'); pa2.setAttribute('stroke-dasharray', '4 4');
-  pa2.setAttribute('marker-end', 'url(#arrow-inner)');
-  svg.appendChild(pa2);
-
-  // ── Center glow disc ──
-  const glowDisc = document.createElementNS(ns, 'circle');
-  glowDisc.setAttribute('cx', CX); glowDisc.setAttribute('cy', CY);
-  glowDisc.setAttribute('r', String(R - 8));
-  glowDisc.setAttribute('fill', 'url(#iconGlowGrad)');
-  svg.appendChild(glowDisc);
-
-  // ── Center watermark icon ──
-  const iconSize = (R - 8) * 1.85;
-  const iconImg = document.createElementNS(ns, 'image');
-  iconImg.setAttribute('href', anseruIconSrc);
-  iconImg.setAttribute('x', String(CX - iconSize / 2));
-  iconImg.setAttribute('y', String(CY - iconSize / 2));
-  iconImg.setAttribute('width', String(iconSize));
-  iconImg.setAttribute('height', String(iconSize));
-  iconImg.setAttribute('opacity', '0.12');
-  iconImg.setAttribute('clip-path', 'url(#centerClip)');
-  iconImg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-  svg.appendChild(iconImg);
-
-  // ── Center text ──
-  const centerGroup = document.createElementNS(ns, 'g');
-
-  const line1 = document.createElementNS(ns, 'text');
-  line1.setAttribute('x', String(CX));
-  line1.setAttribute('y', String(CY - (isXS ? 22 : isSM ? 28 : 36)));
-  line1.setAttribute('text-anchor', 'middle');
-  line1.setAttribute('dominant-baseline', 'central');
-  line1.setAttribute('font-family', '"DM Sans", sans-serif');
-  line1.setAttribute('font-size', String(centerFontSize1));
-  line1.setAttribute('font-weight', '400');
-  line1.setAttribute('letter-spacing', '-1.5');
-  line1.setAttribute('fill', '#111827');
-  line1.textContent = 'End-to-End';
-
-  const line2 = document.createElementNS(ns, 'text');
-  line2.setAttribute('x', String(CX));
-  line2.setAttribute('y', String(CY + (isXS ? 24 : isSM ? 30 : 40)));
-  line2.setAttribute('text-anchor', 'middle');
-  line2.setAttribute('dominant-baseline', 'central');
-  line2.setAttribute('font-family', '"DM Sans", sans-serif');
-  line2.setAttribute('font-size', String(centerFontSize2));
-  line2.setAttribute('font-weight', '500');
-  line2.setAttribute('letter-spacing', '-2');
-  line2.setAttribute('fill', 'url(#centerTextGrad)');
-  line2.textContent = 'Deal Intelligence';
-
-  centerGroup.appendChild(line1);
-  centerGroup.appendChild(line2);
-  svg.appendChild(centerGroup);
-
- // ── Nodes ──
-const labelDist = isXS ? R + 55 : isSM ? R + 65 : isMD ? R + 70 : R + 80;
-
-const nodeGroups = rfpNodes.map((node, i) => {
-  const p = polar(CX, CY, R, node.angle);
-  // Label position: pushed radially outward from center
-  const lp = polar(CX, CY, labelDist, node.angle);
-  const g = document.createElementNS(ns, 'g');
-
-  const glow = document.createElementNS(ns, 'circle');
-  glow.setAttribute('cx', p.x); glow.setAttribute('cy', p.y);
-  glow.setAttribute('r', String(NR + 10));
-  glow.setAttribute('fill', 'none');
-  glow.setAttribute('stroke', node.g1);
-  glow.setAttribute('stroke-width', '3');
-  glow.setAttribute('opacity', '0');
-  glow.style.transition = 'all 0.6s ease-in-out';
-
-  const mask = document.createElementNS(ns, 'circle');
-  mask.setAttribute('cx', p.x); mask.setAttribute('cy', p.y);
-  mask.setAttribute('r', String(NR));
-  mask.setAttribute('fill', '#f8f9fa');
-  mask.style.transition = 'all 0.6s ease-in-out';
-
-  const ball = document.createElementNS(ns, 'circle');
-  ball.setAttribute('cx', p.x); ball.setAttribute('cy', p.y);
-  ball.setAttribute('r', String(NR));
-  ball.setAttribute('fill', `url(#rfpg${i})`);
-  ball.setAttribute('opacity', '0.4');
-  ball.style.transition = 'all 0.6s ease-in-out';
-
-  // Text anchor: left side of circle = end, right side = start, top/bottom = middle
-  const angleMod = ((node.angle % 360) + 360) % 360;
-  let anchor = 'middle';
-  if (angleMod > 20 && angleMod < 160)       anchor = 'start';
-  else if (angleMod > 200 && angleMod < 340) anchor = 'end';
-
-  const tg = document.createElementNS(ns, 'g');
-  tg.setAttribute('transform', `translate(${lp.x}, ${lp.y})`);
-  tg.style.transition = 'opacity 0.6s ease-in-out';
-  tg.style.opacity = '0.6';
-
-  const titleT = document.createElementNS(ns, 'text');
-  titleT.setAttribute('font-size', String(titleFontSize));
-  titleT.setAttribute('fill', '#111827');
-  titleT.setAttribute('font-weight', '600');
-  titleT.setAttribute('font-family', '"DM Sans", sans-serif');
-  titleT.setAttribute('text-anchor', anchor);
-
-  const titleWords = node.title.split(' ');
-
-  if (node.title.length <= CHAR_LIMIT) {
-    titleT.setAttribute('x', '0');
-    titleT.setAttribute('y', '0');
-    const span = document.createElementNS(ns, 'tspan');
-    span.setAttribute('x', '0'); span.setAttribute('dy', '0');
-    span.textContent = node.title;
-    titleT.appendChild(span);
-  } else {
-    let splitIdx = 1, bestDiff = Infinity;
-    for (let w = 1; w < titleWords.length; w++) {
-      const diff = Math.abs(
-        titleWords.slice(0, w).join(' ').length -
-        titleWords.slice(w).join(' ').length
-      );
-      if (diff < bestDiff) { bestDiff = diff; splitIdx = w; }
-    }
-    const l1 = titleWords.slice(0, splitIdx).join(' ');
-    const l2 = titleWords.slice(splitIdx).join(' ');
-
-    titleT.setAttribute('x', '0');
-    titleT.setAttribute('y', String(-lineHeight / 2));
-
-    const span1 = document.createElementNS(ns, 'tspan');
-    span1.setAttribute('x', '0'); span1.setAttribute('dy', '0');
-    span1.textContent = l1;
-
-    const span2 = document.createElementNS(ns, 'tspan');
-    span2.setAttribute('x', '0'); span2.setAttribute('dy', String(lineHeight));
-    span2.textContent = l2;
-
-    titleT.appendChild(span1);
-    titleT.appendChild(span2);
-  }
-
-  tg.appendChild(titleT);
-  g.appendChild(glow); g.appendChild(mask); g.appendChild(ball); g.appendChild(tg);
-  svg.appendChild(g);
-
-  return { glow, mask, ball, tg };
-});
-
-  container.appendChild(svg);
-
-  // ── Active node cycling ──
-  let activeNode = 1;
-
-  function updateNodes(idx) {
-    nodeGroups.forEach((ng, i) => {
-      const isActive = i === idx;
-      ng.glow.setAttribute('r',       isActive ? String(NR + 16) : String(NR + 10));
-      ng.glow.setAttribute('opacity', isActive ? '0.65' : '0');
-      ng.mask.setAttribute('r',       isActive ? String(NR + 5)  : String(NR));
-      ng.ball.setAttribute('r',       isActive ? String(NR + 5)  : String(NR));
-      ng.ball.setAttribute('opacity', isActive ? '1' : '0.4');
-      ng.tg.style.opacity = isActive ? '1' : '0.6';
-    });
-  }
-
-  updateNodes(1);
-
-  if (window._rfpInterval) clearInterval(window._rfpInterval);
-  window._rfpInterval = setInterval(() => {
-    activeNode = (activeNode + 1) % rfpNodes.length;
-    updateNodes(activeNode);
-  }, 2000);
-}
-
-  buildSVG();
-
-  let resizeTimer;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(buildSVG, 150);
-  });
-}
 // ── FAQ ───────────────────────────────────────────────────────────────────────
 function initFAQ() {
   let openIndex = null;
   const items = document.querySelectorAll(".faq-item");
-  
+
   items.forEach((item, idx) => {
-    item._idx = idx; 
+    item._idx = idx;
     item.querySelector(".faq-trigger").addEventListener("click", () => {
       const isOpen = openIndex === idx;
-      
+
       if (openIndex !== null && openIndex !== idx) {
         const prev = items[openIndex];
         const prevAns = prev.querySelector(".faq-answer");
         const prevInner = prevAns.firstElementChild;
-        
+
         const curW = prev.getBoundingClientRect().width;
         prev.style.transition = "none";
         prev.style.width = "fit-content";
         const targetW = prev.getBoundingClientRect().width;
         prev.style.width = curW + "px";
-        
+
         prevAns.style.transition = "none";
         prevAns.style.maxHeight = prevAns.scrollHeight + "px";
-        
+
         if (prevInner) prevInner.style.width = curW + "px";
-        
+
         prev.offsetHeight;
-        
+
         prev.style.transition = "width 0.4s cubic-bezier(0.04,0.62,0.23,0.98)";
         prevAns.style.transition = "max-height 0.4s cubic-bezier(0.04,0.62,0.23,0.98), opacity 0.3s ease";
         prev.style.width = targetW + "px";
         prevAns.style.maxHeight = "0px";
         prevAns.style.opacity = "0";
         prev.querySelector(".faq-icon").textContent = "+";
-        
+
         setTimeout(() => {
           if (openIndex !== prev._idx) {
-             prev.style.width = "";
-             if (prevInner) prevInner.style.width = "";
+            prev.style.width = "";
+            if (prevInner) prevInner.style.width = "";
           }
         }, 400);
       }
-      
+
       openIndex = isOpen ? null : idx;
       const ans = item.querySelector(".faq-answer");
       const inner = ans.firstElementChild;
-      
+
       if (!isOpen) {
         const curW = item.getBoundingClientRect().width;
-        
+
         item.style.transition = "none";
         ans.style.transition = "none";
         item.style.width = "100%";
         ans.style.maxHeight = "none";
         if (inner) inner.style.width = "";
-        
+
         const targetW = item.getBoundingClientRect().width;
         const targetH = ans.scrollHeight;
-        
+
         item.style.width = curW + "px";
         ans.style.maxHeight = "0px";
-        
+
         if (inner) inner.style.width = targetW + "px";
         item.offsetHeight;
-        
+
         item.style.transition = "width 0.4s cubic-bezier(0.04,0.62,0.23,0.98)";
         ans.style.transition = "max-height 0.4s cubic-bezier(0.04,0.62,0.23,0.98), opacity 0.4s ease";
         item.style.width = targetW + "px";
         ans.style.maxHeight = targetH + "px";
         ans.style.opacity = "1";
         item.querySelector(".faq-icon").textContent = "−";
-        
+
         setTimeout(() => {
           if (openIndex === idx) {
             item.style.width = "100%";
@@ -658,29 +316,29 @@ function initFAQ() {
             if (inner) inner.style.width = "";
           }
         }, 400);
-        
+
       } else {
         const curW = item.getBoundingClientRect().width;
-        
+
         item.style.transition = "none";
         item.style.width = "fit-content";
         const targetW = item.getBoundingClientRect().width;
         item.style.width = curW + "px";
-        
+
         ans.style.transition = "none";
         ans.style.maxHeight = ans.scrollHeight + "px";
         if (inner) inner.style.width = curW + "px";
-        
+
         item.offsetHeight;
-        
+
         item.style.transition = "width 0.4s cubic-bezier(0.04,0.62,0.23,0.98)";
         ans.style.transition = "max-height 0.4s cubic-bezier(0.04,0.62,0.23,0.98), opacity 0.3s ease";
-        
+
         item.style.width = targetW + "px";
         ans.style.maxHeight = "0px";
         ans.style.opacity = "0";
         item.querySelector(".faq-icon").textContent = "+";
-        
+
         setTimeout(() => {
           if (openIndex !== idx) {
             item.style.width = "";
@@ -799,7 +457,7 @@ function eliminateGap() {
     // We add padding-top so its background covers the gap, but its content starts right below the sticky element.
     hSection.style.marginTop = `-${gap}px`;
     hSection.style.paddingTop = `${gap}px`;
-    
+
     // Ensure layering is correct (Problem on top during scroll)
     if (pSection) pSection.style.position = "relative";
     if (pSection) pSection.style.zIndex = "10";
@@ -867,36 +525,7 @@ function initFlipCards() {
 }
 
 // ── Workflow Section Animations ────────────────────────────────────────────────
-function initWorkflowHeaderAnimations() {
-  const items = document.querySelectorAll(".workflow-anim-item");
-  const container = document.getElementById("workflow-header-container");
 
-  if (!items.length || !container) return;
-
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: container,
-      start: "top 80%",
-      toggleActions: "play none none reverse"
-    }
-  });
-
-  tl.to(items[0], {
-    y: 0, opacity: 1,
-    duration: 0.6,
-    ease: "power3.out"
-  })
-  .to(items[1], {
-    y: 0, opacity: 1,
-    duration: 1.0,
-    ease: "expo.out"
-  }, "-=0.3")
-  .to(items[2], {
-    y: 0, opacity: 1,
-    duration: 0.7,
-    ease: "power2.out"
-  }, "-=0.5");
-}
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
@@ -904,7 +533,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initNavbar();
   initFlipCards();
   initProblemCarousel();
-  
+
   // Call gap eliminator on load and resize
   eliminateGap();
   window.addEventListener("resize", eliminateGap);
@@ -917,3 +546,170 @@ document.addEventListener("DOMContentLoaded", () => {
   initFAQ();
   initFeatures();
 });
+
+// ── Assets for Workflow ──────────────────────────────────────────────────
+import bidIcon from "./assets/bid.png";
+import docIcon from "./assets/doc.png";
+import proposalIcon from "./assets/proposal.png";
+import reqIcon from "./assets/req.png";
+import smeIcon from "./assets/sme.png";
+import winlossIcon from "./assets/winloss.png";
+import custInsightsIcon from "./assets/cust_insights.png";
+import leadEvalIcon from "./assets/lead_eval.png";
+import riAiIcon from "./assets/ri_ai.png";
+
+(function () {
+  const STEPS = [
+    {
+      title: "RFP Decomposition",
+      desc: "Break complex RFPs into structured sections and extract key requirements.",
+      icon: docIcon,
+    },
+    {
+      title: "Deal Qualification",
+      desc: "Evaluate fit, assess win probability, and decide whether to pursue.",
+      icon: bidIcon,
+    },
+    {
+      title: "Requirement Intelligence",
+      desc: "Categorize questions, tag by topic, and route to the right teams.",
+      icon: reqIcon,
+    },
+    {
+      title: "Proposal Architecture",
+      desc: "Generate a structured proposal outline and response flow.",
+      icon: proposalIcon,
+    },
+    {
+      title: "First Winnable Draft",
+      desc: "Generate contextual first drafts using enterprise knowledge.",
+      icon: riAiIcon,
+    },
+    {
+      title: "SME Collaboration",
+      desc: "Route complex responses to subject matter experts for review.",
+      icon: smeIcon,
+    },
+    {
+      title: "Final Proposal",
+      desc: "Deliver a polished proposal ready for submission.",
+      icon: leadEvalIcon,
+    },
+    {
+      title: "Win–Loss Capture",
+      desc: "Capture deal outcomes and key insights.",
+      icon: winlossIcon,
+    },
+    {
+      title: "Smarter Next Deal",
+      desc: "Feed insights back to improve future responses.",
+      icon: custInsightsIcon,
+    },
+  ];
+
+  function initWorkflow() {
+    const section = document.getElementById("workflow-section");
+    const stepsList = document.getElementById("steps-list");
+    if (!section || !stepsList) return;
+
+    stepsList.innerHTML = "";
+    STEPS.forEach((step, i) => {
+      const row = document.createElement("div");
+      row.className = "step-row";
+      row.innerHTML = `
+        <div class="step-node-col">
+          <div class="node-wrapper">
+            <div class="half-ring"></div>
+            <div class="node-circle">
+              <img src="${step.icon}" alt="${step.title}" />
+            </div>
+          </div>
+          ${i < STEPS.length - 1 ? `
+          <div class="connector-symbols">
+            <div class="connector-symbol symbol-left">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="7 13 12 18 17 13"></polyline>
+                <polyline points="7 6 12 11 17 6"></polyline>
+              </svg>
+            </div>
+            <div class="connector-symbol symbol-right">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="7 13 12 18 17 13"></polyline>
+                <polyline points="7 6 12 11 17 6"></polyline>
+              </svg>
+            </div>
+          </div>
+          ` : ''}
+        </div>
+        <div class="step-body">
+          <p class="step-title">${step.title}</p>
+          <p class="step-desc">${step.desc}</p>
+        </div>
+      `;
+      stepsList.appendChild(row);
+    });
+
+
+    const rows = gsap.utils.toArray(".step-row");
+
+    // Create GSAP Timeline for pinning and sequential animation
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: "top top",
+        end: "+=2000", // Adjusted scroll length
+        pin: true,
+        scrub: 0.5, // Smoother scrub
+        anticipatePin: 1,
+      },
+    });
+
+    // Animate each row's opacity and the active state
+    rows.forEach((row, i) => {
+      const circle = row.querySelector(".node-circle");
+      const ring = row.querySelector(".half-ring");
+      const icon = circle.querySelector("img");
+
+      const startTime = i * 4;
+
+      // Opacity of the whole row
+      tl.to(row, {
+        opacity: 1,
+        duration: 2,
+      }, startTime);
+
+      // Circle gradient and scale
+      tl.to(circle, {
+        background: "linear-gradient(135deg, #FF3B8D 0%, #4D79FF 100%)",
+        scale: 1.1,
+        boxShadow: "0 4px 12px rgba(77, 121, 255, 0.3)",
+        duration: 2,
+      }, startTime);
+
+      // Ring border color
+      if (ring) {
+        tl.to(ring, {
+          borderColor: "#e5e7eb",
+          duration: 2,
+        }, startTime);
+      }
+
+      // Icon inversion
+      tl.to(icon, {
+        filter: "brightness(0) invert(1)",
+        opacity: 1,
+        duration: 2,
+      }, startTime);
+    });
+
+
+    // Add some padding at the end
+    tl.to({}, { duration: 2 });
+  }
+
+  window.addEventListener("load", () => {
+    // Wait for everything to be ready
+    setTimeout(initWorkflow, 100);
+  });
+  window.addEventListener("resize", initWorkflow);
+})();
