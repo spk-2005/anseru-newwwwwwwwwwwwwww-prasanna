@@ -450,6 +450,7 @@ section[data-section] {
   font-family: 'DM Sans', sans-serif;
   display: flex;
   flex-direction: column;
+  align-items: flex-start; /* Left align everything in the column */
   justify-content: flex-start;
   position: relative;
   overflow: hidden;
@@ -463,7 +464,7 @@ section[data-section] {
 
 .wf-tag {
   font-size: 12px;
-  text-align: left;
+  text-align: left !important;
   color: #888;
   margin-bottom: 2px;
   text-transform: none;
@@ -483,11 +484,11 @@ section[data-section] {
   font-weight: 500;
   margin-bottom: 4px;
   line-height: 1.2;
-  text-align: left;
+  text-align: left !important;
 }
 
 .wf-title {
-  text-align: left;
+  text-align: left !important;
   font-size: clamp(18px, 5.5vw, 28px);
   font-weight: 700;
   color: #000;
@@ -638,7 +639,7 @@ section[data-section] {
 /* Symbols */
 .connector-symbols {
   position: absolute;
-  top: 100%; /* Placed at the junction of rows */
+  top: 50%; /* Adjusted dynamically via JS for perfect between-circle centering */
   left: 50%;
   display: flex;
   flex-direction: row;

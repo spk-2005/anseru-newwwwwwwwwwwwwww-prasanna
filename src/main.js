@@ -666,6 +666,16 @@ import riAiIcon from "./assets/ri_ai.png";
       const endY = getRelativeCenter(allWrappers[allWrappers.length - 1]);
       backbone.style.top = `${startY}px`;
       backbone.style.height = `${endY - startY}px`;
+
+      // Position the connector-symbols exactly between the centers of each row's circle
+      const symbols = stepsList.querySelectorAll(".connector-symbols");
+      symbols.forEach((sym, idx) => {
+        const center1 = getRelativeCenter(allWrappers[idx]);
+        const center2 = getRelativeCenter(allWrappers[idx + 1]);
+        const midPoint = (center1 + center2) / 2;
+        const rowTop = allWrappers[idx].closest('.step-row').offsetTop;
+        sym.style.top = `${midPoint - rowTop}px`;
+      });
     }
 
 
@@ -693,6 +703,7 @@ import riAiIcon from "./assets/ri_ai.png";
         const circle = row.querySelector(".node-circle");
         const ring = row.querySelector(".half-ring");
         const icon = circle.querySelector("img");
+        const connector = row.querySelector(".connector-symbols");
 
         const startTime = i * 4;
 
@@ -725,8 +736,13 @@ import riAiIcon from "./assets/ri_ai.png";
           duration: 2,
         }, startTime);
 
-        // After this row is done, if not the last one, we can dim it slightly back or keep it bright.
-        // The user didn't specify, but keeping it bright is usually better for reading the whole timeline.
+        // Connector symbols opacity (if they exist)
+        if (connector) {
+          tl.to(connector, {
+            opacity: 1,
+            duration: 2,
+          }, startTime);
+        }
       });
 
       // Add a small buffer at the end
@@ -742,7 +758,7 @@ import riAiIcon from "./assets/ri_ai.png";
   }
 
   window.addEventListener("resize", () => {
-    // Re-check backbone position on resize
+    // Re-check backbone position and symbol positioning on resize
     const stepsList = document.getElementById("steps-list");
     const backbone = stepsList?.querySelector(".workflow-backbone");
     const allWrappers = stepsList?.querySelectorAll(".node-wrapper");
@@ -760,6 +776,15 @@ import riAiIcon from "./assets/ri_ai.png";
       const endY = getRelativeCenter(allWrappers[allWrappers.length - 1]);
       backbone.style.top = `${startY}px`;
       backbone.style.height = `${endY - startY}px`;
+
+      const symbols = stepsList.querySelectorAll(".connector-symbols");
+      symbols.forEach((sym, idx) => {
+        const center1 = getRelativeCenter(allWrappers[idx]);
+        const center2 = getRelativeCenter(allWrappers[idx + 1]);
+        const midPoint = (center1 + center2) / 2;
+        const rowTop = allWrappers[idx].closest('.step-row').offsetTop;
+        sym.style.top = `${midPoint - rowTop}px`;
+      });
     }
   });
 
