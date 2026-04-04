@@ -651,14 +651,14 @@ import wfIcon9 from "./assets/workflow-icon-9.png";
       if (allWrappers.length < 2) return;
 
       const RADIUS = allWrappers[0].offsetHeight / 2; // 20px for a 40px wrapper
-      const BORDER_OVERLAP = 2; // extend 2px into the half-ring border on each end
+      const BORDER_OVERLAP = 3; // increased from 2 to 3 to firmly join arc and line
 
       allWrappers.forEach((wrapper, i) => {
         if (i === allWrappers.length - 1) return; // no segment after last circle
         const topCenter = getRelativeCenter(wrapper);
         const bottomCenter = getRelativeCenter(allWrappers[i + 1]);
         const segTop = topCenter + RADIUS - BORDER_OVERLAP;
-        const segHeight = (bottomCenter - RADIUS + BORDER_OVERLAP) - segTop;
+        const segHeight = Math.ceil((bottomCenter - RADIUS + BORDER_OVERLAP) - segTop);
         if (segHeight <= 0) return;
 
         const seg = document.createElement('div');
@@ -697,14 +697,14 @@ import wfIcon9 from "./assets/workflow-icon-9.png";
         const circle = row.querySelector(".node-circle");
         const icon = circle ? circle.querySelector("img") : null;
         gsap.set(row, { opacity: 0.25 });
-        gsap.set(circle, { 
+        gsap.set(circle, {
           backgroundImage: `url(${circleLogoBg})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundColor: "transparent",
           borderColor: "#eeeeee",
           filter: "grayscale(1) opacity(0.2)",
-          scale: 1 
+          scale: 1
         });
         gsap.set(icon, { opacity: 0 });
       });
@@ -798,14 +798,14 @@ import wfIcon9 from "./assets/workflow-icon-9.png";
     const allWrappers = stepsList.querySelectorAll('.node-wrapper');
     if (allWrappers.length < 2) return;
     const RADIUS = allWrappers[0].offsetHeight / 2;
-    const BORDER_OVERLAP = 2;
+    const BORDER_OVERLAP = 3;
 
     allWrappers.forEach((wrapper, i) => {
       if (i === allWrappers.length - 1) return;
       const topCenter = getRelativeCenter(wrapper);
       const bottomCenter = getRelativeCenter(allWrappers[i + 1]);
       const segTop = topCenter + RADIUS - BORDER_OVERLAP;
-      const segHeight = (bottomCenter - RADIUS + BORDER_OVERLAP) - segTop;
+      const segHeight = Math.ceil((bottomCenter - RADIUS + BORDER_OVERLAP) - segTop);
       if (segHeight <= 0) return;
       const seg = document.createElement('div');
       seg.className = 'workflow-segment';

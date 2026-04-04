@@ -220,7 +220,7 @@ html {
 
 /* Consistent section spacing */
 section[data-section] {
-  padding-top: clamp(8px, 1vw, 60px);
+  padding-top: 0;
 }
 
 .anseru-section-tag {
@@ -441,13 +441,8 @@ section[data-section] {
   height: clamp(300px, 105vw, 360px);
   position: relative;
   perspective: 1000px;
-}
-
-.wf-wrap {
+}.wf-wrap {
   padding: clamp(52px, 13vw, 68px) clamp(12px, 4vw, 20px) 0 !important;
-  /* 56px top = navbar height offset */
-  min-height: 100dvh;
-  /* fills full viewport — no dead space at bottom during GSAP pin */
   box-sizing: border-box;
   max-width: 600px;
   font-size: clamp(20px, 5.97vw, 46px);
@@ -460,7 +455,6 @@ section[data-section] {
   position: relative;
   overflow: hidden;
 }
-
 @media (min-width: 1024px) {
   .wf-wrap {
     display: none !important;
@@ -604,8 +598,8 @@ section[data-section] {
   border: 2px solid #D9D9D9;
   /* Matching thickness */
   border-radius: 50%;
-  clip-path: inset(0 50% 0 0);
-  /* Perfectly clips at the vertical center */
+  clip-path: inset(0 48% 0 0);
+  /* Overshoots 50% slightly to overlap the 1.5px vertical line */
   pointer-events: none;
   z-index: 1;
 }
