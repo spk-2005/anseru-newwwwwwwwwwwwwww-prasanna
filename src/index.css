@@ -536,16 +536,15 @@ section[data-section] {
 
 .step-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;  /* change from center to flex-start */
   gap: 16px;
   position: relative;
   z-index: 2;
   opacity: 0.4;
   transition: opacity 0.5s ease;
-  min-height: 48px;
-  /* Increased to accommodate 40px circles */
+  min-height: 72px;         /* fixed height so all rows are equal */
+  height: 72px;             /* enforce equal spacing */
 }
-
 .step-row.active {
   opacity: 1;
 }
@@ -561,7 +560,6 @@ section[data-section] {
   filter: brightness(0) invert(1);
   opacity: 1;
 }
-
 .step-node-col {
   position: relative;
   width: 49.5px;
@@ -570,6 +568,7 @@ section[data-section] {
   flex-direction: column;
   align-items: center;
   align-self: stretch;
+  min-height: 72px;
 }
 
 /* Segments are drawn BETWEEN circles — never through them */
@@ -640,25 +639,37 @@ section[data-section] {
 }
 
 .step-body {
-  padding: 8px 8px 16px 6px;
+  padding: 0 8px 0 6px;    /* remove vertical padding — height handles spacing */
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* vertically center text in the fixed height row */
+  min-height: 72px;
+  height: 72px;
 }
-
 .step-title {
-  font-size: clamp(14px, 3.5vw, 16px);
-  font-weight: 400;
-  /* Removed bold */
+  font-size: clamp(12px, 3.2vw, 14px);
+  font-weight: 500;
   color: #111;
-  margin: 0;
+  margin: 0 0 2px 0;
+  line-height: 1.3;
+  /* Force title to always wrap to exactly 2 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
-
 .step-desc {
-  font-size: clamp(11px, 3vw, 13px);
+  font-size: clamp(10px, 2.8vw, 12px);
   color: #666;
-  margin: 2px 0 0;
-  line-height: 1.4;
+  margin: 0;
+  line-height: 1.35;
+  /* Force desc to always wrap to exactly 2 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
-
 /* Symbols */
 .connector-symbols {
   position: absolute;
