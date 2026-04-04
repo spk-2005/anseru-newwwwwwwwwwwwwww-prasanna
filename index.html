@@ -475,7 +475,7 @@
     </script>
 
     <div class="w-full font-sans">
-      <div class="max-w-310 mx-auto px-2 min-[250px]:px-6">
+      <div class="max-w-310 mx-auto padding: clamp(52px,13vw,68px) clamp(12px,4vw,20px) 0; min-[250px]:px-6">
         <div class="mb-8 md:mb-8 hidden md:block">
           <p class="anseru-section-tag">Customer Problem</p>
           <div class="flex flex-col md:flex-row md:justify-between md:items-end gap-8 text-left">
@@ -492,11 +492,11 @@
 
         <!-- MOBILE CAROUSEL -->
         <div id="problem-mobile-gsap" class="md:hidden relative w-full bg-white " style="height: 250vh;">
-          <div class="sticky top-0 w-full bg-white flex flex-col" style="
+          <div class="sticky top-14 w-full bg-white flex flex-col" style="
             height: auto;
             overflow: hidden;
             box-sizing: border-box;
-            padding: clamp(60px, 14vw, 72px) 0 clamp(16px, 4vw, 24px);
+            
           ">
 
             <!-- Mobile Header -->
@@ -1170,9 +1170,6 @@ max-w-full">
 
   <section data-section id="how-it-works" class="scroll-mt-5">
     <!-- MOBILE carousel -->
-    <!-- MOBILE carousel -->
-    <!-- MOBILE carousel - 300px+ responsive -->
-    <!-- MOBILE carousel - fully responsive, centered pills, correct card heights -->
     <div id="hiw-mobile-gsap" class="lg:hidden relative w-full bg-white" style="height: 350vh;">
       <div class="sticky top-0 w-full bg-white flex flex-col" style="height: auto; overflow: hidden;">
 
@@ -1996,11 +1993,12 @@ max-w-full">
         </div>
 
         <!-- Slide Track -->
-        <div style="overflow-x: hidden; overflow-y: visible;">
+        <div style="overflow-x: hidden; overflow-y: hidden;">
           <div id="agents-mobile-track" style="
           display: flex;
           width: 200vw;
           transform: translateX(0);
+          
           will-change: transform;
           transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1);
           align-items: flex-start;
@@ -2014,7 +2012,7 @@ max-w-full">
                 <div class="bg-white border-b border-[#e5e7eb]">
                   <div class="relative flex flex-col justify-between overflow-hidden" style="
                   background: linear-gradient(180deg,#201cae 0%,#6aa4ee 100%);
-                  padding: clamp(16px,5vw,32px);
+                  
                   height: clamp(200px,60vw,300px);
                   border-radius: 8px;
                 ">
@@ -2447,7 +2445,7 @@ max-w-full">
           </div>
 
 
-            <!-- Card 4: Governance & Analytics -->
+          <!-- Card 4: Governance & Analytics -->
           <div
             class="feature-card group relative bg-[#F9FAFB] flex flex-col w-full lg:min-h-[400px] xl:min-h-[440px] cursor-pointer"
             onclick="this.classList.toggle('active')" style="flex: 1">
@@ -2564,7 +2562,7 @@ max-w-full">
             </div>
           </div>
 
-        
+
 
         </div>
 
@@ -2667,9 +2665,13 @@ max-w-full">
   <section data-section id="integration" class="scroll-mb-2">
     <section class="py-2 bg-white">
       <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row gap-12 md:gap-24 items-center">
-        <div class="text-center md:text-left flex-1 order-first md:order-last">
+        <div class="flex flex-col items-start text-left flex-1 order-first md:order-last">
           <p class="anseru-section-tag">Integrations</p>
           <h2 class="anseru-section-title">Connect to the Tools <br class="hidden md:block" />You Already Use</h2>
+          <a href="https://calendly.com/kg-goutham-anseru"
+            style="display:inline-block; background:#000; color:#fff; padding: 4px 16px; margin-top: 20px; border-radius:4px; font-size: clamp(13px,3.5vw,15px); font-weight:400; text-decoration:none; white-space:nowrap;">
+            Request Demo
+          </a>
         </div>
         <div
           class="w-full max-w-105 aspect-square bg-gray-50 rounded-3xl overflow-hidden flex items-center justify-center relative pointer-events-none order-last md:order-first">
@@ -2810,7 +2812,7 @@ max-w-full">
   </section>
 
 
-  <section data-section id="faq" class="scroll-mt-5 p-2">
+  <section data-section id="faq" class="scroll-mt-5">
     <section class="w-full  bg-[#f3f4f6]">
       <div class="max-w-[1400px] mx-auto px-4 min-[250px]:px-6 md:px-12">
 
@@ -2825,7 +2827,7 @@ max-w-full">
 
           <div class="faq-item flex flex-col border border-gray-200 bg-white rounded-lg overflow-hidden w-full">
             <div
-              class="faq-trigger flex items-center gap-3 py-4 px-5 cursor-pointer hover:bg-gray-50 transition-all select-none">
+              class="faq-trigger flex items-center gap-3 py-4 px-2 cursor-pointer hover:bg-gray-50 transition-all select-none">
               <img src="./src/assets/Frame (11).png" loading="lazy" alt="" class="shrink-0 w-4 h-4 opacity-60" />
               <span
                 class="text-[12px] min-[402px]:text-[14px] sm:text-[15px] text-black font-normal leading-snug text-left flex-1">What
@@ -3076,7 +3078,7 @@ max-w-full">
       <!-- Right side: Text Block -->
       <div class="bg-white flex items-center justify-center">
         <div
-          class="w-full max-w-[500px] px-6 py-10 md:py-0 md:px-9 flex flex-col items-center justify-center text-center md:items-start md:text-left gap-5">
+          class="w-full max-w-[500px] px-6 py-10 md:py-0 md:px-9 flex flex-col items-start justify-start text-left md:items-start md:text-left gap-5">
           <h2 class="tracking-tight">
             <span class="text-gray-800 text-[28px] leading-[1.2] block mb-0.5 font-normal">The New Layer for</span>
             <span class="text-[#1c36e4] text-[32px] md:text-[46px] leading-[1.1] block font-medium">Enterprise
@@ -3088,22 +3090,27 @@ max-w-full">
               knowledge into deal-ready intelligence so teams can focus on winning.
             </p>
           </div>
+          <a href="https://calendly.com/kg-goutham-anseru"
+            style="display:inline-block; background:#000; color:#fff; padding: clamp(8px,1.5vw,12px) clamp(20px,4vw,32px); border-radius:4px; font-size: clamp(13px,3.5vw,15px); font-weight:400; text-decoration:none; white-space:nowrap;">
+            Request Demo
+          </a>
         </div>
       </div>
     </div>
 
     <!-- Middle Split Section -->
-    <div class="w-full bg-[#f4f4f5] grid grid-cols-1 md:grid-cols-2 border-t border-gray-200">
-      <div class="px-6 py-6 md:p-14 flex flex-col  text-center">
+    <div class="w-full bg-[#f4f4f5] grid grid-cols-1 md:grid-cols-2 border-t border-b border-gray-200">
+      <div class="px-6 py-8 md:py-14 md:px-14 flex flex-col items-center md:items-start text-center md:text-left">
         <h2
-          style="font-size: clamp(22px,6.5vw,36px); line-height:1.25; font-weight:400; color:#000; margin-bottom: clamp(24px,6vw,40px); max-width:480px;">
+          style="font-size: clamp(18px, 5.5vw, 24px); line-height: 1.25; font-weight: 400; color: #000; margin-bottom: 20px;">
           Deal Intelligent Infrastructure for Modern Sales teams
         </h2>
         <a href="https://calendly.com/kg-goutham-anseru"
-          style="display:inline-block; background:#000; color:#fff; padding: clamp(10px,2.5vw,14px) clamp(28px,6vw,48px); border-radius:8px; font-size: clamp(13px,3.5vw,15px); font-weight:400; text-decoration:none; white-space:nowrap;">
+          style="display: inline-block; background: #000; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 400; text-decoration: none; white-space: nowrap;">
           Talk to Founders
         </a>
       </div>
+
       <div class="hidden md:flex p-24 flex-col justify-center items-start">
         <h3 style="font-size:15px; font-weight:600; color:#1f2937; margin-bottom:24px; letter-spacing:0.02em;">How it
           Works</h3>
@@ -3120,17 +3127,18 @@ max-w-full">
     </div>
 
     <!-- Footer -->
-    <footer class="w-full bg-[#f4f4f5] border-t border-gray-200/80"
-      style="padding: clamp(24px,6vw,40px) clamp(16px,5vw,48px);">
-      <div style="display:flex; flex-direction:column; align-items:center; gap:12px; text-align:center;">
+    <footer class="w-full bg-[#f4f4f5] border-t border-gray-200/80" style="padding: clamp(40px, 10vw, 64px) 24px;">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center;">
         <img src="./src/assets/Vector.png" alt="Anseru Logo"
-          style="height: clamp(24px,5vw,34px); width:auto; object-fit:contain;" loading="lazy" />
-        <p style="font-size: clamp(12px,3vw,14px); color:#6b7280; margin:0;">
-          © 2026 Anseru Inc. All rights reserved.
-        </p>
-        <div style="display:flex; gap: clamp(16px,5vw,32px);">
-          <a href="#" style="font-size: clamp(12px,3vw,14px); color:#6b7280; text-decoration:none;">Terms of Service</a>
-          <a href="#" style="font-size: clamp(12px,3vw,14px); color:#6b7280; text-decoration:none;">Privacy Policy</a>
+          style="height: clamp(28px, 6vw, 36px); width: auto; object-fit: contain;" loading="lazy" />
+        <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+          <p style="font-size: 14px; color: #6b7280; margin: 0;">
+            © 2026 Anseru Inc. All rights reserved.
+          </p>
+          <div style="display: flex; gap: 20px; justify-content: center;">
+            <a href="#" style="font-size: 14px; color: #6b7280; text-decoration: none;">Terms of Service</a>
+            <a href="#" style="font-size: 14px; color: #6b7280; text-decoration: none;">Privacy Policy</a>
+          </div>
         </div>
       </div>
     </footer>

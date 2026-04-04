@@ -221,7 +221,6 @@ html {
 /* Consistent section spacing */
 section[data-section] {
   padding-top: clamp(8px, 1vw, 60px);
-  padding-bottom: clamp(8px, 1vw, 60px);
 }
 
 .anseru-section-tag {
@@ -230,6 +229,7 @@ section[data-section] {
   letter-spacing: 0;
   color: rgba(0, 0, 0, 0.6);
 }
+
 
 .anseru-section-description {
   font-size: clamp(12px, 3.48vw, 16px);
@@ -444,9 +444,10 @@ section[data-section] {
 }
 
 .wf-wrap {
-  padding: 56px 20px 4px;
+  padding: clamp(52px, 13vw, 68px) clamp(12px, 4vw, 20px) 0 !important;
   /* 56px top = navbar height offset */
-  min-height: 100dvh;   /* fills full viewport — no dead space at bottom during GSAP pin */
+  min-height: 100dvh;
+  /* fills full viewport — no dead space at bottom during GSAP pin */
   box-sizing: border-box;
   max-width: 600px;
   font-size: clamp(20px, 5.97vw, 46px);
@@ -545,8 +546,8 @@ section[data-section] {
 }
 
 .step-row.active .node-circle {
-  background: linear-gradient(135deg, #FF3B8D 0%, #4D79FF 100%);
-  box-shadow: 0 4px 12px rgba(77, 121, 255, 0.3);
+  background: linear-gradient(90deg, #1D80F9 0%, #E74F62 100%);
+  box-shadow: 0 4px 20px rgba(231, 79, 98, 0.35);
   transform: scale(1.1);
   border-color: transparent;
 }
@@ -569,9 +570,11 @@ section[data-section] {
 /* Segments are drawn BETWEEN circles — never through them */
 .workflow-segment {
   position: absolute;
-  left: 24px;
+  left: 24.75px;
+  /* Half of 49.5px column width */
   width: 1.5px;
   background: #D9D9D9;
+
   transform: translateX(-50%);
   z-index: 0;
   pointer-events: none;
@@ -611,15 +614,14 @@ section[data-section] {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background: #ebebeb;
-  /* fallback — GSAP sets the radial gradient via gsap.set() on init */
-  border: 1.5px solid #e0e0e0;
+
   display: flex;
   align-items: center;
   justify-content: center;
   transition: border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   /* only non-GSAP prop */
-  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.8), 0 1px 4px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
   z-index: 2;
 }
 
@@ -630,10 +632,11 @@ section[data-section] {
   /* Very faint in pre-reveal state */
   transition: all 0.4s;
   object-fit: contain;
+  background: transparent;
 }
 
 .step-body {
-  padding: 2px 8px 4px 6px;
+  padding: 4px 8px 8px 6px;
   flex: 1;
 }
 
@@ -676,7 +679,7 @@ section[data-section] {
   transform: translate(-50%, -50%);
   width: 24px;
   height: 24px;
-  border: 1.2px solid #D9D9D9;
+  border: 2px solid #D9D9D9;
   border-radius: 50%;
   background: white;
   /* Cuts backbone inside rings too */
@@ -700,6 +703,7 @@ section[data-section] {
 .symbol-right {
   transform: translateX(1px);
 }
+
 
 
 .step-row:last-child .step-body {

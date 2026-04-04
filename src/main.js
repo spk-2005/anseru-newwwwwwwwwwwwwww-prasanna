@@ -528,6 +528,7 @@ function initFlipCards() {
 
 // ── Assets for Workflow ──────────────────────────────────────────────────
 import riAiIcon from "./assets/ri_ai.png";
+import circleLogoBg from "./assets/image-circle-logo.png";
 import wfIcon1 from "./assets/workflow-icon-1.png";
 import wfIcon2 from "./assets/workflow-icon-2.png";
 import wfIcon3 from "./assets/workflow-icon-3.png";
@@ -650,19 +651,23 @@ import wfIcon9 from "./assets/workflow-icon-9.png";
       if (allWrappers.length < 2) return;
 
       const RADIUS = allWrappers[0].offsetHeight / 2; // 20px for a 40px wrapper
+      const BORDER_OVERLAP = 2; // extend 2px into the half-ring border on each end
 
       allWrappers.forEach((wrapper, i) => {
         if (i === allWrappers.length - 1) return; // no segment after last circle
-        const topCenter    = getRelativeCenter(wrapper);
+        const topCenter = getRelativeCenter(wrapper);
         const bottomCenter = getRelativeCenter(allWrappers[i + 1]);
-        const segTop    = topCenter + RADIUS;          // start below this circle
-        const segHeight = (bottomCenter - RADIUS) - segTop; // end above next circle
+        const segTop = topCenter + RADIUS - BORDER_OVERLAP;
+        const segHeight = (bottomCenter - RADIUS + BORDER_OVERLAP) - segTop;
         if (segHeight <= 0) return;
 
         const seg = document.createElement('div');
         seg.className = 'workflow-segment';
-        seg.style.top    = `${segTop}px`;
+        seg.dataset.segIndex = i;          // link segment to its row
+        seg.style.top = `${segTop}px`;
         seg.style.height = `${segHeight}px`;
+        seg.style.left = `${allWrappers[0].offsetLeft + RADIUS}px`; // center logic
+        seg.style.opacity = '0.2';         // match inactive row opacity
         stepsList.appendChild(seg);
       });
 
@@ -690,10 +695,18 @@ import wfIcon9 from "./assets/workflow-icon-9.png";
       // Set initial states via GSAP so it fully owns these properties (avoids CSS !important conflicts)
       rows.forEach((row) => {
         const circle = row.querySelector(".node-circle");
-        const icon   = circle ? circle.querySelector("img") : null;
-        gsap.set(row,    { opacity: 0.4 });
-        gsap.set(circle, { background: GREY_GRADIENT, borderColor: "#e0e0e0", scale: 1 });
-        gsap.set(icon,   { opacity: 0.2, filter: "none" });
+        const icon = circle ? circle.querySelector("img") : null;
+        gsap.set(row, { opacity: 0.25 });
+        gsap.set(circle, { 
+          backgroundImage: `url(${circleLogoBg})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundColor: "transparent",
+          borderColor: "#eeeeee",
+          filter: "grayscale(1) opacity(0.2)",
+          scale: 1 
+        });
+        gsap.set(icon, { opacity: 0 });
       });
 
       const tl = gsap.timeline({
@@ -722,22 +735,20 @@ import wfIcon9 from "./assets/workflow-icon-9.png";
           duration: 2,
         }, startTime);
 
-        // Circle gradient and scale
+        // Circle image background and scale
         tl.to(circle, {
-          background: "linear-gradient(135deg, #FF3B8D 0%, #4D79FF 100%)",
           borderColor: "transparent",
           scale: 1.1,
-          boxShadow: "0 4px 12px rgba(77, 121, 255, 0.3)",
+          filter: "grayscale(0) opacity(1)",
           duration: 2,
         }, startTime);
 
+        // Ring keeps CSS color #D9D9D9 — no GSAP override, always matches segment
 
-        // Ring border color
-        if (ring) {
-          tl.to(ring, {
-            borderColor: "#e5e7eb",
-            duration: 2,
-          }, startTime);
+        // Animate this row's connecting segment (below it) in sync with the row
+        const seg = stepsList.querySelector(`.workflow-segment[data-seg-index="${i}"]`);
+        if (seg) {
+          tl.to(seg, { opacity: 1, duration: 2 }, startTime);
         }
 
         // Icon inversion
@@ -787,18 +798,22 @@ import wfIcon9 from "./assets/workflow-icon-9.png";
     const allWrappers = stepsList.querySelectorAll('.node-wrapper');
     if (allWrappers.length < 2) return;
     const RADIUS = allWrappers[0].offsetHeight / 2;
+    const BORDER_OVERLAP = 2;
 
     allWrappers.forEach((wrapper, i) => {
       if (i === allWrappers.length - 1) return;
-      const topCenter    = getRelativeCenter(wrapper);
+      const topCenter = getRelativeCenter(wrapper);
       const bottomCenter = getRelativeCenter(allWrappers[i + 1]);
-      const segTop    = topCenter + RADIUS;
-      const segHeight = (bottomCenter - RADIUS) - segTop;
+      const segTop = topCenter + RADIUS - BORDER_OVERLAP;
+      const segHeight = (bottomCenter - RADIUS + BORDER_OVERLAP) - segTop;
       if (segHeight <= 0) return;
       const seg = document.createElement('div');
       seg.className = 'workflow-segment';
-      seg.style.top    = `${segTop}px`;
+      seg.dataset.segIndex = i;
+      seg.style.top = `${segTop}px`;
       seg.style.height = `${segHeight}px`;
+      seg.style.left = `${allWrappers[0].offsetLeft + RADIUS}px`; // force centering
+      seg.style.opacity = '0.2';
       stepsList.appendChild(seg);
     });
 
