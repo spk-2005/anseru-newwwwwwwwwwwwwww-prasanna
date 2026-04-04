@@ -163,6 +163,48 @@
   </nav>
 
   <script>
+    (function() {
+  function fixScrollZoneMargins() {
+    // Only apply on mobile (< 768px)
+    if (window.innerWidth >= 768) return;
+
+    var zones = [
+      { outer: 'problem-mobile-gsap',    sticky: null },
+      { outer: 'hiw-mobile-gsap',        sticky: null },
+      { outer: 'agents-mobile-carousel', sticky: null }
+    ];
+
+    zones.forEach(function(z) {
+      var outer = document.getElementById(z.outer);
+      if (!outer) return;
+
+      // The sticky child is always the first direct child div
+      var sticky = outer.querySelector(':scope > div');
+      if (!sticky) return;
+
+      // Measure the visible sticky height
+      var stickyH = sticky.scrollHeight;
+      var outerH  = outer.offsetHeight; // e.g. 250vh in px
+
+      // Pull next content up so it starts right after sticky content
+      var pull = outerH - stickyH;
+      if (pull > 0) {
+        outer.style.marginBottom = '-' + pull + 'px';
+      }
+    });
+  }
+
+  // Run after fonts/images settle
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(fixScrollZoneMargins, 100);
+    });
+  } else {
+    setTimeout(fixScrollZoneMargins, 100);
+  }
+
+  window.addEventListener('resize', fixScrollZoneMargins);
+})();
     // 0. Toggle Mobile Menu Logic
     const mobileMenuBtn = document.getElementById("mobile-menu-btn");
     const mobileMenu = document.getElementById("mobile-menu");
@@ -353,7 +395,7 @@
       humans-in-loop
     </p>
   </div>
-  <section data-section id="problem" class="scroll-mt-20">
+  <section data-section id="problem"  style="position: relative; z-index: 1;"">
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const textContainer = document.getElementById("mobile-reveal-text");
@@ -491,7 +533,9 @@
         </div>
 
         <!-- MOBILE CAROUSEL -->
-        <div id="problem-mobile-gsap" class="md:hidden relative w-full bg-white " style="height: 250vh;">
+       <div id="problem-mobile-gsap" class="md:hidden relative w-full bg-white" 
+     style="height: 250vh; margin-bottom: calc(-250vh + 520px);">
+
           <div class="sticky top-14 w-full bg-white flex flex-col" style="
             height: auto;
             overflow: hidden;
@@ -1161,9 +1205,9 @@
     </div>
   </section>
 
-  <section data-section id="how-it-works" class="scroll-mt-5">
+  <section data-section id="how-it-works" class="scroll-mt-5 style="position: relative; z-index: 2;"">
     <!-- MOBILE carousel -->
-    <div id="hiw-mobile-gsap" class="lg:hidden relative w-full bg-white" style="height: 350vh;">
+    <div id="hiw-mobile-gsap" class="lg:hidden relative w-full bg-white" style="height: 350vh; margin-bottom: calc(-350vh + 600px);">
       <div class="sticky top-0 w-full bg-white flex flex-col" style="height: auto; overflow: hidden;">
 
         <!-- Header -->
@@ -1944,12 +1988,12 @@
   </section>
   </div>
 
-  <section data-section id="product" class="scroll-mt-4">
+  <section data-section id="product" style="position: relative; z-index: 3;" class="scroll-mt-4">
 
     <!-- ───────────────────────────────────────────
        MOBILE  (< lg)  — scroll-driven carousel
   ─────────────────────────────────────────────── -->
-    <div id="agents-mobile-carousel" class="lg:hidden relative w-full bg-white" style="height: 200vh;">
+    <div id="agents-mobile-carousel" class="lg:hidden relative w-full bg-white" style="height: 200vh; margin-bottom: calc(-200vh + 700px);">
       <div class="sticky top-0 w-full bg-white" style="overflow-x: hidden;">
 
         <!-- Header -->
@@ -2299,7 +2343,7 @@
   </div>
 
 
-  <section data-section id="features" class="scroll-mt-12">
+  <section data-section id="features" class="scroll-mt-12 style="position: relative; z-index: 4;">
     <div class="w-full bg-white overflow-hidden">
       <div class="max-w-[1400px] mx-auto px-3 min-[250px]:px-6 md:px-12">
 

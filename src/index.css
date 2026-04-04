@@ -338,6 +338,17 @@ section[data-section] {
   color: rgba(0, 0, 0, 0.7);
   line-height: 1.45;
   font-size: clamp(14px, 4.2vw, 16px);
+
+}
+
+#how-it-works {
+  position: relative;
+  z-index: 10;
+}
+
+#problem-mobile-gsap {
+  position: relative;
+  z-index: 5;
 }
 
 /* ── 3D flip cards ─────────────────────────────────────────────── */
