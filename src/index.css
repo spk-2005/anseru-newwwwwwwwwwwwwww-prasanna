@@ -446,6 +446,8 @@ section[data-section] {
 .wf-wrap {
   padding: 56px 20px 4px;
   /* 56px top = navbar height offset */
+  min-height: 100dvh;   /* fills full viewport — no dead space at bottom during GSAP pin */
+  box-sizing: border-box;
   max-width: 600px;
   font-size: clamp(20px, 5.97vw, 46px);
   margin: 0 auto;
@@ -453,11 +455,9 @@ section[data-section] {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  /* Left align everything in the column */
   justify-content: flex-start;
   position: relative;
   overflow: hidden;
-
 }
 
 @media (min-width: 1024px) {
@@ -482,7 +482,7 @@ section[data-section] {
 }
 
 .wf-sub {
-  font-size: clamp(13px, 4vw, 18px);
+  font-size: clamp(20px, 5.97vw, 46px);
   color: #111;
   margin: 0;
   font-weight: 400;
@@ -495,9 +495,9 @@ section[data-section] {
 .wf-title {
   text-align: center !important;
   width: 100%;
-  font-size: clamp(18px, 5.5vw, 28px);
+  /* 34px at 402px = 8.46vw  →  clamp(min, fluid, max) across all viewports */
+  font-size: clamp(24px, 8.46vw, 44px);
   font-weight: 400;
-  /* Removed bold */
   color: #000;
   line-height: 1.1;
   letter-spacing: -0.02em;
@@ -662,7 +662,8 @@ section[data-section] {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 3px;   /* tight — symbols hug the line */
+  gap: 3px;
+  /* tight — symbols hug the line */
   transform: translate(-50%, -50%);
   z-index: 10;
   width: 40px;
