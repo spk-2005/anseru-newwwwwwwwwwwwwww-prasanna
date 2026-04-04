@@ -721,19 +721,6 @@ import wfIcon9 from "./assets/workflow-icon-9.png";
       });
 
       const tl = gsap.timeline();
-      ScrollTrigger.create({
-        trigger: section,
-        start: "top top", // Stick at the top of the screen
-        end: "+=700", // Shorter for 9 steps
-        pin: true,
-        anticipatePin: 1,
-        onUpdate: (self) => {
-          // Only move the timeline forward, preventing "un-reveal" on scroll up
-          if (self.progress > tl.progress()) {
-            gsap.to(tl, { progress: self.progress, duration: 0.3, ease: "power1.out" });
-          }
-        }
-      });
 
       // Animate each row's opacity and the active state
       rows.forEach((row, i) => {
@@ -744,7 +731,7 @@ import wfIcon9 from "./assets/workflow-icon-9.png";
 
         const startTime = i * 2.5;
 
-        // Opacity of the whole row - animation should start from 0.4 to 1
+        // Opacity of the whole row
         tl.to(row, {
           opacity: 1,
           duration: 1.5,
@@ -782,8 +769,41 @@ import wfIcon9 from "./assets/workflow-icon-9.png";
         }
       });
 
-      // Add a small buffer at the end
-      tl.to({}, { duration: 1 });
+      // ── ScrollTrigger: pin while revealing, then release permanently ──────────
+      // Once the user scrolls past the end of the workflow section (all steps
+      // revealed), kill the ScrollTrigger so the pin never re-engages on
+      // subsequent up/down scrolling — normal page scroll is fully restored.
+      let wfST = ScrollTrigger.create({
+        trigger: section,
+        start: "top top",
+        end: "+=100",
+        pin: true,
+        anticipatePin: 1,
+        onUpdate: (self) => {
+          // One-way: only advance the timeline, never un-reveal on scroll-up
+          if (self.progress > tl.progress()) {
+            gsap.to(tl, { progress: self.progress, duration: 0.3, ease: "power1.out" });
+          }
+        },
+        onLeave: () => {
+          // ── Permanently remove ALL sticky/pin behaviour ───────────────────
+          // 1. Destroy the ScrollTrigger so the pin never re-engages
+          if (wfST) { wfST.kill(false); wfST = null; }
+
+          // 2. Strip every inline style GSAP's pin may have left on the element
+          //    (position:fixed, top, left, width, transform, will-change)
+          ['position', 'top', 'left', 'width', 'transform', 'will-change'].forEach(
+            (prop) => section.style.removeProperty(prop)
+          );
+
+          // 3. Unwrap the gsap-pin-spacer div GSAP wraps the section in.
+          //    Without this the spacer still occupies space and can cause layout shifts.
+          const spacer = section.parentElement;
+          if (spacer && spacer.classList.contains('gsap-pin-spacer')) {
+            spacer.replaceWith(section);
+          }
+        },
+      });
     });
   }
 
