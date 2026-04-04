@@ -639,7 +639,7 @@ section[data-section] {
 }
 
 .step-body {
-  padding: 4px 8px 0 0;
+  padding: 2px 4px 0 0;
   flex: 1;
   display: flex;
   flex-direction: column;
