@@ -1120,17 +1120,24 @@
         margin-bottom: clamp(8px,2.5vw,14px);
       ">How Anseru Turns Knowledge Into Winning Deals</h2>
 
-          <!-- Pills - CENTERED -->
-          <div style="display: flex; justify-content: center; width: 100%; margin-bottom: clamp(8px,2.5vw,14px);">
-            <div id="hiw-pills-mobile" style="display: flex; gap: clamp(3px,1vw,6px); flex-wrap: nowrap;">
+          <!-- Pills - CENTERED Segmented Control Style -->
+          <div style="display: flex; justify-content: center; width: 100%; margin: clamp(16px, 4vw, 24px) 0;">
+            <div id="hiw-pills-mobile" style="
+              display: inline-flex; 
+              background-color: #F3F4F6; 
+              padding: 4px; 
+              border-radius: 12px; 
+              gap: 2px;
+              align-items: center;
+            ">
               <button data-idx="0" class="hiw-pill"
-                style="font-size: clamp(10px,3vw,13px); font-weight: 500; padding: clamp(5px,1.5vw,8px) clamp(10px,3vw,16px); border-radius: 5px; border: none; cursor: pointer; background: #000; color: #fff; white-space: nowrap; transition: all 0.25s;">Connect</button>
+                style="font-size: clamp(11px, 3.2vw, 13px); font-weight: 500; padding: 8px clamp(12px, 3.5vw, 20px); border-radius: 8px; border: none; cursor: pointer; background: #000; color: #fff; white-space: nowrap; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">Connect</button>
               <button data-idx="1" class="hiw-pill"
-                style="font-size: clamp(10px,3vw,13px); font-weight: 500; padding: clamp(5px,1.5vw,8px) clamp(10px,3vw,16px); border-radius: 5px; border: none; cursor: pointer; background: transparent; color: #9CA3AF; white-space: nowrap; transition: all 0.25s;">Upload</button>
+                style="font-size: clamp(11px, 3.2vw, 13px); font-weight: 500; padding: 8px clamp(12px, 3.5vw, 20px); border-radius: 8px; border: none; cursor: pointer; background: transparent; color: #000; white-space: nowrap; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">Upload</button>
               <button data-idx="2" class="hiw-pill"
-                style="font-size: clamp(10px,3vw,13px); font-weight: 500; padding: clamp(5px,1.5vw,8px) clamp(10px,3vw,16px); border-radius: 5px; border: none; cursor: pointer; background: transparent; color: #9CA3AF; white-space: nowrap; transition: all 0.25s;">Respond</button>
+                style="font-size: clamp(11px, 3.2vw, 13px); font-weight: 500; padding: 8px clamp(12px, 3.5vw, 20px); border-radius: 8px; border: none; cursor: pointer; background: transparent; color: #000; white-space: nowrap; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">Respond</button>
               <button data-idx="3" class="hiw-pill"
-                style="font-size: clamp(10px,3vw,13px); font-weight: 500; padding: clamp(5px,1.5vw,8px) clamp(10px,3vw,16px); border-radius: 5px; border: none; cursor: pointer; background: transparent; color: #9CA3AF; white-space: nowrap; transition: all 0.25s;">Approve</button>
+                style="font-size: clamp(11px, 3.2vw, 13px); font-weight: 500; padding: 8px clamp(12px, 3.5vw, 20px); border-radius: 8px; border: none; cursor: pointer; background: transparent; color: #000; white-space: nowrap; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">Approve</button>
             </div>
           </div>
         </div>
@@ -1456,7 +1463,7 @@
               pill.style.color = '#fff';
             } else {
               pill.style.background = 'transparent';
-              pill.style.color = '#9CA3AF';
+              pill.style.color = '#000';
             }
           });
 
@@ -1520,31 +1527,29 @@
             <p class="anseru-section-tag">How It Works</p>
             <h2 class="anseru-section-title mt-2 mb-4">How Anseru Turns Knowledge<br />Into Winning Deals</h2>
             <div id="carousel-indicators-desktop"
-              class="flex justify-center items-center gap-0 max-w-[580px] mx-auto px-4">
+              class="flex justify-center items-center gap-1 mx-auto px-1 py-1 rounded-xl w-fit"
+              style="background: #F3F4F6;">
               <div class="flex items-center">
                 <button data-idx="0"
-                  class="carousel-ind-btn text-[13px] sm:text-[15px] font-medium transition-colors cursor-pointer px-3 sm:px-4 py-2 rounded-full text-black bg-gray-100">
+                  class="carousel-ind-btn text-[13px] sm:text-[15px] font-medium transition-all duration-300 cursor-pointer px-4 sm:px-6 py-2.5 rounded-lg text-white bg-black">
                   Connect
                 </button>
-                <div class="w-5 sm:w-10 h-px bg-gray-200 -mx-1 sm:-mx-2"></div>
               </div>
               <div class="flex items-center">
                 <button data-idx="1"
-                  class="carousel-ind-btn text-[13px] sm:text-[15px] font-medium transition-colors cursor-pointer px-3 sm:px-4 py-2 rounded-full text-gray-400 hover:text-gray-600">
+                  class="carousel-ind-btn text-[13px] sm:text-[15px] font-medium transition-all duration-300 cursor-pointer px-4 sm:px-6 py-2.5 rounded-lg text-black bg-transparent">
                   Upload
                 </button>
-                <div class="w-5 sm:w-10 h-px bg-gray-200 -mx-1 sm:-mx-2"></div>
               </div>
               <div class="flex items-center">
                 <button data-idx="2"
-                  class="carousel-ind-btn text-[13px] sm:text-[15px] font-medium transition-colors cursor-pointer px-3 sm:px-4 py-2 rounded-full text-gray-400 hover:text-gray-600">
+                  class="carousel-ind-btn text-[13px] sm:text-[15px] font-medium transition-all duration-300 cursor-pointer px-4 sm:px-6 py-2.5 rounded-lg text-black bg-transparent">
                   Respond
                 </button>
-                <div class="w-5 sm:w-10 h-px bg-gray-200 -mx-1 sm:-mx-2"></div>
               </div>
               <div class="flex items-center">
                 <button data-idx="3"
-                  class="carousel-ind-btn text-[13px] sm:text-[15px] font-medium transition-colors cursor-pointer px-3 sm:px-4 py-2 rounded-full text-gray-400 hover:text-gray-600">
+                  class="carousel-ind-btn text-[13px] sm:text-[15px] font-medium transition-all duration-300 cursor-pointer px-4 sm:px-6 py-2.5 rounded-lg text-black bg-transparent">
                   Approve
                 </button>
               </div>
@@ -1895,7 +1900,6 @@
       <div class="sticky top-0 w-full bg-white" style="overflow-x: hidden;">
 
         <!-- Header -->
-        <!-- Header -->
         <div style="padding: clamp(52px,13vw,68px) clamp(12px,4vw,20px) 0;">
           <p style="font-size: clamp(14px,3vw,15px); color: #6B7280; margin-bottom: 3px;">Proven Results</p>
           <h2 style="
@@ -1908,25 +1912,31 @@
       ">Two Super Agents</h2>
         </div>
 
-        <!-- Tab Pills -->
-        <div style="padding: 0 clamp(10px,4vw,20px); margin-bottom: clamp(12px,3vw,16px);">
-          <div
-            class="inline-flex w-fit items-center gap-0.5 min-[250px]:gap-1 bg-gray-100 p-0.5 min-[250px]:p-1 rounded-xl flex-wrap">
+        <!-- Tab Pills - CENTERED -->
+        <div style="display: flex; justify-content: center; width: 100%; padding: 0 clamp(10px, 4vw, 20px); margin-bottom: clamp(16px, 4vw, 24px);">
+          <div style="
+            display: inline-flex; 
+            background-color: #F3F4F6; 
+            padding: 4px; 
+            border-radius: 12px; 
+            gap: 2px;
+            align-items: center;
+          ">
             <button id="mobile-tab-archer"
               onclick="if(window.scrollToAgentMobileSlide) window.scrollToAgentMobileSlide(0)"
-              style="font-size: clamp(9px,2.74vw,14px);"
-              class="flex items-center gap-1 min-[250px]:gap-2 px-2 min-[250px]:px-4 sm:px-5 py-1.5 min-[250px]:py-2.5 rounded-lg font-medium transition-all cursor-pointer bg-black text-white whitespace-nowrap">
+              style="font-size: clamp(11px, 3.2vw, 13px); font-weight: 500; padding: 8px clamp(12px, 3.5vw, 20px); border-radius: 8px; border: none; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); background: #000; color: #fff; white-space: nowrap;"
+              class="flex items-center gap-2">
               Meet Archer
               <img src="./src/assets/Sud.png" loading="lazy" alt="archer"
-                class="brightness-0 invert w-3 min-[250px]:w-4 h-3 min-[250px]:h-4" />
+                class="brightness-0 invert w-3.5 h-3.5" />
             </button>
             <button id="mobile-tab-knox"
               onclick="if(window.scrollToAgentMobileSlide) window.scrollToAgentMobileSlide(1)"
-              style="font-size: clamp(9px,2.74vw,14px);"
-              class="flex items-center gap-1 min-[250px]:gap-2 px-2 min-[250px]:px-4 sm:px-5 py-1.5 min-[250px]:py-2.5 rounded-lg font-medium transition-all cursor-pointer bg-transparent text-black hover:bg-gray-200 whitespace-nowrap">
+              style="font-size: clamp(11px, 3.2vw, 13px); font-weight: 500; padding: 8px clamp(12px, 3.5vw, 20px); border-radius: 8px; border: none; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); background: transparent; color: #000; white-space: nowrap;"
+              class="flex items-center gap-2">
               Meet Knox
               <img src="./src/assets/kg.png" loading="lazy" alt="knox"
-                class="w-3 min-[250px]:w-4 h-3 min-[250px]:h-4" />
+                class="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
@@ -2180,15 +2190,11 @@
           pills.forEach(function (btn, i) {
             if (!btn) return;
             var active = i === idx;
-            btn.className = [
-              'flex items-center gap-1 min-[250px]:gap-2',
-              'px-2 min-[250px]:px-4 sm:px-5',
-              'py-1.5 min-[250px]:py-2.5',
-              'rounded-lg font-medium transition-all cursor-pointer whitespace-nowrap',
-              active ? 'bg-black text-white' : 'bg-transparent text-black hover:bg-gray-200'
-            ].join(' ');
+            btn.style.background = active ? '#000' : 'transparent';
+            btn.style.color = active ? '#fff' : '#000';
+            
             var img = btn.querySelector('img');
-            if (img) img.className = (active ? 'brightness-0 invert ' : '') + 'w-3 min-[250px]:w-4 h-3 min-[250px]:h-4';
+            if (img) img.className = (active ? 'brightness-0 invert ' : '') + 'w-3.5 h-3.5';
           });
         }
 

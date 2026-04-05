@@ -30,8 +30,9 @@ function updateCarouselIndicators(activeSlide) {
     if (!container) return;
     container.querySelectorAll(".carousel-ind-btn").forEach((btn) => {
       const isActive = Number(btn.dataset.idx) === activeSlide;
-      btn.className = `carousel-ind-btn text-[13px] sm:text-[15px] font-medium transition-colors cursor-pointer px-3 sm:px-4 py-2 rounded-full ${isActive ? "text-black bg-gray-100" : "text-gray-400 hover:text-gray-600"
-        }`;
+      btn.className = `carousel-ind-btn text-[13px] sm:text-[15px] font-medium transition-all duration-300 cursor-pointer px-4 sm:px-6 py-2.5 rounded-lg ${
+        isActive ? "text-white bg-black" : "text-black bg-transparent hover:bg-gray-200"
+      }`;
     });
   });
 }
@@ -473,16 +474,28 @@ function initProblemCarousel() {
   const dotsContainer = document.getElementById("problem-dots-mobile");
   if (!track || !dotsContainer) return;
 
+  // Set appropriate touch-action to allow vertical scrolling 
+  // while handling horizontal dragging
+  track.style.touchAction = "pan-y";
+  track.style.cursor = "grab";
+
   const slides = track.querySelectorAll(".prob-card-wrap");
   const slideCount = slides.length;
   const dots = dotsContainer.querySelectorAll("button");
   let currentIdx = 0;
   let autoSlideInterval;
 
+  // Drag state
+  let isDragging = false;
+  let startX = 0;
+  let currentTranslate = 0;
+  let prevTranslate = 0;
+  let animationID;
+
   function updateDots(idx) {
     dots.forEach((dot, i) => {
       const isActive = i === idx;
-      dot.className = `w-1.5 h-1.5 rounded-full transition-all duration-300 ${isActive ? "bg-[#2C48DB] w-4" : "bg-gray-300"}`;
+      dot.className = `problem-dot transition-all duration-300 h-2 bg-gray-300 rounded-full ${isActive ? "bg-[#2C48DB] w-5" : "w-2 bg-gray-300"}`;
     });
   }
 
@@ -490,11 +503,19 @@ function initProblemCarousel() {
     if (idx < 0) idx = slideCount - 1;
     if (idx >= slideCount) idx = 0;
     currentIdx = idx;
+
+    const parentWidth = track.parentElement.offsetWidth;
     
-    const slideWidth = track.offsetWidth / 3; // 300% width, so each slide is 1/3 of track
-    // Actually track.offsetWidth is 300% of parent. 
-    // It's easier to use percentage.
-    track.style.transform = `translateX(-${idx * 33.3333}%)`;
+    // Ensure the track has the transition property set
+    track.style.transition = "transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)";
+    
+    // Force a reflow to ensure the browser registers the transition change 
+    // before the transform change, preventing the "flash" (instant jump).
+    void track.offsetHeight; 
+    
+    track.style.transform = `translateX(-${idx * (100 / slideCount)}%)`;
+    prevTranslate = -idx * parentWidth;
+    
     updateDots(idx);
   }
 
@@ -502,24 +523,98 @@ function initProblemCarousel() {
     stopAutoSlide();
     autoSlideInterval = setInterval(() => {
       goToSlide(currentIdx + 1);
-    }, 3000);
+    }, 4500); 
   }
 
   function stopAutoSlide() {
     if (autoSlideInterval) clearInterval(autoSlideInterval);
   }
 
+  // --- Drag Events ---
+  function onPointerDown(e) {
+    isDragging = true;
+    startX = e.clientX;
+    stopAutoSlide();
+    track.style.transition = "none";
+    track.style.cursor = "grabbing";
+    
+    const parentWidth = track.parentElement.offsetWidth;
+    // Sync prevTranslate with the current percentage position in pixels
+    prevTranslate = -currentIdx * parentWidth;
+    currentTranslate = prevTranslate;
+  }
+
+  function onPointerMove(e) {
+    if (!isDragging) return;
+    const currentX = e.clientX;
+    const moveX = currentX - startX;
+    
+    const parentWidth = track.parentElement.offsetWidth;
+    // Faster swipe detection: 20% of track width or specific pixel threshold
+    const threshold = parentWidth * 0.22; 
+
+    // If we've dragged far enough, trigger the automatic slide change
+    if (Math.abs(moveX) > threshold) {
+      isDragging = false; 
+      track.style.cursor = "grab";
+      
+      if (moveX < 0 && currentIdx < slideCount - 1) {
+        goToSlide(currentIdx + 1);
+      } else if (moveX > 0 && currentIdx > 0) {
+        goToSlide(currentIdx - 1);
+      } else {
+        goToSlide(currentIdx);
+      }
+      startAutoSlide();
+      return;
+    }
+
+    currentTranslate = prevTranslate + moveX;
+    
+    // Resistance at edges
+    const minTranslate = -(slideCount - 1) * parentWidth;
+    const maxTranslate = 0;
+
+    if (currentTranslate > maxTranslate) {
+      currentTranslate = maxTranslate + (currentTranslate - maxTranslate) * 0.3;
+    } else if (currentTranslate < minTranslate) {
+      currentTranslate = minTranslate + (currentTranslate - minTranslate) * 0.3;
+    }
+    
+    if (animationID) cancelAnimationFrame(animationID);
+    animationID = requestAnimationFrame(() => {
+      track.style.transform = `translateX(${currentTranslate}px)`;
+    });
+  }
+
+  function onPointerUp(e) {
+    if (!isDragging) return;
+    isDragging = false;
+    track.style.cursor = "grab";
+    
+    // Snap back if we didn't reach threshold
+    goToSlide(currentIdx); 
+    startAutoSlide();
+  }
+
   // Handle dot clicks
   dots.forEach((dot, i) => {
     dot.addEventListener("click", () => {
       goToSlide(i);
-      startAutoSlide(); // reset interval
+      startAutoSlide(); 
     });
   });
 
-  // Pause on hover
-  track.addEventListener("mouseenter", stopAutoSlide);
-  track.addEventListener("mouseleave", startAutoSlide);
+  // Track events
+  track.addEventListener("pointerdown", onPointerDown);
+  window.addEventListener("pointermove", onPointerMove);
+  window.addEventListener("pointerup", onPointerUp);
+  window.addEventListener("pointercancel", onPointerUp);
+
+  // Prevent image drag ghosting
+  track.querySelectorAll("img").forEach(img => {
+    img.addEventListener("dragstart", (e) => e.preventDefault());
+  });
 
   // Initialize
   updateDots(0);
